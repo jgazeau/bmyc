@@ -1,2 +1,1 @@
-# bmyc
-Bump Me if You Can
+# Bump Me if You Can (bmyc)
