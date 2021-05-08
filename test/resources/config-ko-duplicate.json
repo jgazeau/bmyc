@@ -1,0 +1,22 @@
+[
+  {
+    "name": "asset1",
+    "localPath": "path/asset1.min.js",
+    "assetManager": {
+      "name": "cdnjs",
+      "library": "library",
+      "fileName": "asset1.min.js"
+    },
+    "currentVersion": "0.0.1"
+  },
+  {
+    "name": "asset1",
+    "localPath": "./path/asset2.min.js",
+    "assetManager": {
+      "name": "github",
+      "owner": "owner",
+      "repository": "repository",
+      "filePath": "dir/asset2.min.js"
+    }
+  }
+]

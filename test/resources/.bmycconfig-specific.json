@@ -1,0 +1,21 @@
+[
+  {
+    "name": "asset1",
+    "localPath": "test/temp/bmyc-cdnjs-specific-typescript.min.js",
+    "assetManager": {
+      "name": "cdnjs",
+      "library": "typescript",
+      "fileName": "typescript.min.js"
+    }
+  },
+  {
+    "name": "asset2",
+    "localPath": "test/temp/bmyc-github-specific-content-ok.js",
+    "assetManager": {
+      "name": "github",
+      "owner": "jgazeau",
+      "repository": "bmyc",
+      "filePath": "test/resources/github-content-ok.js"
+    }
+  }
+]
