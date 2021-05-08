@@ -1,0 +1,10 @@
+{
+  "name": "asset1",
+  "localPath": "test/temp/validUnexistingSampleAsset.js",
+  "assetManager": {
+    "name": "github",
+    "owner": "jgazeau",
+    "repository": "bmyc",
+    "filePath": "test/resources/github-content-ok.js"
+  }
+}

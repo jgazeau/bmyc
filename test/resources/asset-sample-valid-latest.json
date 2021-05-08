@@ -1,0 +1,11 @@
+{
+  "name": "asset1",
+  "localPath": "test/resources/github-content-ok.js",
+  "assetManager": {
+    "name": "github",
+    "owner": "jgazeau",
+    "repository": "bmyc",
+    "filePath": "test/resources/github-content-ok.js"
+  },
+  "currentVersion": ""
+}

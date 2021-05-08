@@ -1,0 +1,11 @@
+{
+  "name": "asset1",
+  "localPath": "./path/asset1.min.js",
+  "assetManager": "github",
+  "currentVersion": "0.0.1"
+},{
+  "name": "asset2",
+  "localPath": "./path/asset2.min.js",
+  "assetManager": "github",
+  "currentVersion": "0.0.2"
+}

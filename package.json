@@ -1,0 +1,68 @@
+{
+  "name": "bmyc",
+  "version": "0.0.1",
+  "description": "Tool to bump assets based on a configuration file",
+  "engines": {
+    "node": ">=14.14.0"
+  },
+  "bin": {
+    "bmyc": "build/src/bmyc"
+  },
+  "scripts": {
+    "bmyc": "ts-node src/bmyc.ts",
+    "test": "c8 mocha build/test/**/test-*.js",
+    "mocha": "mocha -r ts-node/register test/**/test-*.ts",
+    "lint": "gts lint",
+    "clean": "gts clean",
+    "compile": "tsc",
+    "fix": "gts fix",
+    "prepare": "npm.cmd run compile",
+    "pretest": "npm.cmd run compile",
+    "posttest": "npm.cmd run lint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jgazeau/bmyc.git"
+  },
+  "keywords": [
+    "bmyc",
+    "bump",
+    "asset"
+  ],
+  "author": "Jordan GAZEAU",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jgazeau/bmyc/issues"
+  },
+  "homepage": "https://github.com/jgazeau/bmyc#readme",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "chai": "^4.3.4",
+    "chai-as-promised": "^7.1.1",
+    "class-transformer": "^0.4.0",
+    "class-validator": "^0.13.1",
+    "fs-extra": "^10.0.0",
+    "kleur": "^4.1.4",
+    "mocha": "^8.3.2",
+    "reflect-metadata": "^0.1.13",
+    "sinon": "^11.1.1",
+    "sinon-chai": "^3.7.0",
+    "table": "^6.7.1",
+    "tslog": "^3.2.0",
+    "yargs": "^16.2.0"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.2.17",
+    "@types/chai-as-promised": "^7.1.4",
+    "@types/fs-extra": "^9.0.11",
+    "@types/mocha": "^8.2.2",
+    "@types/node": "^14.11.2",
+    "@types/sinon": "^10.0.2",
+    "@types/sinon-chai": "^3.2.5",
+    "@types/yargs": "^17.0.0",
+    "c8": "^7.7.1",
+    "gts": "^3.1.0",
+    "ts-node": "^10.0.0",
+    "typescript": "^4.2.4"
+  }
+}
