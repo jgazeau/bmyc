@@ -2,8 +2,8 @@ import kleur = require('kleur');
 import {hideBin} from 'yargs/helpers';
 import {getOutputWidth} from '../utils/helpers';
 import {repository, homepage, bugs} from '../../package.json';
-import {DEFAULT_CONFIGURATION_FILE_NAME} from '../utils/const';
 import {IArgumentsParser, ICliArguments} from './iArgumentsParser';
+import {BMYC_HEADER, DEFAULT_CONFIGURATION_FILE_NAME} from '../utils/const';
 const yargs = require('yargs');
 
 export class BmycCli {
@@ -35,7 +35,7 @@ export class BmycCli {
         'Options:': 'Other Options:',
         'Commands:': 'Commands:',
       })
-      .usage('Usage: $0 [options]')
+      .usage(`${BMYC_HEADER}\nUsage: $0 [options]`)
       .alias('v', 'version')
       .alias('h', 'help')
       .example([

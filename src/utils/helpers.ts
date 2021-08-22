@@ -4,7 +4,7 @@ import {logger} from './logger';
 import {PathLike} from 'fs-extra';
 import {Color, white} from 'kleur';
 import {TLogLevelName} from 'tslog';
-import {MAX_TTY_LENGTH} from './const';
+import {BMYC_HEADER, MAX_TTY_LENGTH} from './const';
 import {ClassConstructor, deserialize} from 'class-transformer';
 import {validateSync, ValidationError} from 'class-validator';
 import {ConfigurationError} from '../model/configurationError';
@@ -47,17 +47,7 @@ export function headerFactory(
   color: Color = white,
   logLevel: TLogLevelName = 'info'
 ): void {
-  logger()[logLevel](
-    color(`
-   _____                      
-  | ___ \\                     
-  | |_/ /_ __ ___  _   _  ___ 
-  | ___ \\ '_ \` _ \\| | | |/ __|
-  | |_/ / | | | | | |_| | (__ 
-  |____/|_| |_| |_|\\__, |\\___|
-                   |___/      
-`)
-  );
+  logger()[logLevel](color(`${BMYC_HEADER}`));
 }
 
 export function getOutputWidth(): number {
