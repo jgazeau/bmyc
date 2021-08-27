@@ -1,7 +1,8 @@
+/* c8 ignore start */
 import * as chai from 'chai';
 import * as sinon from 'sinon';
 import * as sinonChai from 'sinon-chai';
-import {logger} from '../../src/utils/logger';
+import {logger} from '../src/utils/logger';
 
 export class SinonStubs {
   private _logger: boolean;
@@ -53,3 +54,4 @@ interface sinonStubsParameters {
   consoleLog?: boolean;
   processExit?: boolean;
 }
+/* c8 ignore stop */

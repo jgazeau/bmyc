@@ -1,7 +1,6 @@
 import kleur = require('kleur');
 import {hideBin} from 'yargs/helpers';
 import {getOutputWidth} from '../utils/helpers';
-import {repository, homepage, bugs} from '../../package.json';
 import {IArgumentsParser, ICliArguments} from './iArgumentsParser';
 import {BMYC_HEADER, DEFAULT_CONFIGURATION_FILE_NAME} from '../utils/const';
 const yargs = require('yargs');
@@ -66,9 +65,9 @@ export class BmycCli {
       .wrap(getOutputWidth())
       .epilog(
         `Additional information:
-  GitHub: ${kleur.green(repository.url)}
-  Documentation: ${kleur.blue(homepage)}
-  Issues: ${kleur.red(bugs.url)}
+  GitHub: ${kleur.green('https://github.com/jgazeau/bmyc.git')}
+  Documentation: ${kleur.blue('https://github.com/jgazeau/bmyc#readme')}
+  Issues: ${kleur.red('https://github.com/jgazeau/bmyc/issues')}
       `
       );
   }

@@ -1,4 +1,4 @@
-#!/usr/bin/env
+#!/usr/bin/env node
 /* eslint-disable @typescript-eslint/no-explicit-any*/
 import 'reflect-metadata';
 import {red} from 'kleur';

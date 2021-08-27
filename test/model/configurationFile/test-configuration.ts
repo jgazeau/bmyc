@@ -3,7 +3,7 @@ import * as path from 'path';
 import * as fs from 'fs-extra';
 import {expect} from 'chai';
 import {PathLike} from 'fs-extra';
-import {setChaiAsPromised} from '../../testUtils/helpers';
+import {setChaiAsPromised} from '../../../testUtils/helpers';
 import {Asset} from '../../../src/model/configurationFile/asset';
 import {ConfigurationError} from '../../../src/model/configurationError';
 import {Configuration} from '../../../src/model/configurationFile/configuration';
@@ -11,7 +11,7 @@ import {
   NON_EXISTING_FILE,
   testTempPath,
   testResourcesPath,
-} from '../../testUtils/const';
+} from '../../../testUtils/const';
 
 const CONFIG_OK: PathLike = path.join(testResourcesPath, 'config-ok.json');
 const CONFIG_KO_CONTENT: PathLike = path.join(

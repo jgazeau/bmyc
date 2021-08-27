@@ -1,7 +1,7 @@
 import * as path from 'path';
 import {expect} from 'chai';
 import {PathLike} from 'fs-extra';
-import {testResourcesPath} from '../testUtils/const';
+import {testResourcesPath} from '../../testUtils/const';
 import {Asset} from '../../src/model/configurationFile/asset';
 import {ConfigurationError} from '../../src/model/configurationError';
 import {

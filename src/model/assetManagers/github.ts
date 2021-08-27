@@ -48,7 +48,7 @@ export class Github extends AssetManager {
           method: 'get',
           headers: {
             Accept: 'application/vnd.github.v3+json',
-            Authorization: `token ${process.env.GITHUB_TOKEN}`,
+            Authorization: `token ${process.env.BMYC_GITHUB_TOKEN}`,
           },
           url: `${GITHUB_API_URL}/repos/${this.owner}/${this.repository}/releases/latest`,
         }).then((response: any) => {
@@ -67,7 +67,7 @@ export class Github extends AssetManager {
           method: 'get',
           headers: {
             Accept: 'application/vnd.github.v3+json',
-            Authorization: `token ${process.env.GITHUB_TOKEN}`,
+            Authorization: `token ${process.env.BMYC_GITHUB_TOKEN}`,
           },
           params: {
             ref: assetRef,
@@ -118,7 +118,7 @@ export class Github extends AssetManager {
           method: 'get',
           headers: {
             Accept: 'application/vnd.github.v3+json',
-            Authorization: `token ${process.env.GITHUB_TOKEN}`,
+            Authorization: `token ${process.env.BMYC_GITHUB_TOKEN}`,
           },
           url: `${GITHUB_API_URL}/repos/${this.owner}/${this.repository}/git/blobs/${assetSha}`,
         }).then((response: any) => {
@@ -149,10 +149,12 @@ export class Github extends AssetManager {
       });
   }
   private checkGitHubToken(): Promise<void> {
-    if (process.env.GITHUB_TOKEN) {
+    if (process.env.BMYC_GITHUB_TOKEN) {
       return Promise.resolve();
     } else {
-      return Promise.reject(new BmycError('GITHUB_TOKEN variable is not set'));
+      return Promise.reject(
+        new BmycError('BMYC_GITHUB_TOKEN variable is not set')
+      );
     }
   }
 }
