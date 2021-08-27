@@ -1,3 +1,4 @@
+/* c8 ignore start */
 import * as chai from 'chai';
 import * as fs from 'fs-extra';
 import {testTempPath} from './const';
@@ -16,3 +17,4 @@ export function mockArgs(args: string[]): void {
 export function cleanTestTempDirectory(): void {
   fs.emptyDirSync(testTempPath);
 }
+/* c8 ignore stop */

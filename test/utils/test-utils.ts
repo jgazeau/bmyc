@@ -2,9 +2,9 @@ import {red} from 'kleur';
 import {expect} from 'chai';
 import {PathLike} from 'fs-extra';
 import {logger} from '../../src/utils/logger';
-import {SinonStubs} from '../testUtils/sinonStubs';
+import {SinonStubs} from '../../testUtils/sinonStubs';
 import {MAX_TTY_LENGTH} from '../../src/utils/const';
-import {logTestLevel, NON_EXISTING_FILE} from '../testUtils/const';
+import {logTestLevel, NON_EXISTING_FILE} from '../../testUtils/const';
 import {ConfigurationError} from '../../src/model/configurationError';
 import {
   checkFilePath,
@@ -12,8 +12,8 @@ import {
   headerFactory,
 } from '../../src/utils/helpers';
 
-const sinonMock = new SinonStubs({});
 describe('Utils tests', () => {
+  const sinonMock = new SinonStubs({});
   afterEach(() => {
     sinonMock.sinonRestoreStubs();
   });

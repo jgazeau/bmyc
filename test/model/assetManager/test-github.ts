@@ -5,13 +5,13 @@ import * as fs from 'fs-extra';
 import {expect} from 'chai';
 import {PathLike} from 'fs-extra';
 import {BmycError} from '../../../src/model/bmycError';
-import {setChaiAsPromised} from '../../testUtils/helpers';
+import {setChaiAsPromised} from '../../../testUtils/helpers';
 import {deserializeObject} from '../../../src/utils/helpers';
 import {Github} from '../../../src/model/assetManagers/github';
-import {rootPath, testResourcesPath} from '../../testUtils/const';
+import {rootPath, testResourcesPath} from '../../../testUtils/const';
 import {ConfigurationError} from '../../../src/model/configurationError';
 
-const tempToken = process.env.GITHUB_TOKEN;
+const tempToken = process.env.BMYC_GITHUB_TOKEN;
 const GITHUB_SAMPLE_DIRECTORY: PathLike = path.join(
   testResourcesPath,
   'github-sample-directory.json'
@@ -43,7 +43,7 @@ const GITHUB_SAMPLE_VALID: PathLike = path.join(
 
 describe('GitHub AssetManager tests', () => {
   beforeEach(() => {
-    process.env.GITHUB_TOKEN = tempToken;
+    process.env.BMYC_GITHUB_TOKEN = tempToken;
   });
   it('GitHub should implement getLatestVersion', () => {
     const github: Github = new Github();
@@ -93,18 +93,18 @@ describe('GitHub AssetManager tests', () => {
       deserializeObject(input, Github);
     }).to.throw(ConfigurationError);
   });
-  it('getLatestVersion without GITHUB_TOKEN environment variable should throw a BmycError', () => {
+  it('getLatestVersion without BMYC_GITHUB_TOKEN environment variable should throw a BmycError', () => {
     setChaiAsPromised();
-    delete process.env.GITHUB_TOKEN;
+    delete process.env.BMYC_GITHUB_TOKEN;
     const input: string = fs.readFileSync(GITHUB_SAMPLE_VALID, 'utf8');
     const github: Github = deserializeObject(input, Github);
     return expect(github.getLatestVersion()).to.eventually.be.rejectedWith(
       BmycError
     );
   });
-  it('getContent without GITHUB_TOKEN environment variable should throw a BmycError', () => {
+  it('getContent without BMYC_GITHUB_TOKEN environment variable should throw a BmycError', () => {
     setChaiAsPromised();
-    delete process.env.GITHUB_TOKEN;
+    delete process.env.BMYC_GITHUB_TOKEN;
     const input: string = fs.readFileSync(GITHUB_SAMPLE_VALID, 'utf8');
     const github: Github = deserializeObject(input, Github);
     return expect(github.getContent('')).to.eventually.be.rejectedWith(

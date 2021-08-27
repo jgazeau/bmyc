@@ -1,20 +1,21 @@
+import 'reflect-metadata';
 import * as path from 'path';
 import * as fs from 'fs-extra';
 import {expect} from 'chai';
 import {Bmyc} from '../src/bmyc';
 import {PathLike} from 'fs-extra';
 import {BumpResults} from '../src/utils/stats';
-import {SinonStubs} from './testUtils/sinonStubs';
+import {SinonStubs} from '../testUtils/sinonStubs';
 import {Asset} from '../src/model/configurationFile/asset';
 import {ConfigurationError} from '../src/model/configurationError';
 import {DEFAULT_CONFIGURATION_FILE_NAME} from '../src/utils/const';
-import {rootPath, testResourcesPath, testTempPath} from './testUtils/const';
+import {rootPath, testResourcesPath, testTempPath} from '../testUtils/const';
 import {Configuration} from '../src/model/configurationFile/configuration';
 import {
   cleanTestTempDirectory,
   mockArgs,
   setChaiAsPromised,
-} from './testUtils/helpers';
+} from '../testUtils/helpers';
 
 const DEFAULT_CONFIG_FILE: PathLike = path.join(
   testResourcesPath,
@@ -43,8 +44,8 @@ const COPY_INCORRECT_CONFIG_FILE: PathLike = path.join(
   INCORRECT_CONFIG_FILE_NAME
 );
 
-const sinonMock = new SinonStubs({});
 describe('Bmyc tests', () => {
+  const sinonMock = new SinonStubs({});
   beforeEach(() => {
     BumpResults.results = [];
     cleanTestTempDirectory();
