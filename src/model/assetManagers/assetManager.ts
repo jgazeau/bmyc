@@ -19,7 +19,7 @@ export abstract class AssetManager implements IAssetManager {
   }
 
   // eslint-disable-next-line  @typescript-eslint/no-unused-vars
-  getContent(assetVersion: string): Promise<string> {
+  getContent(assetVersion: string): Promise<Buffer> {
     throw new ConfigurationError('Method to be implemented.');
   }
 }

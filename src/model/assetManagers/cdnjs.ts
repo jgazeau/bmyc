@@ -49,7 +49,7 @@ export class Cdnjs extends AssetManager {
       });
   }
 
-  getContent(assetVersion: string): Promise<string> {
+  getContent(assetVersion: string): Promise<Buffer> {
     const cdnjsGithub = new Github();
     cdnjsGithub._owner = CDNJS_GITHUB_OWNER;
     cdnjsGithub._repository = CDNJS_GITHUB_REPOSITORY;

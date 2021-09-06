@@ -110,7 +110,7 @@ export class Github extends AssetManager {
       });
   }
 
-  getBlob(assetSha: string): Promise<string> {
+  getBlob(assetSha: string): Promise<Buffer> {
     return this.checkGitHubToken()
       .then(() => {
         return axios({
@@ -124,10 +124,7 @@ export class Github extends AssetManager {
         }).then((response: any) => {
           if (response.data.content) {
             return Promise.resolve(
-              Buffer.from(
-                response.data.content,
-                response.data.encoding
-              ).toString('utf-8')
+              Buffer.from(response.data.content, response.data.encoding)
             );
           } else {
             throw new BmycError(`Cannot get content of blob ${assetSha}`);
@@ -139,7 +136,7 @@ export class Github extends AssetManager {
       });
   }
 
-  getContent(assetVersion: string): Promise<string> {
+  getContent(assetVersion: string): Promise<Buffer> {
     return this.getSha(assetVersion)
       .then((assetSha: string) => {
         return this.getBlob(assetSha);

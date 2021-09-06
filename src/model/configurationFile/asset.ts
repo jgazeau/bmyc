@@ -103,13 +103,15 @@ export class Asset {
               return fs
                 .access(this.localPath, fs.constants.W_OK)
                 .then(() => {
-                  return fs.readFile(this.localPath, 'utf8').then(localData => {
-                    if (assetContent !== localData) {
-                      return Promise.reject();
-                    } else {
-                      return Promise.resolve();
-                    }
-                  });
+                  return fs
+                    .readFile(this.localPath, 'base64')
+                    .then(localData => {
+                      if (assetContent.toString('base64') !== localData) {
+                        return Promise.reject();
+                      } else {
+                        return Promise.resolve();
+                      }
+                    });
                 })
                 .catch(() => {
                   return fs.outputFile(
