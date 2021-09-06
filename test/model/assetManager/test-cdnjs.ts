@@ -88,7 +88,9 @@ describe('Cdnjs AssetManager tests', () => {
     const input: string = fs.readFileSync(CDNJS_SAMPLE_VALID, 'utf8');
     const cdnjs: Cdnjs = deserializeObject(input, Cdnjs);
     return cdnjs.getLatestVersion().then(latestVersion => {
-      expect(cdnjs.getContent(latestVersion)).to.eventually.not.be.empty;
+      return cdnjs.getContent(latestVersion).then(content => {
+        expect(content).to.not.be.empty;
+      });
     });
   });
   it('getContent on unexisting file should throw a BmycError', () => {

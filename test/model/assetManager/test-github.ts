@@ -148,9 +148,11 @@ describe('GitHub AssetManager tests', () => {
     const input: any = JSON.stringify(tempInput);
     const github: Github = deserializeObject(input, Github);
     return github.getLatestVersion().then(latestVersion => {
-      expect(github.getContent(latestVersion)).to.eventually.equal(
-        fs.readFileSync(path.join(rootPath, tempInput.filePath), 'utf8')
-      );
+      return github.getContent(latestVersion).then(content => {
+        expect(content.toString('utf8')).to.equal(
+          fs.readFileSync(path.join(rootPath, tempInput.filePath), 'utf8')
+        );
+      });
     });
   });
   it('getContent on an unexisting file which parent is a file should throw a BmycError', () => {

@@ -1,8 +1,5 @@
 {
   "enable-source-maps": true,
   "timeout": 160000,
-  "throw-deprecation": true,
-  "mochaExplorer.require": "ts-node/register",
-  "mochaExplorer.files": "test/**/test-*.ts",
-  "mochaExplorer.esmLoader": false
+  "throw-deprecation": true
 }
