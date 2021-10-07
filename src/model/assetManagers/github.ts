@@ -2,13 +2,14 @@
 import * as path from 'path';
 import axios from 'axios';
 import {BmycError} from '../bmycError';
-import {IsDefined} from 'class-validator';
 import {AssetManager} from './assetManager';
+import {IsDefined, IsString} from 'class-validator';
 
 const GITHUB_API_URL = 'https://api.github.com';
 
 export class Github extends AssetManager {
   @IsDefined()
+  @IsString()
   private owner: string;
   /* c8 ignore start */
   public get _owner(): string {
@@ -20,6 +21,7 @@ export class Github extends AssetManager {
   /* c8 ignore stop */
 
   @IsDefined()
+  @IsString()
   private repository: string;
   /* c8 ignore start */
   public get _repository(): string {
@@ -31,6 +33,7 @@ export class Github extends AssetManager {
   /* c8 ignore stop */
 
   @IsDefined()
+  @IsString()
   private filePath: string;
   /* c8 ignore start */
   public get _filePath(): string {

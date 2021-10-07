@@ -17,7 +17,7 @@ export class Configuration {
   }
   /* c8 ignore stop */
 
-  @ArrayUnique((asset: Asset) => asset._name)
+  @ArrayUnique((asset: Asset) => asset._package + asset._name)
   private assets: Asset[];
   /* c8 ignore start */
   public get _assets(): Asset[] {

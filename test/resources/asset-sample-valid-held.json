@@ -1,0 +1,12 @@
+{
+  "hold": true,
+  "name": "asset1",
+  "localPath": "test/temp/validOutdatedSampleAsset.js",
+  "assetManager": {
+    "name": "github",
+    "owner": "jgazeau",
+    "repository": "bmyc",
+    "filePath": "test/resources/github-content-ok.js"
+  },
+  "currentVersion": "0.0.0"
+}

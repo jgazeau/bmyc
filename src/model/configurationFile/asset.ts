@@ -4,12 +4,32 @@ import {PathLike} from 'fs-extra';
 import {Cdnjs} from '../assetManagers/cdnjs';
 import {Github} from '../assetManagers/github';
 import {Exclude, Type} from 'class-transformer';
-import {IsDefined, Validate, ValidateNested} from 'class-validator';
 import {AssetManager as AssetManager} from '../assetManagers/assetManager';
+import {
+  IsBoolean,
+  IsDefined,
+  IsOptional,
+  IsString,
+  Validate,
+  ValidateNested,
+} from 'class-validator';
 import {AssetManagerValidator as AssetManagerValidator} from '../assetManagers/assetManagerValidator';
 
 export class Asset {
+  @IsOptional()
+  @IsString()
+  private package = '';
+  /* c8 ignore start */
+  public get _package(): string {
+    return this.package;
+  }
+  public set _package(value: string) {
+    this.package = value;
+  }
+  /* c8 ignore stop */
+
   @IsDefined()
+  @IsString()
   private name: string;
   /* c8 ignore start */
   public get _name(): string {
@@ -17,6 +37,18 @@ export class Asset {
   }
   public set _name(value: string) {
     this.name = value;
+  }
+  /* c8 ignore stop */
+
+  @IsOptional()
+  @IsBoolean()
+  private hold = false;
+  /* c8 ignore start */
+  public get _hold(): boolean {
+    return this.hold;
+  }
+  public set _hold(value: boolean) {
+    this.hold = value;
   }
   /* c8 ignore stop */
 
@@ -76,6 +108,21 @@ export class Asset {
   }
   /* c8 ignore stop */
 
+  @Exclude()
+  private isNewVersion = false;
+  /* c8 ignore start */
+  public get _isNewVersion(): boolean {
+    return this.isNewVersion;
+  }
+  public set _isNewVersion(value: boolean) {
+    this.isNewVersion = value;
+  }
+  /* c8 ignore stop */
+
+  /*
+   * Set asset to the latest available version.
+   * This function is used mainly for tests.
+   */
   setToLatestVersion(): Promise<boolean> {
     return this.assetManager
       .getLatestVersion()
@@ -89,12 +136,15 @@ export class Asset {
       });
   }
 
+  /*
+   * Bump asset to the latest available version.
+   */
   bumpToLatestVersion(force = false): Promise<Asset> {
     return this.assetManager
       .getLatestVersion()
       .then((latestVersion: string) => {
-        if (latestVersion === this.currentVersion && !force) {
-          this.isUpdated = false;
+        this.isNewVersion = latestVersion !== this.currentVersion;
+        if ((!this.isNewVersion && !force) || this.hold) {
           return Promise.resolve(this);
         } else {
           return this.assetManager

@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any*/
 import axios from 'axios';
 import {Github} from './github';
-import {IsDefined} from 'class-validator';
 import {AssetManager} from './assetManager';
+import {IsDefined, IsString} from 'class-validator';
 
 const CDNJS_API_URL = 'https://api.cdnjs.com';
 const CDNJS_GITHUB_OWNER = 'cdnjs';
@@ -12,6 +12,7 @@ const CDNJS_GITHUB_REF = 'master';
 
 export class Cdnjs extends AssetManager {
   @IsDefined()
+  @IsString()
   private library: string;
   /* c8 ignore start */
   public get _library(): string {
@@ -23,6 +24,7 @@ export class Cdnjs extends AssetManager {
   /* c8 ignore stop */
 
   @IsDefined()
+  @IsString()
   private fileName: string;
   /* c8 ignore start */
   public get _fileName(): string {

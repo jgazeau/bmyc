@@ -17,6 +17,10 @@ const ASSET_SAMPLE_INCORRECT_ASSET_MANAGER: PathLike = path.join(
   testResourcesPath,
   'asset-sample-incorrect-asset-manager.json'
 );
+const ASSET_SAMPLE_VALID_HElD: PathLike = path.join(
+  testResourcesPath,
+  'asset-sample-valid-held.json'
+);
 const ASSET_SAMPLE_VALID_LATEST: PathLike = path.join(
   testResourcesPath,
   'asset-sample-valid-latest.json'
@@ -125,6 +129,29 @@ describe('Asset tests', () => {
     return asset.bumpToLatestVersion().then(tempAsset => {
       expect(tempAsset._isUpdated).to.be.true;
       expect(tempAsset._currentVersion).to.not.be.empty;
+    });
+  });
+  it('bumpToLatestVersion on a held and outdated asset should return asset with isNewVersion true and isUpdated false', () => {
+    setChaiAsPromised();
+    const asset: Asset = deserializeObject(
+      fs.readFileSync(ASSET_SAMPLE_VALID_HElD, 'utf8'),
+      Asset
+    );
+    return asset.bumpToLatestVersion().then(tempAsset => {
+      expect(tempAsset._isNewVersion).to.be.true;
+      expect(tempAsset._isUpdated).to.be.false;
+    });
+  });
+  it('bumpToLatestVersion on a held and up-to-date asset should return asset with isNewVersion true and isUpdated false', () => {
+    setChaiAsPromised();
+    const tempInput: any = JSON.parse(
+      fs.readFileSync(ASSET_SAMPLE_VALID_HElD, 'utf8')
+    );
+    tempInput.currentVersion = version;
+    const asset: Asset = deserializeObject(JSON.stringify(tempInput), Asset);
+    return asset.bumpToLatestVersion().then(tempAsset => {
+      expect(tempAsset._isNewVersion).to.be.false;
+      expect(tempAsset._isUpdated).to.be.false;
     });
   });
   it('bumpToLatestVersion on a outdated asset should return asset with isUpdated true and update asset content', () => {

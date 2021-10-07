@@ -11,7 +11,7 @@
     "currentVersion": "0.0.1"
   },
   {
-    "package": "package1",
+    "package": "package2",
     "name": "asset1",
     "localPath": "./path/asset2.min.js",
     "assetManager": {

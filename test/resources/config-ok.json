@@ -1,5 +1,7 @@
 [
   {
+    "package": "",
+    "hold": false,
     "name": "asset1",
     "localPath": "path/asset1.min.js",
     "assetManager": {
@@ -10,6 +12,8 @@
     "currentVersion": "0.0.1"
   },
   {
+    "package": "",
+    "hold": false,
     "name": "asset2",
     "localPath": "./path/asset2.min.js",
     "assetManager": {

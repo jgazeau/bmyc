@@ -14,6 +14,10 @@ import {
 } from '../../../testUtils/const';
 
 const CONFIG_OK: PathLike = path.join(testResourcesPath, 'config-ok.json');
+const CONFIG_OK_DUPLICATE: PathLike = path.join(
+  testResourcesPath,
+  'config-ok-duplicate.json'
+);
 const CONFIG_KO_CONTENT: PathLike = path.join(
   testResourcesPath,
   'config-ko-content.json'
@@ -22,7 +26,6 @@ const CONFIG_KO_DUPLICATE: PathLike = path.join(
   testResourcesPath,
   'config-ko-duplicate.json'
 );
-
 const CONFIG_KO_INCOMPLETE: PathLike = path.join(
   testResourcesPath,
   'config-ko-incomplete.json'
@@ -35,6 +38,15 @@ const CONFIG_KO_JSON: PathLike = path.join(
 describe('Configuration tests', () => {
   it('Using a valid configuration file should parse a correct JSON', () => {
     const configFile: Configuration = new Configuration(CONFIG_OK);
+    expect(configFile._filePath).to.be.a('string');
+    expect(configFile._assets.length).to.be.equal(2);
+    expect(configFile._assets).to.be.an.instanceof(Array);
+    configFile._assets.forEach(asset => {
+      expect(asset).to.be.an.instanceof(Asset);
+    });
+  });
+  it('Using a valid configuration file with same package name should parse a correct JSON', () => {
+    const configFile: Configuration = new Configuration(CONFIG_OK_DUPLICATE);
     expect(configFile._filePath).to.be.a('string');
     expect(configFile._assets.length).to.be.equal(2);
     expect(configFile._assets).to.be.an.instanceof(Array);

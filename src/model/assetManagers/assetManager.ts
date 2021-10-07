@@ -1,9 +1,10 @@
-import {IsDefined} from 'class-validator';
+import {IsDefined, IsString} from 'class-validator';
 import {ConfigurationError} from '../configurationError';
 import {IAssetManager as IAssetManager} from './iAssetManager';
 
 export abstract class AssetManager implements IAssetManager {
   @IsDefined()
+  @IsString()
   private name: string;
   /* c8 ignore start */
   public get _name(): string {
