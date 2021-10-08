@@ -2,7 +2,5 @@
   "mochaExplorer.require": "ts-node/register",
   "mochaExplorer.files": "test/**/test-*.ts",
   "mochaExplorer.esmLoader": false,
-  "mochaExplorer.env": {
-    "BMYC_GITHUB_TOKEN": "TO_SET"
-  }
+  "mochaExplorer.envPath": "bmyc.env"
 }

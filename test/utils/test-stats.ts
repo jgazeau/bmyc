@@ -18,7 +18,8 @@ function mockAsset(
   localPath: PathLike,
   currentVersion: string,
   isUpdated: boolean,
-  isNewVersion: boolean
+  isNewVersion: boolean,
+  latestVersion?: string
 ): Asset {
   const asset = new Asset();
   asset._package = packageName;
@@ -26,6 +27,7 @@ function mockAsset(
   asset._hold = hold;
   asset._localPath = localPath;
   asset._currentVersion = currentVersion;
+  asset._latestVersion = latestVersion;
   asset._isUpdated = isUpdated;
   asset._isNewVersion = isNewVersion;
   return asset;
@@ -36,7 +38,9 @@ function mockResultEntry(asset: Asset, error?: Error): BumpResultEntry {
     asset._package,
     asset._name,
     getSummary(asset, error),
-    asset._currentVersion!,
+    asset._latestVersion
+      ? `${asset._currentVersion}\n(${asset._latestVersion})`
+      : asset._currentVersion!,
     getStatus(asset, error),
   ];
 }
@@ -109,7 +113,8 @@ describe('Stats tests', () => {
       FAKE_LOCALPATH,
       FAKE_VERSION,
       false,
-      false
+      true,
+      'Y.Y.Y'
     );
     const asset8 = mockAsset(
       'package2',

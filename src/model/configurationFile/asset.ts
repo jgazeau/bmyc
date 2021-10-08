@@ -98,6 +98,17 @@ export class Asset {
   /* c8 ignore stop */
 
   @Exclude()
+  private latestVersion?: string | undefined;
+  /* c8 ignore start */
+  public get _latestVersion(): string | undefined {
+    return this.latestVersion;
+  }
+  public set _latestVersion(value: string | undefined) {
+    this.latestVersion = value;
+  }
+  /* c8 ignore stop */
+
+  @Exclude()
   private isUpdated = false;
   /* c8 ignore start */
   public get _isUpdated(): boolean {
@@ -127,6 +138,7 @@ export class Asset {
     return this.assetManager
       .getLatestVersion()
       .then((latestVersion: string) => {
+        this.latestVersion = latestVersion;
         this.currentVersion = latestVersion;
         this.isUpdated = true;
         return Promise.resolve(this.isUpdated);
@@ -143,6 +155,7 @@ export class Asset {
     return this.assetManager
       .getLatestVersion()
       .then((latestVersion: string) => {
+        this.latestVersion = latestVersion;
         this.isNewVersion = latestVersion !== this.currentVersion;
         if ((!this.isNewVersion && !force) || this.hold) {
           return Promise.resolve(this);

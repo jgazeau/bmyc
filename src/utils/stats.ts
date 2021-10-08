@@ -13,7 +13,7 @@ class BumpStatus {
   static readonly ERROR = new BumpStatus('ERROR', red);
   static HELD(isNewVersion: boolean): BumpStatus {
     return isNewVersion
-      ? new BumpStatus('HELD\n(NEW VERSION\nAVAILABLE)', yellow)
+      ? new BumpStatus('HELD\n(OUTDATED)', yellow)
       : new BumpStatus('HELD\n(UP-TO-DATE)', yellow);
   }
 
@@ -95,7 +95,7 @@ export class BumpResults {
         {width: packageSize},
         {width: nameSize},
         {width: summarySize},
-        {width: versionSize},
+        {width: versionSize, alignment: 'center'},
         {width: statusSize, alignment: 'center'},
       ],
     };
@@ -137,7 +137,9 @@ export class BumpResults {
       asset._package,
       asset._name,
       getSummary(asset, error),
-      asset._currentVersion,
+      asset._latestVersion
+        ? `${asset._currentVersion}\n(${asset._latestVersion})`
+        : asset._currentVersion,
       getStatus(asset, error)
     );
   }
