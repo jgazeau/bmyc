@@ -1,5 +1,6 @@
 name: Tests
 on:
+  workflow_dispatch:
   push:
     branches:
       - '**'
@@ -8,8 +9,6 @@ on:
     paths:
       - '**'
       - '!CHANGELOG.md'
-      - '!package.json'
-      - '!package-lock.json'
 env:
   NPM_CACHE_NAME: "npm-cache"
   NPM_CACHE_PATH: "~/.npm"
