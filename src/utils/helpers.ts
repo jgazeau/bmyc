@@ -22,7 +22,7 @@ export function validateClassObjectSync(
   objectType?: string,
   parentObjectType?: string
 ): void {
-  const objectTypeMessage = objectType ? objectType : typeof objectType;
+  const objectTypeMessage = objectType ? objectType : typeof object;
   const parentObjectTypeMessage = parentObjectType
     ? `of ${parentObjectType}`
     : '';
