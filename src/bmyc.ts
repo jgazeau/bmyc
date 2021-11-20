@@ -13,14 +13,14 @@ export class Bmyc {
   static main(): Promise<Configuration> {
     return new BmycCli()
       .parse()
-      .then(argv => {
+      .then(cliArgs => {
         headerFactory();
-        const configuration = new Configuration(argv.config);
+        const configuration = new Configuration(cliArgs.config);
         logger().info(`${configuration._assets.length} asset(s) to process`);
         return Promise.all(
           configuration._assets.map((asset: Asset) => {
             return asset
-              .bumpToLatestVersion(argv.force)
+              .bumpToLatestVersion(cliArgs.force)
               .then(tempAsset => {
                 BumpResults.storeResult(tempAsset);
               })

@@ -1,21 +1,22 @@
 import kleur = require('kleur');
 import {hideBin} from 'yargs/helpers';
-import {getOutputWidth} from '../utils/helpers';
 import {IArgumentsParser, ICliArguments} from './iArgumentsParser';
-import {BMYC_HEADER, DEFAULT_CONFIGURATION_FILE_NAME} from '../utils/const';
+import {CLI_USAGE, DEFAULT_CONFIGURATION_FILE_NAME} from '../utils/const';
 const yargs = require('yargs');
 
 export class BmycCli {
   private GROUPS = {
     COMMONS: 'Common options:',
   };
-  private static _debugMode = false;
-  public static get debugMode(): boolean {
-    return this._debugMode;
+  private static _cliArgs: ICliArguments;
+  /* c8 ignore start */
+  public static get cliArgs() {
+    return BmycCli._cliArgs;
   }
-  public static set debugMode(value: boolean) {
-    this._debugMode = value;
+  public static set cliArgs(value) {
+    BmycCli._cliArgs = value;
   }
+  /* c8 ignore stop */
 
   private parser: IArgumentsParser;
   /* c8 ignore start */
@@ -31,14 +32,14 @@ export class BmycCli {
     this._parser = yargs(hideBin(process.argv))
       .scriptName('bmyc')
       .check((argv: ICliArguments) => {
-        BmycCli.debugMode = argv.debug;
+        BmycCli.cliArgs = argv;
         return true;
       })
       .updateStrings({
         'Options:': 'Other Options:',
         'Commands:': 'Commands:',
       })
-      .usage(`${BMYC_HEADER}\nUsage: $0 [options]`)
+      .usage(CLI_USAGE)
       .alias('v', 'version')
       .alias('h', 'help')
       .example([
@@ -66,7 +67,7 @@ export class BmycCli {
           group: this.GROUPS.COMMONS,
         },
       })
-      .wrap(getOutputWidth())
+      .wrap(null)
       .epilog(
         `Additional information:
   GitHub: ${kleur.green('https://github.com/jgazeau/bmyc.git')}
@@ -77,6 +78,7 @@ export class BmycCli {
   }
 
   parse(): Promise<ICliArguments> {
-    return Promise.resolve(this.parser.argv);
+    this.parser.argv;
+    return Promise.resolve(BmycCli.cliArgs);
   }
 }

@@ -12,7 +12,9 @@ export class LoggerFactory {
 
   public static getInstance(): Logger {
     if (!this.logger) {
-      const loggerLevel: TLogLevelName = BmycCli.debugMode ? 'debug' : 'info';
+      const loggerLevel: TLogLevelName = BmycCli.cliArgs.debug
+        ? 'debug'
+        : 'info';
       this.logger = new Logger({
         type: 'pretty',
         minLevel: loggerLevel,
