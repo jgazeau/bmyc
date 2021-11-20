@@ -19,8 +19,8 @@ describe('Bmyc CLI tests', () => {
     mockArgs(['--help']);
     const cli = new BmycCli();
     return cli.parse().then(() => {
-      expect(console.log).to.be.calledTwice;
-      expect(process.exit).to.be.calledTwice;
+      expect(console.log).to.be.calledOnce;
+      expect(process.exit).to.be.calledOnce;
     });
   });
   it('parse with version option should display version and exit', () => {
@@ -31,8 +31,8 @@ describe('Bmyc CLI tests', () => {
     mockArgs(['--version']);
     const cli = new BmycCli();
     return cli.parse().then(() => {
-      expect(console.log).to.be.calledTwice;
-      expect(process.exit).to.be.calledTwice;
+      expect(console.log).to.be.calledOnce;
+      expect(process.exit).to.be.calledOnce;
     });
   });
   it('parse with debug option should set logger in debug mode', () => {

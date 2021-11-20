@@ -30,6 +30,10 @@ export class BmycCli {
   constructor() {
     this._parser = yargs(hideBin(process.argv))
       .scriptName('bmyc')
+      .check((argv: ICliArguments) => {
+        BmycCli.debugMode = argv.debug;
+        return true;
+      })
       .updateStrings({
         'Options:': 'Other Options:',
         'Commands:': 'Commands:',
@@ -73,7 +77,6 @@ export class BmycCli {
   }
 
   parse(): Promise<ICliArguments> {
-    BmycCli.debugMode = this.parser.argv.debug;
     return Promise.resolve(this.parser.argv);
   }
 }
