@@ -1,125 +1,130 @@
 /* eslint-disable @typescript-eslint/no-explicit-any*/
 import * as path from 'path';
 import {logger} from './logger';
-import {MAX_TTY_LENGTH, NOT_AVAILABLE} from './const';
 import {Asset} from '../model/configurationFile/asset';
-import {blue, Color, gray, green, red, yellow} from 'kleur';
 import {getBorderCharacters, table, TableUserConfig} from 'table';
+import {blue, Color, gray, green, red, white, yellow} from 'kleur';
 
-class BumpStatus {
-  static readonly HEADER = new BumpStatus('Status', gray);
-  static readonly UPDATED = new BumpStatus('UPDATED', green);
-  static readonly UPTODATE = new BumpStatus('UP-TO-DATE', blue);
-  static readonly ERROR = new BumpStatus('ERROR', red);
-  static HELD(isNewVersion: boolean): BumpStatus {
-    return isNewVersion
-      ? new BumpStatus('HELD\n(OUTDATED)', yellow)
-      : new BumpStatus('HELD\n(UP-TO-DATE)', yellow);
-  }
-
-  private constructor(
-    public readonly status: string,
-    public readonly color: Color
+export class PrintEntry {
+  constructor(
+    public readonly content: string,
+    public readonly color: Color = white
   ) {}
 }
 
-export type BumpResultEntry = [string, string, string, string, BumpStatus];
+const HEADER_PACKAGE = new PrintEntry('Package', gray);
+const HEADER_NAME = new PrintEntry('Name', gray);
+const HEADER_PATH = new PrintEntry('Local path', gray);
+const HEADER_VERSION = new PrintEntry('Version', gray);
+const HEADER_STATUS = new PrintEntry('Status', gray);
 
-export class BumpResults {
-  private static columnHeader: BumpResultEntry = [
-    gray('Package'),
-    gray('Name'),
-    gray('Local path'),
-    gray('Version'),
-    BumpStatus.HEADER,
+export const STATUS_UPDATED = new PrintEntry('UPDATED', green);
+export const STATUS_UPTODATE = new PrintEntry('UP-TO-DATE', blue);
+export const STATUS_ERROR = new PrintEntry('ERROR', red);
+
+class SortedStatus {
+  static readonly STATUS_UPDATED: PrintEntry = STATUS_UPDATED;
+  static readonly STATUS_UPTODATE: PrintEntry = STATUS_UPTODATE;
+  static readonly STATUS_ERROR: PrintEntry = STATUS_ERROR;
+}
+
+function HELD(isNewVersion: boolean): PrintEntry {
+  return isNewVersion
+    ? new PrintEntry('HELD\n(OUTDATED)', yellow)
+    : new PrintEntry('HELD\n(UP-TO-DATE)', yellow);
+}
+
+export type ResultEntry = [
+  PrintEntry,
+  PrintEntry,
+  PrintEntry,
+  PrintEntry,
+  PrintEntry
+];
+type TableEntry = [string?, string?, string?, string?, string?] | [];
+
+export class PrintResults {
+  private static columnHeader: ResultEntry = [
+    HEADER_PACKAGE,
+    HEADER_NAME,
+    HEADER_PATH,
+    HEADER_VERSION,
+    HEADER_STATUS,
   ];
-  private static tableConfig: TableUserConfig;
-  private static _results: BumpResultEntry[] = [BumpResults.columnHeader];
-  public static get results(): BumpResultEntry[] {
-    return BumpResults._results;
+
+  private static _tableConfig: TableUserConfig;
+  /* c8 ignore start */
+  public static get tableConfig(): TableUserConfig {
+    return PrintResults._tableConfig;
   }
-  public static set results(value: BumpResultEntry[]) {
-    BumpResults._results = value;
+  public static set tableConfig(value: TableUserConfig) {
+    PrintResults._tableConfig = value;
+  }
+  /* c8 ignore stop */
+
+  private static _table: TableEntry[] = [];
+  /* c8 ignore start */
+  public static get table(): TableEntry[] {
+    return PrintResults._table;
+  }
+  public static set table(value: TableEntry[]) {
+    PrintResults._table = value;
+  }
+  /* c8 ignore stop */
+
+  private static _results: ResultEntry[] = [];
+  /* c8 ignore start */
+  public static get results(): ResultEntry[] {
+    return PrintResults._results;
+  }
+  public static set results(value: ResultEntry[]) {
+    PrintResults._results = value;
+  }
+  /* c8 ignore stop */
+
+  public static orderResults() {
+    this.results.sort((r1, r2) => {
+      const r1Status = Object.values(SortedStatus).indexOf(r1[4] as PrintEntry);
+      const r2Status = Object.values(SortedStatus).indexOf(r2[4] as PrintEntry);
+      return r1[0].content === r2[0].content
+        ? r1Status === r2Status
+          ? r1[1].content.localeCompare(r2[1].content)
+          : r1Status - r2Status
+        : r1[0].content.localeCompare(r2[0].content);
+    });
   }
 
-  private static maxSize(map: any, maxSize: number): number {
-    return Math.min(
-      Math.max(...Object.values(map as any[]).map(el => el.length)),
-      maxSize
-    );
-  }
-
-  private static enhanceTableResults(): void {
-    this.results.forEach(entry =>
-      entry.map((value, index) => {
-        if (value instanceof BumpStatus) {
-          entry[index] = value.color(value.status);
-        }
-      })
-    );
+  public static storeResult(asset: Asset, error?: Error) {
+    this.results.push([
+      new PrintEntry(asset._package),
+      new PrintEntry(asset._name),
+      new PrintEntry(getSummary(asset, error)),
+      new PrintEntry(getAssetVersion(asset)),
+      getStatus(asset, error),
+    ]);
   }
 
   private static tableResultsConfig(): void {
-    const globalPaddingSize: number = 2 * 2 + 3 * (this.results[0].length - 1);
-    const maxColumnSize: number = Math.floor(
-      (MAX_TTY_LENGTH - globalPaddingSize) / this.results[0].length
-    );
-    const packageSize = 16;
-    const nameSize: number = this.maxSize(
-      this.results.map(entry => entry[1]),
-      maxColumnSize
-    );
-    const versionSize: number = this.maxSize(
-      this.results.map(entry => entry[3]),
-      maxColumnSize
-    );
-    const statusSize: number = this.maxSize(
-      this.results.map(entry => entry[4].status),
-      maxColumnSize
-    );
-    const summarySize: number = Math.max(
-      MAX_TTY_LENGTH -
-        globalPaddingSize -
-        packageSize -
-        nameSize -
-        versionSize -
-        statusSize,
-      maxColumnSize
-    );
     this.tableConfig = {
       border: getBorderCharacters('norc'),
       header: {
         content: gray('Asset results summary'),
       },
-      columns: [
-        {width: packageSize},
-        {width: nameSize},
-        {width: summarySize},
-        {width: versionSize, alignment: 'center'},
-        {width: statusSize, alignment: 'center'},
-      ],
+      columns: {
+        4: {alignment: 'center'},
+        5: {alignment: 'center'},
+      },
     };
   }
 
-  public static addResults(
-    packageName: string,
-    assetName: string,
-    summary: string,
-    assetVersion: string = NOT_AVAILABLE,
-    status: BumpStatus
-  ) {
-    this.results.push([packageName, assetName, summary, assetVersion, status]);
-  }
-
-  public static orderResults() {
-    this.results.sort((r1, r2) => {
-      const r1Status = Object.values(BumpStatus).indexOf(r1[4] as BumpStatus);
-      const r2Status = Object.values(BumpStatus).indexOf(r2[4] as BumpStatus);
-      return r1[0] === r2[0]
-        ? r1Status === r2Status
-          ? r1[1].localeCompare(r2[1])
-          : r1Status - r2Status
-        : r1[0].localeCompare(r2[0]);
+  private static enhanceTableResults(): void {
+    this.results.unshift(PrintResults.columnHeader);
+    this.results.forEach((entry, entryIndex) => {
+      const tempEntry: TableEntry = [];
+      entry.map((value, index) => {
+        tempEntry[index] = value.color(value.content);
+      });
+      this.table[entryIndex] = tempEntry;
     });
   }
 
@@ -127,32 +132,26 @@ export class BumpResults {
     this.orderResults();
     this.tableResultsConfig();
     this.enhanceTableResults();
-    this.results.length
-      ? logger().info(`\n${table(this.results, this.tableConfig)}`)
+    this.table.length
+      ? logger().info(`\n${table(this.table, this.tableConfig)}`)
       : logger().error('No results available');
-  }
-
-  public static storeResult(asset: Asset, error?: Error) {
-    this.addResults(
-      asset._package,
-      asset._name,
-      getSummary(asset, error),
-      asset._latestVersion
-        ? `${asset._currentVersion}\n(${asset._latestVersion})`
-        : asset._currentVersion,
-      getStatus(asset, error)
-    );
   }
 }
 
-export function getStatus(asset: Asset, error?: Error): BumpStatus {
+export function getStatus(asset: Asset, error?: Error): PrintEntry {
   return error
-    ? BumpStatus.ERROR
+    ? STATUS_ERROR
     : asset._isUpdated
-    ? BumpStatus.UPDATED
+    ? STATUS_UPDATED
     : asset._hold
-    ? BumpStatus.HELD(asset._isNewVersion)
-    : BumpStatus.UPTODATE;
+    ? HELD(asset._isNewVersion)
+    : STATUS_UPTODATE;
+}
+
+export function getAssetVersion(asset: Asset): string {
+  return asset._latestVersion
+    ? `${asset._currentVersion}\n(${asset._latestVersion})`
+    : asset._currentVersion || 'N/A';
 }
 
 export function getSummary(asset: Asset, error?: Error): string {

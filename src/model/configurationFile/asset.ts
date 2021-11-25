@@ -5,6 +5,7 @@ import {Cdnjs} from '../assetManagers/cdnjs';
 import {Github} from '../assetManagers/github';
 import {Exclude, Type} from 'class-transformer';
 import {AssetManager as AssetManager} from '../assetManagers/assetManager';
+import {AssetManagerValidator as AssetManagerValidator} from '../assetManagers/assetManagerValidator';
 import {
   IsBoolean,
   IsDefined,
@@ -13,7 +14,6 @@ import {
   Validate,
   ValidateNested,
 } from 'class-validator';
-import {AssetManagerValidator as AssetManagerValidator} from '../assetManagers/assetManagerValidator';
 
 export class Asset {
   @IsOptional()
@@ -142,9 +142,6 @@ export class Asset {
         this.currentVersion = latestVersion;
         this.isUpdated = true;
         return Promise.resolve(this.isUpdated);
-      })
-      .catch((error: Error) => {
-        throw error;
       });
   }
 
@@ -192,9 +189,6 @@ export class Asset {
               return Promise.resolve(this);
             });
         }
-      })
-      .catch((error: Error) => {
-        throw error;
       });
   }
 }

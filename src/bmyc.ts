@@ -4,7 +4,7 @@ import 'reflect-metadata';
 import {red} from 'kleur';
 import {logger} from './utils/logger';
 import {BmycCli} from './cli/bmycCli';
-import {BumpResults} from './utils/stats';
+import {PrintResults} from './utils/stats';
 import {headerFactory} from './utils/helpers';
 import {Asset} from './model/configurationFile/asset';
 import {Configuration} from './model/configurationFile/configuration';
@@ -22,16 +22,16 @@ export class Bmyc {
             return asset
               .bumpToLatestVersion(cliArgs.force)
               .then(tempAsset => {
-                BumpResults.storeResult(tempAsset);
+                PrintResults.storeResult(tempAsset);
               })
               .catch((error: Error) => {
-                BumpResults.storeResult(asset, error);
+                PrintResults.storeResult(asset, error);
                 logger().debug(error);
               });
           })
         )
           .then(() => {
-            BumpResults.printResults();
+            PrintResults.printResults();
           })
           .then(() => {
             return Promise.resolve(configuration);

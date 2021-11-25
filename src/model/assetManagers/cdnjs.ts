@@ -42,13 +42,9 @@ export class Cdnjs extends AssetManager {
         fields: 'version',
       },
       url: `${CDNJS_API_URL}/libraries/${this.library}`,
-    })
-      .then((response: any) => {
-        return Promise.resolve(response.data.version);
-      })
-      .catch((error: Error) => {
-        throw error;
-      });
+    }).then((response: any) => {
+      return Promise.resolve(response.data.version);
+    });
   }
 
   getContent(assetVersion: string): Promise<Buffer> {
@@ -56,13 +52,8 @@ export class Cdnjs extends AssetManager {
     cdnjsGithub._owner = CDNJS_GITHUB_OWNER;
     cdnjsGithub._repository = CDNJS_GITHUB_REPOSITORY;
     cdnjsGithub._filePath = `${CDNJS_GITHUB_ROOT_FILEPATH}/${this.library}/${assetVersion}/${this.fileName}`;
-    return cdnjsGithub
-      .getSha(CDNJS_GITHUB_REF)
-      .then((assetSha: string) => {
-        return cdnjsGithub.getBlob(assetSha);
-      })
-      .catch((error: Error) => {
-        throw error;
-      });
+    return cdnjsGithub.getSha(CDNJS_GITHUB_REF).then((assetSha: string) => {
+      return cdnjsGithub.getBlob(assetSha);
+    });
   }
 }

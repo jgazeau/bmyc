@@ -1,5 +1,5 @@
-import {Logger, TLogLevelName} from 'tslog';
 import {BmycCli} from '../cli/bmycCli';
+import {Logger, TLogLevelName} from 'tslog';
 
 export class LoggerFactory {
   private static _logger: Logger;
@@ -12,9 +12,12 @@ export class LoggerFactory {
 
   public static getInstance(): Logger {
     if (!this.logger) {
-      const loggerLevel: TLogLevelName = BmycCli.cliArgs.debug
-        ? 'debug'
-        : 'info';
+      const loggerLevel: TLogLevelName =
+        BmycCli.cliArgs !== undefined
+          ? BmycCli.cliArgs.debug
+            ? 'debug'
+            : 'info'
+          : 'info';
       this.logger = new Logger({
         type: 'pretty',
         minLevel: loggerLevel,

@@ -4,13 +4,13 @@ import * as fs from 'fs-extra';
 import {expect} from 'chai';
 import {Bmyc} from '../src/bmyc';
 import {PathLike} from 'fs-extra';
-import {BumpResults} from '../src/utils/stats';
+import {PrintResults} from '../src/utils/stats';
 import {SinonStubs} from '../testUtils/sinonStubs';
 import {Asset} from '../src/model/configurationFile/asset';
 import {ConfigurationError} from '../src/model/configurationError';
 import {DEFAULT_CONFIGURATION_FILE_NAME} from '../src/utils/const';
-import {rootPath, testResourcesPath, testTempPath} from '../testUtils/const';
 import {Configuration} from '../src/model/configurationFile/configuration';
+import {rootPath, testResourcesPath, testTempPath} from '../testUtils/const';
 import {
   cleanTestTempDirectory,
   mockArgs,
@@ -47,7 +47,7 @@ const COPY_INCORRECT_CONFIG_FILE: PathLike = path.join(
 describe('Bmyc tests', () => {
   const sinonMock = new SinonStubs({});
   beforeEach(() => {
-    BumpResults.results = [];
+    PrintResults.results = [];
     cleanTestTempDirectory();
     process.chdir(rootPath);
     sinonMock.logger = true;
