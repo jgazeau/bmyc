@@ -54,7 +54,7 @@ describe('Bmyc CLI tests', () => {
   });
   it('parse with config option should have specific configuration file argument and other default arguments', () => {
     setChaiAsPromised();
-    mockArgs(['--config', `"${NON_EXISTING_FILE}"`]);
+    mockArgs(['--config', `${NON_EXISTING_FILE}`]);
     const cli = new BmycCli();
     return cli.parse().then(argv => {
       expect(argv.config).to.be.equal(NON_EXISTING_FILE);
