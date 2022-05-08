@@ -109,6 +109,17 @@ export class Asset {
   /* c8 ignore stop */
 
   @Exclude()
+  private beforeUpdateVersion?: string | undefined;
+  /* c8 ignore start */
+  public get _beforeUpdateVersion(): string | undefined {
+    return this.beforeUpdateVersion;
+  }
+  public set _beforeUpdateVersion(value: string | undefined) {
+    this.beforeUpdateVersion = value;
+  }
+  /* c8 ignore stop */
+
+  @Exclude()
   private isUpdated = false;
   /* c8 ignore start */
   public get _isUpdated(): boolean {
@@ -153,6 +164,7 @@ export class Asset {
       .getLatestVersion()
       .then((latestVersion: string) => {
         this.latestVersion = latestVersion;
+        this.beforeUpdateVersion = this.currentVersion;
         this.isNewVersion = latestVersion !== this.currentVersion;
         if ((!this.isNewVersion && !force) || this.hold) {
           return Promise.resolve(this);

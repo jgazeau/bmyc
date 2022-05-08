@@ -54,12 +54,26 @@ Additional information:
   Issues: https://github.com/jgazeau/bmyc/issues
 ```
 
+### How to hold a version?
+
+To hold a version, set the `hold` parameter for the specific asset to `true`:
+```json
+{
+  ...
+  "name": "asset1",
+  "hold": true,
+  ...
+}
+```
+
 # Examples
 
 ```json
 [
   {
+    "package": "asset1Package",
     "name": "asset1",
+    "hold": false,
     "localPath": "path/asset1.min.js",
     "assetManager": {
       "name": "cdnjs",
@@ -69,7 +83,9 @@ Additional information:
     "currentVersion": "0.0.1"
   },
   {
+    "package": "asset2Package",
     "name": "asset2",
+    "hold": false,
     "localPath": "./path/asset2.min.js",
     "assetManager": {
       "name": "github",
