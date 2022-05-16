@@ -2,8 +2,8 @@ import * as path from 'path';
 import {expect} from 'chai';
 import {PathLike} from 'fs-extra';
 import {logger} from '../../src/utils/logger';
-import {SinonStubs} from '../../testUtils/sinonStubs';
-import {testResourcesPath} from '../../testUtils/const';
+import {SinonStubs} from '../testUtils/sinonStubs';
+import {testResourcesPath} from '../testUtils/const';
 import {Asset} from '../../src/model/configurationFile/asset';
 import {ConfigurationError} from '../../src/model/configurationError';
 import {

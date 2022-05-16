@@ -1,9 +1,9 @@
 import 'reflect-metadata';
 import {expect} from 'chai';
 import {BmycCli} from '../../src/cli/bmycCli';
-import {SinonStubs} from '../../testUtils/sinonStubs';
-import {NON_EXISTING_FILE} from '../../testUtils/const';
-import {mockArgs, setChaiAsPromised} from '../../testUtils/helpers';
+import {SinonStubs} from '../testUtils/sinonStubs';
+import {NON_EXISTING_FILE} from '../testUtils/const';
+import {mockArgs, setChaiAsPromised} from '../testUtils/helpers';
 import {DEFAULT_CONFIGURATION_FILE_NAME} from '../../src/utils/const';
 
 describe('Bmyc CLI tests', () => {

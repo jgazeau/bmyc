@@ -5,10 +5,10 @@ import * as fs from 'fs-extra';
 import {expect} from 'chai';
 import {PathLike} from 'fs-extra';
 import {BmycError} from '../../../src/model/bmycError';
-import {setChaiAsPromised} from '../../../testUtils/helpers';
+import {setChaiAsPromised} from '../../testUtils/helpers';
 import {deserializeObject} from '../../../src/utils/helpers';
 import {Github} from '../../../src/model/assetManagers/github';
-import {rootPath, testResourcesPath} from '../../../testUtils/const';
+import {rootPath, testResourcesPath} from '../../testUtils/const';
 import {ConfigurationError} from '../../../src/model/configurationError';
 
 const tempToken = process.env.BMYC_GITHUB_TOKEN;

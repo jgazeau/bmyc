@@ -5,11 +5,11 @@ import * as fs from 'fs-extra';
 import {expect} from 'chai';
 import {PathLike} from 'fs-extra';
 import {version} from '../../../package.json';
-import {setChaiAsPromised} from '../../../testUtils/helpers';
+import {setChaiAsPromised} from '../../testUtils/helpers';
 import {deserializeObject} from '../../../src/utils/helpers';
 import {Github} from '../../../src/model/assetManagers/github';
 import {Asset} from '../../../src/model/configurationFile/asset';
-import {rootPath, testResourcesPath} from '../../../testUtils/const';
+import {rootPath, testResourcesPath} from '../../testUtils/const';
 import {ConfigurationError} from '../../../src/model/configurationError';
 import {AssetManager} from '../../../src/model/assetManagers/assetManager';
 

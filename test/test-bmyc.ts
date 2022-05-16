@@ -5,17 +5,17 @@ import {expect} from 'chai';
 import {Bmyc} from '../src/bmyc';
 import {PathLike} from 'fs-extra';
 import {PrintResults} from '../src/utils/stats';
-import {SinonStubs} from '../testUtils/sinonStubs';
+import {SinonStubs} from './testUtils/sinonStubs';
 import {Asset} from '../src/model/configurationFile/asset';
 import {ConfigurationError} from '../src/model/configurationError';
 import {DEFAULT_CONFIGURATION_FILE_NAME} from '../src/utils/const';
 import {Configuration} from '../src/model/configurationFile/configuration';
-import {rootPath, testResourcesPath, testTempPath} from '../testUtils/const';
+import {rootPath, testResourcesPath, testTempPath} from './testUtils/const';
 import {
   cleanTestTempDirectory,
   mockArgs,
   setChaiAsPromised,
-} from '../testUtils/helpers';
+} from './testUtils/helpers';
 
 const DEFAULT_CONFIG_FILE: PathLike = path.join(
   testResourcesPath,
