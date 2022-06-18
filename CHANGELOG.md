@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.3.0 (18/06/2022)
+
+#### Internal
+
+- [**internal**] chore:(deps): bump class-transformer from 0.4.0 to 0.5.1 [#28](https://github.com/jgazeau/bmyc/pull/28)
+- [**internal**] chore:(deps-dev): bump @types/node from 17.0.31 to 17.0.40 [#27](https://github.com/jgazeau/bmyc/pull/27)
+- [**internal**] chore:(deps-dev): bump mocha from 9.1.3 to 10.0.0 [#24](https://github.com/jgazeau/bmyc/pull/24)
+- [**internal**] chore:(deps): bump fs-extra from 10.0.0 to 10.1.0 [#23](https://github.com/jgazeau/bmyc/pull/23)
+
+---
+
 ## 0.2.0 (08/05/2022)
 
 #### Internal
