@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any*/
 import * as path from 'path';
 import {logger} from './logger';
+import {NOT_AVAILABLE} from './const';
 import {Asset} from '../model/configurationFile/asset';
 import {getBorderCharacters, table, TableUserConfig} from 'table';
 import {blue, Color, gray, green, red, white, yellow} from 'kleur';
@@ -10,6 +11,9 @@ export class PrintEntry {
     public readonly content: string,
     public readonly color: Color = white
   ) {}
+  toString(): string {
+    return this.color(this.content);
+  }
 }
 
 const HEADER_PACKAGE = new PrintEntry('Package', gray);
@@ -28,10 +32,10 @@ class SortedStatus {
   static readonly STATUS_ERROR: PrintEntry = STATUS_ERROR;
 }
 
-function HELD(isNewVersion: boolean): PrintEntry {
+export function HELD(isNewVersion: boolean, separator = '\n'): PrintEntry {
   return isNewVersion
-    ? new PrintEntry('HELD\n(OUTDATED)', yellow)
-    : new PrintEntry('HELD\n(UP-TO-DATE)', yellow);
+    ? new PrintEntry(`HELD${separator}(OUTDATED)`, yellow)
+    : new PrintEntry(`HELD${separator}(UP-TO-DATE)`, yellow);
 }
 
 export type ResultEntry = [
@@ -51,6 +55,22 @@ export class PrintResults {
     HEADER_VERSION,
     HEADER_STATUS,
   ];
+
+  private static _totalCount = {
+    heldOutdated: 0,
+    heldUptodate: 0,
+    error: 0,
+    uptodate: 0,
+    updated: 0,
+  };
+  /* c8 ignore start */
+  public static get totalCount() {
+    return PrintResults._totalCount;
+  }
+  public static set totalCount(value) {
+    PrintResults._totalCount = value;
+  }
+  /* c8 ignore stop */
 
   private static _tableConfig: TableUserConfig;
   /* c8 ignore start */
@@ -105,6 +125,8 @@ export class PrintResults {
   }
 
   private static tableResultsConfig(): void {
+    const maxColSpan = this.columnHeader.length;
+    const totalColSpan = this.columnHeader.length - 1;
     this.tableConfig = {
       border: getBorderCharacters('norc'),
       header: {
@@ -114,6 +136,44 @@ export class PrintResults {
         4: {alignment: 'center'},
         5: {alignment: 'center'},
       },
+      spanningCells: [
+        {
+          col: 0,
+          row: this.table.length - 6,
+          colSpan: maxColSpan,
+          alignment: 'center',
+        },
+        {
+          col: 0,
+          row: this.table.length - 5,
+          colSpan: totalColSpan,
+          alignment: 'right',
+        },
+        {
+          col: 0,
+          row: this.table.length - 4,
+          colSpan: totalColSpan,
+          alignment: 'right',
+        },
+        {
+          col: 0,
+          row: this.table.length - 3,
+          colSpan: totalColSpan,
+          alignment: 'right',
+        },
+        {
+          col: 0,
+          row: this.table.length - 2,
+          colSpan: totalColSpan,
+          alignment: 'right',
+        },
+        {
+          col: 0,
+          row: this.table.length - 1,
+          colSpan: totalColSpan,
+          alignment: 'right',
+        },
+      ],
     };
   }
 
@@ -121,8 +181,8 @@ export class PrintResults {
     this.results.unshift(PrintResults.columnHeader);
     this.results.forEach((entry, entryIndex) => {
       const tempEntry: TableEntry = [];
-      entry.map((value, index) => {
-        tempEntry[index] = value.color(value.content);
+      entry.map((entry, index) => {
+        tempEntry[index] = entry.toString();
       });
       this.table[entryIndex] = tempEntry;
     });
@@ -130,22 +190,55 @@ export class PrintResults {
 
   public static printResults() {
     this.orderResults();
-    this.tableResultsConfig();
     this.enhanceTableResults();
+    this.totals();
+    this.tableResultsConfig();
     this.table.length
       ? logger().info(`\n${table(this.table, this.tableConfig)}`)
       : logger().error('No results available');
+    if (this.totalCount.error) {
+      process.exitCode = 1;
+    }
+  }
+
+  public static totals() {
+    this.table.push(
+      [gray('Totals '), '', '', '', ''],
+      [
+        HELD(true, ' ').toString(),
+        '',
+        '',
+        '',
+        `${this.totalCount.heldOutdated}`,
+      ],
+      [
+        HELD(false, ' ').toString(),
+        '',
+        '',
+        '',
+        `${this.totalCount.heldUptodate}`,
+      ],
+      [STATUS_ERROR.toString(), '', '', '', `${this.totalCount.error}`],
+      [STATUS_UPTODATE.toString(), '', '', '', `${this.totalCount.uptodate}`],
+      [STATUS_UPDATED.toString(), '', '', '', `${this.totalCount.updated}`]
+    );
   }
 }
 
 export function getStatus(asset: Asset, error?: Error): PrintEntry {
-  return error
-    ? STATUS_ERROR
+  let printEntry;
+  error
+    ? ((printEntry = STATUS_ERROR), PrintResults.totalCount.error++)
     : asset._isUpdated
-    ? STATUS_UPDATED
+    ? ((printEntry = STATUS_UPDATED), PrintResults.totalCount.updated++)
     : asset._hold
-    ? HELD(asset._isNewVersion)
-    : STATUS_UPTODATE;
+    ? asset._isNewVersion
+      ? ((printEntry = HELD(asset._isNewVersion)),
+        PrintResults.totalCount.heldOutdated++)
+      : ((printEntry = HELD(asset._isNewVersion)),
+        PrintResults.totalCount.heldUptodate++)
+    : ((printEntry = STATUS_UPTODATE), PrintResults.totalCount.uptodate++);
+  return printEntry;
 }
 
 export function getAssetVersion(asset: Asset): string {
@@ -153,7 +246,7 @@ export function getAssetVersion(asset: Asset): string {
     ? asset._isUpdated || asset._hold
       ? `${asset._beforeUpdateVersion}\n(${asset._latestVersion})`
       : asset._latestVersion
-    : asset._currentVersion || 'N/A';
+    : asset._currentVersion || NOT_AVAILABLE;
 }
 
 export function getSummary(asset: Asset, error?: Error): string {

@@ -2,6 +2,7 @@
 import * as chai from 'chai';
 import * as fs from 'fs-extra';
 import {testTempPath} from './const';
+import {PrintResults} from '../../src/utils/stats';
 import * as chaiAsPromised from 'chai-as-promised';
 
 export function setChaiAsPromised(): void {
@@ -16,5 +17,15 @@ export function mockArgs(args: string[]): void {
 
 export function cleanTestTempDirectory(): void {
   fs.emptyDirSync(testTempPath);
+}
+
+export function cleanupPrintResults(): void {
+  PrintResults.results = [];
+  PrintResults.table = [];
+  PrintResults.totalCount.heldOutdated = 0;
+  PrintResults.totalCount.heldUptodate = 0;
+  PrintResults.totalCount.error = 0;
+  PrintResults.totalCount.uptodate = 0;
+  PrintResults.totalCount.updated = 0;
 }
 /* c8 ignore stop */

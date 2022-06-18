@@ -46,4 +46,5 @@ export class Bmyc {
 Bmyc.main().catch((error: Error) => {
   logger().error(red(`${error.message}`));
   logger().debug(error);
+  process.exitCode = 1;
 });

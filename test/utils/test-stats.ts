@@ -3,7 +3,9 @@ import {expect} from 'chai';
 import {PathLike} from 'fs-extra';
 import {logger} from '../../src/utils/logger';
 import {SinonStubs} from '../testUtils/sinonStubs';
+import {NOT_AVAILABLE} from '../../src/utils/const';
 import {testResourcesPath} from '../testUtils/const';
+import {cleanupPrintResults} from '../testUtils/helpers';
 import {Asset} from '../../src/model/configurationFile/asset';
 import {ConfigurationError} from '../../src/model/configurationError';
 import {
@@ -13,6 +15,10 @@ import {
   getSummary,
   PrintEntry,
   getAssetVersion,
+  STATUS_ERROR,
+  STATUS_UPDATED,
+  STATUS_UPTODATE,
+  HELD,
 } from '../../src/utils/stats';
 
 function mockAsset(
@@ -179,8 +185,7 @@ const orderedResults: ResultEntry[] = [
 describe('Stats tests', () => {
   const sinonMock = new SinonStubs({});
   beforeEach(() => {
-    PrintResults.results = [];
-    PrintResults.table = [];
+    cleanupPrintResults();
     PrintResults.storeResult(asset12);
     PrintResults.storeResult(asset11);
     PrintResults.storeResult(asset10);
@@ -206,5 +211,78 @@ describe('Stats tests', () => {
     sinonMock.sinonSetStubs();
     PrintResults.printResults();
     expect(logger()['info']).to.be.calledOnce;
+  });
+  it('totals should add totals', () => {
+    PrintResults.totals();
+    expect(PrintResults.table).to.have.length(6);
+  });
+  it('getStatus should return STATUS_ERROR', () => {
+    const asset = new Asset();
+    const error = new Error();
+    expect(getStatus(asset, error)).to.equal(STATUS_ERROR);
+  });
+  it('getStatus should return STATUS_UPDATED', () => {
+    const asset = new Asset();
+    asset._isUpdated = true;
+    expect(getStatus(asset)).to.equal(STATUS_UPDATED);
+  });
+  it('getStatus should return STATUS_UPTODATE', () => {
+    const asset = new Asset();
+    asset._isUpdated = false;
+    expect(getStatus(asset)).to.equal(STATUS_UPTODATE);
+  });
+  it('getStatus should return HELD_OUTDATED', () => {
+    const asset = new Asset();
+    asset._isUpdated = false;
+    asset._hold = true;
+    asset._isNewVersion = true;
+    expect(getStatus(asset)).to.deep.equal(HELD(true));
+  });
+  it('getStatus should return HELD_UPTODATE', () => {
+    const asset = new Asset();
+    asset._isUpdated = false;
+    asset._hold = true;
+    asset._isNewVersion = false;
+    expect(getStatus(asset)).to.deep.equal(HELD(false));
+  });
+  it('getAssetVersion should return current and updated version when updated', () => {
+    const asset = new Asset();
+    const beforeUpdateVersion = '0.0.0';
+    const latestVersion = '0.0.1';
+    asset._beforeUpdateVersion = beforeUpdateVersion;
+    asset._latestVersion = latestVersion;
+    asset._isUpdated = true;
+    expect(getAssetVersion(asset)).to.equal(
+      `${beforeUpdateVersion}\n(${latestVersion})`
+    );
+  });
+  it('getAssetVersion should return current and updated version when hold', () => {
+    const asset = new Asset();
+    const beforeUpdateVersion = '0.0.0';
+    const latestVersion = '0.0.1';
+    asset._beforeUpdateVersion = beforeUpdateVersion;
+    asset._latestVersion = latestVersion;
+    asset._hold = true;
+    expect(getAssetVersion(asset)).to.equal(
+      `${beforeUpdateVersion}\n(${latestVersion})`
+    );
+  });
+  it('getAssetVersion should return latest version', () => {
+    const asset = new Asset();
+    const latestVersion = '0.0.1';
+    asset._latestVersion = latestVersion;
+    asset._isUpdated = false;
+    asset._hold = false;
+    expect(getAssetVersion(asset)).to.equal(`${latestVersion}`);
+  });
+  it('getAssetVersion should return current version', () => {
+    const asset = new Asset();
+    const currentVersion = '0.0.1';
+    asset._currentVersion = currentVersion;
+    expect(getAssetVersion(asset)).to.equal(`${currentVersion}`);
+  });
+  it('getAssetVersion should return unknown version', () => {
+    const asset = new Asset();
+    expect(getAssetVersion(asset)).to.equal(NOT_AVAILABLE);
   });
 });
