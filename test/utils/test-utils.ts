@@ -17,12 +17,12 @@ describe('Utils tests', () => {
   afterEach(() => {
     sinonMock.sinonRestoreStubs();
   });
-  it('checkFilePath using an existing file path should return its path', () => {
+  it('checkFilePath should return path when existing file path', () => {
     const filePath: PathLike = __filename;
     const configPath: PathLike = checkFilePath(filePath);
     expect(configPath).to.be.equal(filePath);
   });
-  it('checkFilePath using a non existing file path should throw a ConfigurationError', () => {
+  it('checkFilePath should throw a ConfigurationError when non existing file path', () => {
     const filePath: PathLike = NON_EXISTING_FILE;
     expect(() => {
       checkFilePath(filePath);

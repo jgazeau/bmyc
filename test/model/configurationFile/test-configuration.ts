@@ -36,7 +36,7 @@ const CONFIG_KO_JSON: PathLike = path.join(
 );
 
 describe('Configuration tests', () => {
-  it('Using a valid configuration file should parse a correct JSON', () => {
+  it('Configuration should parse a correct JSON when valid configuration file', () => {
     const configFile: Configuration = new Configuration(CONFIG_OK);
     expect(configFile._filePath).to.be.a('string');
     expect(configFile._assets.length).to.be.equal(2);
@@ -45,7 +45,7 @@ describe('Configuration tests', () => {
       expect(asset).to.be.an.instanceof(Asset);
     });
   });
-  it('Using a valid configuration file with same package name should parse a correct JSON', () => {
+  it('Configuration should parse a correct JSON when valid configuration file with same package name', () => {
     const configFile: Configuration = new Configuration(CONFIG_OK_DUPLICATE);
     expect(configFile._filePath).to.be.a('string');
     expect(configFile._assets.length).to.be.equal(2);
@@ -54,27 +54,27 @@ describe('Configuration tests', () => {
       expect(asset).to.be.an.instanceof(Asset);
     });
   });
-  it('Using an invalid configuration file should throw a SyntaxError', () => {
+  it('Configuration should throw a SyntaxError when invalid configuration file', () => {
     expect(() => {
       new Configuration(CONFIG_KO_JSON);
     }).to.throw(SyntaxError);
   });
-  it('Using a bad content configuration file path should throw a ConfigurationError', () => {
+  it('Configuration should throw a ConfigurationError when bad content configuration file path', () => {
     expect(() => {
       new Configuration(CONFIG_KO_CONTENT);
     }).to.throw(ConfigurationError);
   });
-  it('Using a configuration file with duplicate assets should throw a ConfigurationError', () => {
+  it('Configuration should throw a ConfigurationError when configuration file with duplicate assets', () => {
     expect(() => {
       new Configuration(CONFIG_KO_DUPLICATE);
     }).to.throw(ConfigurationError);
   });
-  it('Using an incomplete configuration file should throw a ConfigurationError', () => {
+  it('Configuration should throw a ConfigurationError when incomplete configuration file', () => {
     expect(() => {
       new Configuration(CONFIG_KO_INCOMPLETE);
     }).to.throw(ConfigurationError);
   });
-  it('Using a non existing configuration file path should throw a ConfigurationError', () => {
+  it('Configuration should throw a ConfigurationError when non existing configuration file path', () => {
     expect(() => {
       new Configuration(NON_EXISTING_FILE);
     }).to.throw(ConfigurationError);

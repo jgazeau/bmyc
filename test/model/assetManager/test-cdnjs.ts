@@ -33,7 +33,7 @@ describe('Cdnjs AssetManager tests', () => {
     const cdnjs: Cdnjs = new Cdnjs();
     expect(cdnjs.getContent).to.be.instanceof(Function);
   });
-  it('Cdnjs without name field should throw a ConfigurationError', () => {
+  it('Cdnjs should throw a ConfigurationError when name not set', () => {
     const tempInput: any = JSON.parse(
       fs.readFileSync(CDNJS_SAMPLE_VALID, 'utf8')
     );
@@ -43,7 +43,7 @@ describe('Cdnjs AssetManager tests', () => {
       deserializeObject(input, Cdnjs);
     }).to.throw(ConfigurationError);
   });
-  it('Cdnjs without library field should throw a ConfigurationError', () => {
+  it('Cdnjs should throw a ConfigurationError when library not set', () => {
     const tempInput: any = JSON.parse(
       fs.readFileSync(CDNJS_SAMPLE_VALID, 'utf8')
     );
@@ -53,7 +53,7 @@ describe('Cdnjs AssetManager tests', () => {
       deserializeObject(input, Cdnjs);
     }).to.throw(ConfigurationError);
   });
-  it('Cdnjs without fileName field should throw a ConfigurationError', () => {
+  it('Cdnjs should throw a ConfigurationError when fileName not set', () => {
     const tempInput: any = JSON.parse(
       fs.readFileSync(CDNJS_SAMPLE_VALID, 'utf8')
     );
@@ -63,7 +63,7 @@ describe('Cdnjs AssetManager tests', () => {
       deserializeObject(input, Cdnjs);
     }).to.throw(ConfigurationError);
   });
-  it('getLatestVersion on a valid Cdnjs should return the latest version', () => {
+  it('getLatestVersion should return the latest version', () => {
     setChaiAsPromised();
     const input: string = fs.readFileSync(CDNJS_SAMPLE_VALID, 'utf8');
     const cdnjs: Cdnjs = deserializeObject(input, Cdnjs);
@@ -71,7 +71,7 @@ describe('Cdnjs AssetManager tests', () => {
       /^[0-9]+\.[0-9]+\.[0-9]+([.-][a-zA-Z0-9]+)*$/
     );
   });
-  it('getLatestVersion on unexisting library should throw a Error', () => {
+  it('getLatestVersion should throw a Error when unexisting library', () => {
     setChaiAsPromised();
     const input: string = fs.readFileSync(
       CDNJS_SAMPLE_UNEXISTING_LIBRARY,
@@ -83,7 +83,7 @@ describe('Cdnjs AssetManager tests', () => {
       '404'
     );
   });
-  it('getContent on a valid Cdnjs should return the latest content', () => {
+  it('getContent should return the latest content', () => {
     setChaiAsPromised();
     const input: string = fs.readFileSync(CDNJS_SAMPLE_VALID, 'utf8');
     const cdnjs: Cdnjs = deserializeObject(input, Cdnjs);
@@ -93,7 +93,7 @@ describe('Cdnjs AssetManager tests', () => {
       });
     });
   });
-  it('getContent on unexisting file should throw a BmycError', () => {
+  it('getContent should throw a BmycError when unexisting file', () => {
     setChaiAsPromised();
     const input: string = fs.readFileSync(CDNJS_SAMPLE_UNEXISTING_FILE, 'utf8');
     const cdnjs: Cdnjs = deserializeObject(input, Cdnjs);

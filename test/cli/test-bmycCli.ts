@@ -11,7 +11,7 @@ describe('Bmyc CLI tests', () => {
   afterEach(() => {
     sinonMock.sinonRestoreStubs();
   });
-  it('parse with help option should display help and exit', () => {
+  it('parse should display help and exit when help option', () => {
     setChaiAsPromised();
     sinonMock.consoleLog = true;
     sinonMock.processExit = true;
@@ -23,7 +23,7 @@ describe('Bmyc CLI tests', () => {
       expect(process.exit).to.be.calledOnce;
     });
   });
-  it('parse with version option should display version and exit', () => {
+  it('parse should display version and exit when version option', () => {
     setChaiAsPromised();
     sinonMock.consoleLog = true;
     sinonMock.processExit = true;
@@ -35,7 +35,7 @@ describe('Bmyc CLI tests', () => {
       expect(process.exit).to.be.calledOnce;
     });
   });
-  it('parse with debug option should set logger in debug mode', () => {
+  it('parse should set logger in debug mode when debug option', () => {
     setChaiAsPromised();
     mockArgs(['--debug']);
     const cli = new BmycCli();
@@ -43,7 +43,7 @@ describe('Bmyc CLI tests', () => {
       expect(argv.debug).to.be.true;
     });
   });
-  it('parse without option should have default arguments', () => {
+  it('parse should have default arguments', () => {
     setChaiAsPromised();
     mockArgs([]);
     const cli = new BmycCli();
@@ -52,7 +52,7 @@ describe('Bmyc CLI tests', () => {
       expect(argv.force).to.be.false;
     });
   });
-  it('parse with config option should have specific configuration file argument and other default arguments', () => {
+  it('parse should have specific configuration file argument and other default arguments when config option', () => {
     setChaiAsPromised();
     mockArgs(['--config', `${NON_EXISTING_FILE}`]);
     const cli = new BmycCli();
@@ -61,7 +61,7 @@ describe('Bmyc CLI tests', () => {
       expect(argv.force).to.be.false;
     });
   });
-  it('parse with force option should have force argument and other default arguments', () => {
+  it('parse should have force argument and other default arguments when force option', () => {
     setChaiAsPromised();
     mockArgs(['--force']);
     const cli = new BmycCli();

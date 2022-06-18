@@ -57,14 +57,14 @@ describe('Bmyc tests', () => {
   afterEach(() => {
     sinonMock.sinonRestoreStubs();
   });
-  it('Bmyc without default configuration file should throw a ConfigurationError', () => {
+  it('Bmyc should throw a ConfigurationError when no default configuration file', () => {
     setChaiAsPromised();
     mockArgs([]);
     return expect(Bmyc.main()).to.eventually.be.rejectedWith(
       ConfigurationError
     );
   });
-  it('Bmyc with default configuration file should create assets and update configuration file', () => {
+  it('Bmyc should create assets and update configuration file when default configuration file', () => {
     setChaiAsPromised();
     mockArgs([]);
     return fs
@@ -98,7 +98,7 @@ describe('Bmyc tests', () => {
         });
       });
   });
-  it('Bmyc with specific configuration file should create assets and update configuration file', () => {
+  it('Bmyc should create assets and update configuration file when specific configuration file', () => {
     setChaiAsPromised();
     mockArgs(['--config', `${COPY_SPECIFIC_CONFIG_FILE}`]);
     return fs
@@ -131,7 +131,7 @@ describe('Bmyc tests', () => {
         });
       });
   });
-  it('Bmyc with up-to-date default configuration file and force option should create assets and update configuration file', () => {
+  it('Bmyc should create assets and update configuration file when up-to-date default configuration file and force option', () => {
     setChaiAsPromised();
     mockArgs(['--force']);
     return fs
@@ -186,7 +186,7 @@ describe('Bmyc tests', () => {
           });
       });
   });
-  it('Bmyc with up-to-date specific configuration file and force option should create assets and update configuration file', () => {
+  it('Bmyc should create assets and update configuration file when up-to-date specific configuration file and force option', () => {
     setChaiAsPromised();
     mockArgs(['--config', `${COPY_SPECIFIC_CONFIG_FILE}`, '--force']);
     return fs
@@ -240,7 +240,7 @@ describe('Bmyc tests', () => {
           });
       });
   });
-  it('Bmyc with up-to-date default configuration file should do nothing', () => {
+  it('Bmyc should do nothing when up-to-date default configuration file', () => {
     setChaiAsPromised();
     mockArgs([]);
     return fs
@@ -288,7 +288,7 @@ describe('Bmyc tests', () => {
           });
       });
   });
-  it('Bmyc with incorrect configuration file should create 1 asset and update configuration file', () => {
+  it('Bmyc should create 1 asset and update configuration file when incorrect configuration file', () => {
     setChaiAsPromised();
     mockArgs(['--config', `${COPY_INCORRECT_CONFIG_FILE}`]);
     return fs

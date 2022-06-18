@@ -53,7 +53,7 @@ describe('GitHub AssetManager tests', () => {
     const github: Github = new Github();
     expect(github.getContent).to.be.instanceof(Function);
   });
-  it('GitHub without name field should throw a ConfigurationError', () => {
+  it('GitHub should throw a ConfigurationError when name not set', () => {
     const tempInput: any = JSON.parse(
       fs.readFileSync(GITHUB_SAMPLE_VALID, 'utf8')
     );
@@ -63,7 +63,7 @@ describe('GitHub AssetManager tests', () => {
       deserializeObject(input, Github);
     }).to.throw(ConfigurationError);
   });
-  it('GitHub without owner field should throw a ConfigurationError', () => {
+  it('GitHub should throw a ConfigurationError when owner not set', () => {
     const tempInput: any = JSON.parse(
       fs.readFileSync(GITHUB_SAMPLE_VALID, 'utf8')
     );
@@ -73,7 +73,7 @@ describe('GitHub AssetManager tests', () => {
       deserializeObject(input, Github);
     }).to.throw(ConfigurationError);
   });
-  it('GitHub without repository field should throw a ConfigurationError', () => {
+  it('GitHub should throw a ConfigurationError when repository not set', () => {
     const tempInput: any = JSON.parse(
       fs.readFileSync(GITHUB_SAMPLE_VALID, 'utf8')
     );
@@ -83,7 +83,7 @@ describe('GitHub AssetManager tests', () => {
       deserializeObject(input, Github);
     }).to.throw(ConfigurationError);
   });
-  it('GitHub without filePath field should throw a ConfigurationError', () => {
+  it('GitHub should throw a ConfigurationError when filePath not set', () => {
     const tempInput: any = JSON.parse(
       fs.readFileSync(GITHUB_SAMPLE_VALID, 'utf8')
     );
@@ -93,7 +93,7 @@ describe('GitHub AssetManager tests', () => {
       deserializeObject(input, Github);
     }).to.throw(ConfigurationError);
   });
-  it('getLatestVersion without BMYC_GITHUB_TOKEN environment variable should throw a BmycError', () => {
+  it('getLatestVersion should throw a BmycError when BMYC_GITHUB_TOKEN not set', () => {
     setChaiAsPromised();
     delete process.env.BMYC_GITHUB_TOKEN;
     const input: string = fs.readFileSync(GITHUB_SAMPLE_VALID, 'utf8');
@@ -102,7 +102,7 @@ describe('GitHub AssetManager tests', () => {
       BmycError
     );
   });
-  it('getContent without BMYC_GITHUB_TOKEN environment variable should throw a BmycError', () => {
+  it('getContent should throw a BmycError when BMYC_GITHUB_TOKEN not set', () => {
     setChaiAsPromised();
     delete process.env.BMYC_GITHUB_TOKEN;
     const input: string = fs.readFileSync(GITHUB_SAMPLE_VALID, 'utf8');
@@ -111,7 +111,7 @@ describe('GitHub AssetManager tests', () => {
       BmycError
     );
   });
-  it('getLatestVersion on an unexisting repo should throw a Error', () => {
+  it('getLatestVersion should throw a Error when unexisting repo', () => {
     setChaiAsPromised();
     const input: string = fs.readFileSync(
       GITHUB_SAMPLE_UNEXISTING_REPO,
@@ -123,7 +123,7 @@ describe('GitHub AssetManager tests', () => {
       '404'
     );
   });
-  it('getLatestVersion on a repository without tags should throw a Error', () => {
+  it('getLatestVersion should throw a Error when repository without tags', () => {
     setChaiAsPromised();
     const input: string = fs.readFileSync(GITHUB_SAMPLE_NO_TAGS, 'utf8');
     const github: Github = deserializeObject(input, Github);
@@ -132,7 +132,7 @@ describe('GitHub AssetManager tests', () => {
       '404'
     );
   });
-  it('getLatestVersion on a valid AssetManager should return the latest version', () => {
+  it('getLatestVersion should return the latest version', () => {
     setChaiAsPromised();
     const input: string = fs.readFileSync(GITHUB_SAMPLE_VALID, 'utf8');
     const github: Github = deserializeObject(input, Github);
@@ -140,7 +140,7 @@ describe('GitHub AssetManager tests', () => {
       /^[0-9]+\.[0-9]+\.[0-9]+$/
     );
   });
-  it('getContent on a valid GitHub should return the latest content', () => {
+  it('getContent should return the latest content', () => {
     setChaiAsPromised();
     const tempInput: any = JSON.parse(
       fs.readFileSync(GITHUB_SAMPLE_VALID, 'utf8')
@@ -155,7 +155,7 @@ describe('GitHub AssetManager tests', () => {
       });
     });
   });
-  it('getContent on an unexisting file which parent is a file should throw a BmycError', () => {
+  it('getContent should throw a BmycError when unexisting file which parent is a file', () => {
     setChaiAsPromised();
     const input: string = fs.readFileSync(GITHUB_SAMPLE_PARENT_AS_FILE, 'utf8');
     const github: Github = deserializeObject(input, Github);
@@ -165,7 +165,7 @@ describe('GitHub AssetManager tests', () => {
       );
     });
   });
-  it('getContent on an unexisting file should throw a BmycError', () => {
+  it('getContent should throw a BmycError when unexisting file', () => {
     setChaiAsPromised();
     const input: string = fs.readFileSync(
       GITHUB_SAMPLE_UNEXISTING_FILE,
@@ -178,7 +178,7 @@ describe('GitHub AssetManager tests', () => {
       );
     });
   });
-  it('getContent on a directory should throw a BmycError', () => {
+  it('getContent should throw a BmycError when directory', () => {
     setChaiAsPromised();
     const input: string = fs.readFileSync(GITHUB_SAMPLE_DIRECTORY, 'utf8');
     const github: Github = deserializeObject(input, Github);
@@ -188,7 +188,7 @@ describe('GitHub AssetManager tests', () => {
       );
     });
   });
-  it('getContent on an empty file should throw a BmycError', () => {
+  it('getContent should throw a BmycError when empty file', () => {
     setChaiAsPromised();
     const input: string = fs.readFileSync(GITHUB_SAMPLE_EMPTY, 'utf8');
     const github: Github = deserializeObject(input, Github);

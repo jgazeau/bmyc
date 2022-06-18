@@ -35,7 +35,7 @@ const ASSET_SAMPLE_VALID_UNEXISTING: PathLike = path.join(
 );
 
 describe('Asset tests', () => {
-  it('Asset without name field should throw a ConfigurationError', () => {
+  it('Asset should throw a ConfigurationError when name not set', () => {
     const tempInput: any = JSON.parse(
       fs.readFileSync(ASSET_SAMPLE_VALID_OUTDATED, 'utf8')
     );
@@ -45,7 +45,7 @@ describe('Asset tests', () => {
       deserializeObject(input, Asset);
     }).to.throw(ConfigurationError);
   });
-  it('Asset without localPath field should throw a ConfigurationError', () => {
+  it('Asset should throw a ConfigurationError when localPath not set', () => {
     const tempInput: any = JSON.parse(
       fs.readFileSync(ASSET_SAMPLE_VALID_OUTDATED, 'utf8')
     );
@@ -55,7 +55,7 @@ describe('Asset tests', () => {
       deserializeObject(input, Asset);
     }).to.throw(ConfigurationError);
   });
-  it('Asset without assetManager field should throw a ConfigurationError', () => {
+  it('Asset should throw a ConfigurationError when assetManager not set', () => {
     const tempInput: any = JSON.parse(
       fs.readFileSync(ASSET_SAMPLE_VALID_OUTDATED, 'utf8')
     );
@@ -65,7 +65,7 @@ describe('Asset tests', () => {
       deserializeObject(input, Asset);
     }).to.throw(ConfigurationError);
   });
-  it('Asset without currentVersion field should parse a correct Asset', () => {
+  it('Asset should parse a correct Asset when currentVersion not set', () => {
     const tempInput: any = JSON.parse(
       fs.readFileSync(ASSET_SAMPLE_VALID_OUTDATED, 'utf8')
     );
@@ -75,7 +75,7 @@ describe('Asset tests', () => {
     expect(asset._localPath).to.be.a('string');
     expect(asset._assetManager).to.be.an.instanceof(AssetManager);
   });
-  it('Using a valid sample Asset should parse a correct Asset', () => {
+  it('Asset should parse a correct Asset when valid sample', () => {
     const asset: Asset = deserializeObject(
       fs.readFileSync(ASSET_SAMPLE_VALID_OUTDATED, 'utf8'),
       Asset
@@ -85,7 +85,7 @@ describe('Asset tests', () => {
     expect(asset._assetManager).to.be.an.instanceof(AssetManager);
     expect(asset._currentVersion).to.be.a('string');
   });
-  it('setToLatestVersion on an incorrect asset should throw a Error', () => {
+  it('setToLatestVersion should throw a Error when incorrect asset', () => {
     setChaiAsPromised();
     const asset: Asset = deserializeObject(
       fs.readFileSync(ASSET_SAMPLE_INCORRECT_ASSET_MANAGER, 'utf8'),
@@ -108,7 +108,7 @@ describe('Asset tests', () => {
       expect(asset._currentVersion).to.be.equal(version);
     });
   });
-  it('bumpToLatestVersion on a latest asset should return asset with isUpdated false', () => {
+  it('bumpToLatestVersion should return asset with isUpdated false when latest asset', () => {
     setChaiAsPromised();
     const tempInput: any = JSON.parse(
       fs.readFileSync(ASSET_SAMPLE_VALID_LATEST, 'utf8')
@@ -119,7 +119,7 @@ describe('Asset tests', () => {
       expect(tempAsset._isUpdated).to.be.false;
     });
   });
-  it('bumpToLatestVersion on a latest asset without current version should return asset with isUpdated true and update current version', () => {
+  it('bumpToLatestVersion should return asset with isUpdated true and update current version when latest asset without current version', () => {
     setChaiAsPromised();
     const tempInput: any = JSON.parse(
       fs.readFileSync(ASSET_SAMPLE_VALID_LATEST, 'utf8')
@@ -131,7 +131,7 @@ describe('Asset tests', () => {
       expect(tempAsset._currentVersion).to.not.be.empty;
     });
   });
-  it('bumpToLatestVersion on a held and outdated asset should return asset with isNewVersion true and isUpdated false', () => {
+  it('bumpToLatestVersion should return asset with isNewVersion true and isUpdated false when held and outdated asset', () => {
     setChaiAsPromised();
     const asset: Asset = deserializeObject(
       fs.readFileSync(ASSET_SAMPLE_VALID_HElD, 'utf8'),
@@ -142,7 +142,7 @@ describe('Asset tests', () => {
       expect(tempAsset._isUpdated).to.be.false;
     });
   });
-  it('bumpToLatestVersion on a held and up-to-date asset should return asset with isNewVersion true and isUpdated false', () => {
+  it('bumpToLatestVersion should return asset with isNewVersion true and isUpdated false when held and up-to-date asset', () => {
     setChaiAsPromised();
     const tempInput: any = JSON.parse(
       fs.readFileSync(ASSET_SAMPLE_VALID_HElD, 'utf8')
@@ -154,7 +154,7 @@ describe('Asset tests', () => {
       expect(tempAsset._isUpdated).to.be.false;
     });
   });
-  it('bumpToLatestVersion on a outdated asset should return asset with isUpdated true and update asset content', () => {
+  it('bumpToLatestVersion should return asset with isUpdated true and update asset content when outdated asset', () => {
     setChaiAsPromised();
     const asset: Asset = deserializeObject(
       fs.readFileSync(ASSET_SAMPLE_VALID_OUTDATED, 'utf8'),
@@ -195,7 +195,7 @@ describe('Asset tests', () => {
           });
       });
   });
-  it('bumpToLatestVersion on an unexisting asset should return asset with isUpdated true and create asset', () => {
+  it('bumpToLatestVersion should return asset with isUpdated true and create asset when unexisting asset', () => {
     setChaiAsPromised();
     const asset: Asset = deserializeObject(
       fs.readFileSync(ASSET_SAMPLE_VALID_UNEXISTING, 'utf8'),
@@ -221,7 +221,7 @@ describe('Asset tests', () => {
         });
     });
   });
-  it('bumpToLatestVersion on an incorrect asset should throw a Error', () => {
+  it('bumpToLatestVersion should throw a Error when incorrect asset', () => {
     setChaiAsPromised();
     const asset: Asset = deserializeObject(
       fs.readFileSync(ASSET_SAMPLE_INCORRECT_ASSET_MANAGER, 'utf8'),
@@ -232,7 +232,7 @@ describe('Asset tests', () => {
       '404'
     );
   });
-  it('bumpToLatestVersion on a latest asset in force mode should return asset with isUpdated true and update asset', () => {
+  it('bumpToLatestVersion should return asset with isUpdated true and update asset when latest asset in force mode', () => {
     setChaiAsPromised();
     const tempInput: any = JSON.parse(
       fs.readFileSync(ASSET_SAMPLE_VALID_LATEST, 'utf8')
