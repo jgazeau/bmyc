@@ -31,7 +31,7 @@ export class Bmyc {
           })
         )
           .then(() => {
-            PrintResults.printResults();
+            return PrintResults.manageResults(cliArgs.summaryPR);
           })
           .then(() => {
             return Promise.resolve(configuration);

@@ -9,4 +9,5 @@ export interface ICliArguments extends Arguments {
   debug: boolean;
   force: boolean;
   config: PathLike;
+  summaryPR: PathLike;
 }

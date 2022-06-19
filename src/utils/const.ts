@@ -1,8 +1,12 @@
 export const DEFAULT_CONFIGURATION_FILE_NAME = '.bmycconfig.json';
-
 export const MAX_TTY_LENGTH = 100;
-
 export const NOT_AVAILABLE = 'N/A';
+export const FORCE_OPTION = 'force';
+export const CONFIG_OPTION = 'config';
+export const SUMMARY_PR_OPTION = 'summary-pr';
+export const SUMMARY_PR_NOT_GENERATED =
+  'No asset updated. Summary for Pull Request not generated.';
+export const SUMMARY_PR_TITLE = 'chore:(bmyc): bump thirparties';
 
 export const BMYC_HEADER = `
 \u25CF       _____                      

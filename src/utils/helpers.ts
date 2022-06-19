@@ -5,9 +5,9 @@ import {PathLike} from 'fs-extra';
 import {Color, white} from 'kleur';
 import {TLogLevelName} from 'tslog';
 import {BMYC_HEADER, MAX_TTY_LENGTH} from './const';
-import {ClassConstructor, deserialize} from 'class-transformer';
 import {validateSync, ValidationError} from 'class-validator';
 import {ConfigurationError} from '../model/configurationError';
+import {ClassConstructor, plainToInstance} from 'class-transformer';
 
 export function checkFilePath(filePath: PathLike): PathLike {
   if (fs.existsSync(filePath)) {
@@ -38,7 +38,7 @@ export function deserializeObject(
   object: any,
   type: ClassConstructor<any>
 ): any {
-  const deserializedObject: any = deserialize(type, object);
+  const deserializedObject: any = plainToInstance(type, JSON.parse(object));
   validateClassObjectSync(deserializedObject);
   return deserializedObject;
 }

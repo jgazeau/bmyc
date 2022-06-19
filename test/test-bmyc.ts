@@ -7,9 +7,13 @@ import {PathLike} from 'fs-extra';
 import {SinonStubs} from './testUtils/sinonStubs';
 import {Asset} from '../src/model/configurationFile/asset';
 import {ConfigurationError} from '../src/model/configurationError';
-import {DEFAULT_CONFIGURATION_FILE_NAME} from '../src/utils/const';
 import {Configuration} from '../src/model/configurationFile/configuration';
 import {rootPath, testResourcesPath, testTempPath} from './testUtils/const';
+import {
+  CONFIG_OPTION,
+  DEFAULT_CONFIGURATION_FILE_NAME,
+  FORCE_OPTION,
+} from '../src/utils/const';
 import {
   cleanTestTempDirectory,
   cleanupPrintResults,
@@ -100,7 +104,7 @@ describe('Bmyc tests', () => {
   });
   it('Bmyc should create assets and update configuration file when specific configuration file', () => {
     setChaiAsPromised();
-    mockArgs(['--config', `${COPY_SPECIFIC_CONFIG_FILE}`]);
+    mockArgs([`--${CONFIG_OPTION}`, `${COPY_SPECIFIC_CONFIG_FILE}`]);
     return fs
       .copyFile(SPECIFIC_CONFIG_FILE, COPY_SPECIFIC_CONFIG_FILE)
       .then(() => {
@@ -131,9 +135,9 @@ describe('Bmyc tests', () => {
         });
       });
   });
-  it('Bmyc should create assets and update configuration file when up-to-date default configuration file and force option', () => {
+  it(`Bmyc should create assets and update configuration file when up-to-date default configuration file and ${FORCE_OPTION} option`, () => {
     setChaiAsPromised();
-    mockArgs(['--force']);
+    mockArgs([`--${FORCE_OPTION}`]);
     return fs
       .copyFile(DEFAULT_CONFIG_FILE, COPY_DEFAULT_CONFIG_FILE)
       .then(() => {
@@ -186,9 +190,13 @@ describe('Bmyc tests', () => {
           });
       });
   });
-  it('Bmyc should create assets and update configuration file when up-to-date specific configuration file and force option', () => {
+  it(`Bmyc should create assets and update configuration file when up-to-date specific configuration file and ${FORCE_OPTION} option`, () => {
     setChaiAsPromised();
-    mockArgs(['--config', `${COPY_SPECIFIC_CONFIG_FILE}`, '--force']);
+    mockArgs([
+      `--${CONFIG_OPTION}`,
+      `${COPY_SPECIFIC_CONFIG_FILE}`,
+      `--${FORCE_OPTION}`,
+    ]);
     return fs
       .copyFile(SPECIFIC_CONFIG_FILE, COPY_SPECIFIC_CONFIG_FILE)
       .then(() => {
@@ -290,7 +298,7 @@ describe('Bmyc tests', () => {
   });
   it('Bmyc should create 1 asset and update configuration file when incorrect configuration file', () => {
     setChaiAsPromised();
-    mockArgs(['--config', `${COPY_INCORRECT_CONFIG_FILE}`]);
+    mockArgs([`--${CONFIG_OPTION}`, `${COPY_INCORRECT_CONFIG_FILE}`]);
     return fs
       .copyFile(INCORRECT_CONFIG_FILE, COPY_INCORRECT_CONFIG_FILE)
       .then(() => {

@@ -3,7 +3,7 @@ import * as fs from 'fs-extra';
 import {Asset} from './asset';
 import {PathLike} from 'fs-extra';
 import {ArrayUnique} from 'class-validator';
-import {classToPlain, deserializeArray} from 'class-transformer';
+import {instanceToPlain, plainToInstance} from 'class-transformer';
 import {checkFilePath, validateClassObjectSync} from '../../utils/helpers';
 
 export class Configuration {
@@ -39,7 +39,7 @@ export class Configuration {
     return fs
       .writeFile(
         this.filePath,
-        JSON.stringify(classToPlain(this.assets), null, 2),
+        JSON.stringify(instanceToPlain(this.assets), null, 2),
         {
           flag: 'w',
         }
@@ -51,10 +51,9 @@ export class Configuration {
 }
 
 function deserializeFile(filePath: PathLike): Asset[] {
-  const assetsArray: Asset[] = deserializeArray(
-    Asset,
+  const assetsArray: Asset[] = JSON.parse(
     fs.readFileSync(filePath, 'utf8')
-  );
+  ).map((value: Asset) => plainToInstance(Asset, value));
   assetsArray.forEach((asset: Asset, i) => {
     validateClassObjectSync(asset, `Asset ${i}`, 'Configuration');
   });

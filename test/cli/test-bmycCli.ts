@@ -2,9 +2,14 @@ import 'reflect-metadata';
 import {expect} from 'chai';
 import {BmycCli} from '../../src/cli/bmycCli';
 import {SinonStubs} from '../testUtils/sinonStubs';
-import {NON_EXISTING_FILE} from '../testUtils/const';
 import {mockArgs, setChaiAsPromised} from '../testUtils/helpers';
-import {DEFAULT_CONFIGURATION_FILE_NAME} from '../../src/utils/const';
+import {NON_EXISTING_FILE, TEST_SUMMARY_PR_FILE_NAME} from '../testUtils/const';
+import {
+  CONFIG_OPTION,
+  DEFAULT_CONFIGURATION_FILE_NAME,
+  FORCE_OPTION,
+  SUMMARY_PR_OPTION,
+} from '../../src/utils/const';
 
 describe('Bmyc CLI tests', () => {
   const sinonMock = new SinonStubs({});
@@ -43,31 +48,64 @@ describe('Bmyc CLI tests', () => {
       expect(argv.debug).to.be.true;
     });
   });
-  it('parse should have default arguments', () => {
+  it('parse should parse arguments', () => {
     setChaiAsPromised();
     mockArgs([]);
     const cli = new BmycCli();
     return cli.parse().then(argv => {
       expect(argv.config).to.be.equal(DEFAULT_CONFIGURATION_FILE_NAME);
+      expect(argv.summaryPR).to.be.undefined;
       expect(argv.force).to.be.false;
     });
   });
-  it('parse should have specific configuration file argument and other default arguments when config option', () => {
+  it(`parse should parse arguments when ${CONFIG_OPTION} option`, () => {
     setChaiAsPromised();
-    mockArgs(['--config', `${NON_EXISTING_FILE}`]);
+    mockArgs([`--${CONFIG_OPTION}`, `${NON_EXISTING_FILE}`]);
     const cli = new BmycCli();
     return cli.parse().then(argv => {
       expect(argv.config).to.be.equal(NON_EXISTING_FILE);
       expect(argv.force).to.be.false;
     });
   });
-  it('parse should have force argument and other default arguments when force option', () => {
+  it('parse should display error and exit when config file is not set', () => {
     setChaiAsPromised();
-    mockArgs(['--force']);
+    sinonMock.consoleError = true;
+    sinonMock.processExit = true;
+    sinonMock.sinonSetStubs();
+    mockArgs([`--${CONFIG_OPTION}`]);
+    const cli = new BmycCli();
+    return cli.parse().then(() => {
+      expect(console.error).to.be.called;
+      expect(process.exit).to.be.called;
+    });
+  });
+  it(`parse should parse arguments when ${FORCE_OPTION} option`, () => {
+    setChaiAsPromised();
+    mockArgs([`--${FORCE_OPTION}`]);
     const cli = new BmycCli();
     return cli.parse().then(argv => {
       expect(argv.config).to.be.equal(DEFAULT_CONFIGURATION_FILE_NAME);
       expect(argv.force).to.be.true;
+    });
+  });
+  it('parse should display error and exit when summary PR file is not set', () => {
+    setChaiAsPromised();
+    sinonMock.consoleError = true;
+    sinonMock.processExit = true;
+    sinonMock.sinonSetStubs();
+    mockArgs([`--${SUMMARY_PR_OPTION}`]);
+    const cli = new BmycCli();
+    return cli.parse().then(() => {
+      expect(console.error).to.be.called;
+      expect(process.exit).to.be.called;
+    });
+  });
+  it(`parse should parse arguments when specific ${SUMMARY_PR_OPTION} option`, () => {
+    setChaiAsPromised();
+    mockArgs([`--${SUMMARY_PR_OPTION}`, `${TEST_SUMMARY_PR_FILE_NAME}`]);
+    const cli = new BmycCli();
+    return cli.parse().then(argv => {
+      expect(argv.summaryPR).to.be.equal(TEST_SUMMARY_PR_FILE_NAME);
     });
   });
 });

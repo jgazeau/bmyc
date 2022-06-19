@@ -1,13 +1,18 @@
 import * as path from 'path';
+import * as fs from 'fs-extra';
 import {expect} from 'chai';
 import {PathLike} from 'fs-extra';
 import {logger} from '../../src/utils/logger';
 import {SinonStubs} from '../testUtils/sinonStubs';
-import {NOT_AVAILABLE} from '../../src/utils/const';
-import {testResourcesPath} from '../testUtils/const';
-import {cleanupPrintResults} from '../testUtils/helpers';
 import {Asset} from '../../src/model/configurationFile/asset';
 import {ConfigurationError} from '../../src/model/configurationError';
+import {cleanupPrintResults, setChaiAsPromised} from '../testUtils/helpers';
+import {NOT_AVAILABLE, SUMMARY_PR_NOT_GENERATED} from '../../src/utils/const';
+import {
+  testResourcesPath,
+  TEST_SUMMARY_PR_FILE_NAME,
+  TEST_SUMMARY_PR_FILE_PATH,
+} from '../testUtils/const';
 import {
   ResultEntry,
   PrintResults,
@@ -54,8 +59,12 @@ function mockResultEntry(asset: Asset, error?: Error): ResultEntry {
 }
 
 const FAKE_ERROR: ConfigurationError = new ConfigurationError('Error occurred');
-const FAKE_LOCALPATH: PathLike = path.join(testResourcesPath, 'fakePath.fake');
+const FAKE_LOCALPATH: PathLike = 'fakePath.fake';
 const FAKE_VERSION = 'X.X.X';
+const TEST_SUMMARY_PR_FILE: PathLike = path.join(
+  testResourcesPath,
+  TEST_SUMMARY_PR_FILE_NAME
+);
 
 const asset1 = mockAsset(
   'package1',
@@ -206,11 +215,38 @@ describe('Stats tests', () => {
     PrintResults.orderResults();
     expect(PrintResults.results.toString()).to.equal(orderedResults.toString());
   });
-  it('printResults should display results', () => {
+  it('manageResults should display results', () => {
     sinonMock.logger = true;
     sinonMock.sinonSetStubs();
-    PrintResults.printResults();
-    expect(logger()['info']).to.be.calledOnce;
+    setChaiAsPromised();
+    return PrintResults.manageResults().then(() => {
+      expect(logger()['info']).to.be.calledOnce;
+    });
+  });
+  it('manageResults should not store results when no asset updated', () => {
+    sinonMock.logger = true;
+    sinonMock.sinonSetStubs();
+    setChaiAsPromised();
+    cleanupPrintResults();
+    return PrintResults.manageResults(TEST_SUMMARY_PR_FILE_NAME).then(() => {
+      expect(logger()['debug']).to.be.calledOnceWith(SUMMARY_PR_NOT_GENERATED);
+    });
+  });
+  it('manageResults should store results when summary PR file', () => {
+    sinonMock.logger = true;
+    sinonMock.sinonSetStubs();
+    setChaiAsPromised();
+    return PrintResults.manageResults(TEST_SUMMARY_PR_FILE_PATH).then(() => {
+      return fs
+        .readFile(TEST_SUMMARY_PR_FILE_PATH, 'utf8')
+        .then(summaryContent => {
+          return fs
+            .readFile(TEST_SUMMARY_PR_FILE, 'utf8')
+            .then(originContent => {
+              expect(originContent).to.be.equal(summaryContent);
+            });
+        });
+    });
   });
   it('totals should add totals', () => {
     PrintResults.totals();

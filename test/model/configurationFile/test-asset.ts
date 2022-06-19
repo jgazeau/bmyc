@@ -5,6 +5,7 @@ import * as fs from 'fs-extra';
 import {expect} from 'chai';
 import {PathLike} from 'fs-extra';
 import {version} from '../../../package.json';
+import {FORCE_OPTION} from '../../../src/utils/const';
 import {setChaiAsPromised} from '../../testUtils/helpers';
 import {deserializeObject} from '../../../src/utils/helpers';
 import {Github} from '../../../src/model/assetManagers/github';
@@ -232,7 +233,7 @@ describe('Asset tests', () => {
       '404'
     );
   });
-  it('bumpToLatestVersion should return asset with isUpdated true and update asset when latest asset in force mode', () => {
+  it(`bumpToLatestVersion should return asset with isUpdated true and update asset when latest asset in ${FORCE_OPTION} mode`, () => {
     setChaiAsPromised();
     const tempInput: any = JSON.parse(
       fs.readFileSync(ASSET_SAMPLE_VALID_LATEST, 'utf8')

@@ -2,7 +2,13 @@ import kleur = require('kleur');
 import {hideBin} from 'yargs/helpers';
 import {getOutputWidth} from '../utils/helpers';
 import {IArgumentsParser, ICliArguments} from './iArgumentsParser';
-import {CLI_USAGE, DEFAULT_CONFIGURATION_FILE_NAME} from '../utils/const';
+import {
+  CLI_USAGE,
+  CONFIG_OPTION,
+  DEFAULT_CONFIGURATION_FILE_NAME,
+  FORCE_OPTION,
+  SUMMARY_PR_OPTION,
+} from '../utils/const';
 const yargs = require('yargs');
 
 export class BmycCli {
@@ -44,8 +50,15 @@ export class BmycCli {
       .alias('v', 'version')
       .alias('h', 'help')
       .example([
-        ['$0 --force', "Force asset's update"],
-        ['$0 --config "./myconfig.json"', 'Use specific configuration file'],
+        [`$0 --${FORCE_OPTION}`, "Force asset's update"],
+        [
+          `$0 --${CONFIG_OPTION} "./myconfig.json"`,
+          'Use specific configuration file',
+        ],
+        [
+          `$0 --${SUMMARY_PR_OPTION} "./summary-pr.md"`,
+          'Generate markdown summary results to describe a Pull Request',
+        ],
       ])
       .options({
         debug: {
@@ -66,6 +79,15 @@ export class BmycCli {
           default: DEFAULT_CONFIGURATION_FILE_NAME,
           description: 'Path of the configuration file',
           group: this.GROUPS.COMMONS,
+          nargs: 1,
+        },
+        summaryPR: {
+          alias: ['s', `${SUMMARY_PR_OPTION}`],
+          type: 'PathLike',
+          description:
+            'Path of the generated markdown summary used to describe a Pull Request',
+          group: this.GROUPS.COMMONS,
+          nargs: 1,
         },
       })
       .wrap(getOutputWidth())

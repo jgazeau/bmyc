@@ -19,6 +19,13 @@ export class SinonStubs {
   public set consoleLog(value: boolean) {
     this._consoleLog = value;
   }
+  private _consoleError: boolean;
+  public get consoleError(): boolean {
+    return this._consoleError;
+  }
+  public set consoleError(value: boolean) {
+    this._consoleError = value;
+  }
   private _processExit: boolean;
   public get processExit(): boolean {
     return this._processExit;
@@ -30,10 +37,12 @@ export class SinonStubs {
   constructor({
     logger = false,
     consoleLog = false,
+    consoleError = false,
     processExit = false,
   }: sinonStubsParameters) {
     this.logger = logger;
     this.consoleLog = consoleLog;
+    this.consoleError = consoleError;
     this.processExit = processExit;
   }
 
@@ -41,6 +50,7 @@ export class SinonStubs {
     chai.use(sinonChai);
     if (this.logger) sinon.stub(logger());
     if (this.consoleLog) sinon.stub(console, 'log');
+    if (this.consoleError) sinon.stub(console, 'error');
     if (this.processExit) sinon.stub(process, 'exit');
   }
 
@@ -52,6 +62,7 @@ export class SinonStubs {
 interface sinonStubsParameters {
   logger?: boolean;
   consoleLog?: boolean;
+  consoleError?: boolean;
   processExit?: boolean;
 }
 /* c8 ignore stop */

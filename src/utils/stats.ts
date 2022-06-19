@@ -1,10 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any*/
 import * as path from 'path';
+import * as fs from 'fs-extra';
+import {PathLike} from 'fs';
 import {logger} from './logger';
-import {NOT_AVAILABLE} from './const';
 import {Asset} from '../model/configurationFile/asset';
 import {getBorderCharacters, table, TableUserConfig} from 'table';
 import {blue, Color, gray, green, red, white, yellow} from 'kleur';
+import {
+  NOT_AVAILABLE,
+  SUMMARY_PR_NOT_GENERATED,
+  SUMMARY_PR_TITLE,
+} from './const';
 
 export class PrintEntry {
   constructor(
@@ -12,6 +18,9 @@ export class PrintEntry {
     public readonly color: Color = white
   ) {}
   toString(): string {
+    return this.content;
+  }
+  toColoredString(): string {
     return this.color(this.content);
   }
 }
@@ -182,22 +191,25 @@ export class PrintResults {
     this.results.forEach((entry, entryIndex) => {
       const tempEntry: TableEntry = [];
       entry.map((entry, index) => {
-        tempEntry[index] = entry.toString();
+        tempEntry[index] = entry.toColoredString();
       });
       this.table[entryIndex] = tempEntry;
     });
   }
 
-  public static printResults() {
+  public static manageResults(summaryPR?: PathLike): Promise<void> {
     this.orderResults();
     this.enhanceTableResults();
     this.totals();
     this.tableResultsConfig();
-    this.table.length
-      ? logger().info(`\n${table(this.table, this.tableConfig)}`)
-      : logger().error('No results available');
+    this.printResults();
     if (this.totalCount.error) {
       process.exitCode = 1;
+    }
+    if (summaryPR) {
+      return this.saveSummaryPR(summaryPR);
+    } else {
+      return Promise.resolve();
     }
   }
 
@@ -205,23 +217,73 @@ export class PrintResults {
     this.table.push(
       [gray('Totals '), '', '', '', ''],
       [
-        HELD(true, ' ').toString(),
+        HELD(true, ' ').toColoredString(),
         '',
         '',
         '',
         `${this.totalCount.heldOutdated}`,
       ],
       [
-        HELD(false, ' ').toString(),
+        HELD(false, ' ').toColoredString(),
         '',
         '',
         '',
         `${this.totalCount.heldUptodate}`,
       ],
-      [STATUS_ERROR.toString(), '', '', '', `${this.totalCount.error}`],
-      [STATUS_UPTODATE.toString(), '', '', '', `${this.totalCount.uptodate}`],
-      [STATUS_UPDATED.toString(), '', '', '', `${this.totalCount.updated}`]
+      [STATUS_ERROR.toColoredString(), '', '', '', `${this.totalCount.error}`],
+      [
+        STATUS_UPTODATE.toColoredString(),
+        '',
+        '',
+        '',
+        `${this.totalCount.uptodate}`,
+      ],
+      [
+        STATUS_UPDATED.toColoredString(),
+        '',
+        '',
+        '',
+        `${this.totalCount.updated}`,
+      ]
     );
+  }
+
+  private static printResults() {
+    this.table.length
+      ? logger().info(`\n${table(this.table, this.tableConfig)}`)
+      : logger().error('No results available');
+  }
+
+  private static saveSummaryPR(summaryPR: PathLike): Promise<void> {
+    if (this.totalCount.updated !== 0) {
+      return fs.writeFile(
+        path.normalize(summaryPR.toString()),
+        PrintResults.buildSummaryPR(),
+        {
+          flag: 'w',
+        }
+      );
+    } else {
+      logger().debug(SUMMARY_PR_NOT_GENERATED);
+      return Promise.resolve();
+    }
+  }
+
+  private static buildSummaryPR(): string {
+    let summary = SUMMARY_PR_TITLE;
+    summary = summary.concat('\n\n');
+    summary = summary.concat(PrintResults.buildSummaryRow(this.columnHeader));
+    summary = summary.concat('| - | - | - | - | - |\n');
+    this.results.forEach(entry => {
+      if (entry.includes(STATUS_UPDATED)) {
+        summary = summary.concat(PrintResults.buildSummaryRow(entry));
+      }
+    });
+    return summary;
+  }
+
+  private static buildSummaryRow(entry: ResultEntry): string {
+    return `| ${entry[0]} | ${entry[1]} | ${entry[2]} | ${entry[3]} | ${entry[4]} |\n`;
   }
 }
 
