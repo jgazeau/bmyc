@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.2 (20/06/2022)
+*No changelog for this release.*
+
+---
+
 ## 0.4.1 (20/06/2022)
 
 #### Internal
