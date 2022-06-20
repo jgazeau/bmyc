@@ -306,7 +306,7 @@ export function getStatus(asset: Asset, error?: Error): PrintEntry {
 export function getAssetVersion(asset: Asset): string {
   return asset._latestVersion
     ? asset._isUpdated || asset._hold
-      ? `${asset._beforeUpdateVersion}\n(${asset._latestVersion})`
+      ? `${asset._beforeUpdateVersion} --> ${asset._latestVersion}`
       : asset._latestVersion
     : asset._currentVersion || NOT_AVAILABLE;
 }

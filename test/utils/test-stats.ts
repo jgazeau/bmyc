@@ -292,7 +292,7 @@ describe('Stats tests', () => {
     asset._latestVersion = latestVersion;
     asset._isUpdated = true;
     expect(getAssetVersion(asset)).to.equal(
-      `${beforeUpdateVersion}\n(${latestVersion})`
+      `${beforeUpdateVersion} --> ${latestVersion}`
     );
   });
   it('getAssetVersion should return current and updated version when hold', () => {
@@ -303,7 +303,7 @@ describe('Stats tests', () => {
     asset._latestVersion = latestVersion;
     asset._hold = true;
     expect(getAssetVersion(asset)).to.equal(
-      `${beforeUpdateVersion}\n(${latestVersion})`
+      `${beforeUpdateVersion} --> ${latestVersion}`
     );
   });
   it('getAssetVersion should return latest version', () => {
