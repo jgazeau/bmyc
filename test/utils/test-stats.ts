@@ -223,13 +223,16 @@ describe('Stats tests', () => {
       expect(logger()['info']).to.be.calledOnce;
     });
   });
-  it('manageResults should not store results when no asset updated', () => {
+  it('manageResults should display info message when no asset updated', () => {
     sinonMock.logger = true;
     sinonMock.sinonSetStubs();
     setChaiAsPromised();
     cleanupPrintResults();
     return PrintResults.manageResults(TEST_SUMMARY_PR_FILE_NAME).then(() => {
-      expect(logger()['debug']).to.be.calledOnceWith(SUMMARY_PR_NOT_GENERATED);
+      expect(logger()['info']).to.be.calledTwice;
+      expect(logger()['info']).to.have.been.calledWith(
+        SUMMARY_PR_NOT_GENERATED
+      );
     });
   });
   it('manageResults should store results when summary PR file', () => {

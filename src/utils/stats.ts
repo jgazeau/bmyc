@@ -264,7 +264,7 @@ export class PrintResults {
         }
       );
     } else {
-      logger().debug(SUMMARY_PR_NOT_GENERATED);
+      logger().info(SUMMARY_PR_NOT_GENERATED);
       return Promise.resolve();
     }
   }

@@ -36,8 +36,10 @@ npm install bmyc
 Usage: bmyc [options]
 
 Common options:
-  -f, --force   Force update of configuration                             [boolean] [default: false]
-  -c, --config  Path of the configuration file                         [default: ".bmycconfig.json"]
+  -f, --force                    Force update of configuration            [boolean] [default: false]
+  -c, --config                   Path of the configuration file        [default: ".bmycconfig.json"]
+  -s, --summaryPR, --summary-pr  Path of the generated markdown summary used to describe a Pull
+                                 Request
 
 Other Options:
       --debug    Turn on debug logging                                    [boolean] [default: false]
@@ -45,8 +47,9 @@ Other Options:
   -h, --help     Show help                                                                 [boolean]
 
 Examples:
-  bmyc --force                     Force asset's update
-  bmyc --config "./myconfig.json"  Use specific configuration file
+  bmyc --force                         Force asset's update
+  bmyc --config "./myconfig.json"      Use specific configuration file
+  bmyc --summary-pr "./summary-pr.md"  Generate markdown summary results to describe a Pull Request
 
 Additional information:
   GitHub: https://github.com/jgazeau/bmyc.git
@@ -56,7 +59,7 @@ Additional information:
 
 ### How to hold a version?
 
-To hold a version, set the `hold` parameter for the specific asset to `true`:
+To hold a version of an asset, and therefore don't update it during the update process, set the `hold` parameter for the specific asset to `true`:
 ```json
 {
   ...
@@ -65,6 +68,16 @@ To hold a version, set the `hold` parameter for the specific asset to `true`:
   ...
 }
 ```
+
+### How to generate a summary for PR creation?
+
+It is possible to generate a summary containing a title and a description for creating a PR.
+
+The generated file has the following characteristics:
+* markdown format
+* title on first line separated from the description by a blank line
+* description table containing updated assets
+* not generated when no assets updated
 
 # Examples
 
