@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.1 (20/06/2022)
+
+#### Internal
+
+- [**internal**] chore:(deps-dev): bump sinon from 12.0.1 to 14.0.0 [#29](https://github.com/jgazeau/bmyc/pull/29)
+
+---
+
 ## 0.4.0 (19/06/2022)
 *No changelog for this release.*
 
