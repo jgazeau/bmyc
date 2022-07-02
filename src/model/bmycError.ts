@@ -4,3 +4,7 @@ export class BmycError extends Error {
     this.name = 'BmycError';
   }
 }
+
+export function unknownLatestVersionError(file: string): BmycError {
+  return new BmycError(`Cannot retrieve latest version for ${file}`);
+}

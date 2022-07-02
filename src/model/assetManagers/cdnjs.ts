@@ -3,6 +3,7 @@ import axios from 'axios';
 import {Github} from './github';
 import {AssetManager} from './assetManager';
 import {IsDefined, IsString} from 'class-validator';
+import {unknownLatestVersionError} from '../bmycError';
 
 const CDNJS_API_URL = 'https://api.cdnjs.com';
 const CDNJS_GITHUB_OWNER = 'cdnjs';
@@ -43,7 +44,12 @@ export class Cdnjs extends AssetManager {
       },
       url: `${CDNJS_API_URL}/libraries/${this.library}`,
     }).then((response: any) => {
-      return Promise.resolve(response.data.version);
+      const version = response.data.version;
+      if (version) {
+        return Promise.resolve(version);
+      } else {
+        throw unknownLatestVersionError(`${this.library}/${this.fileName}`);
+      }
     });
   }
 

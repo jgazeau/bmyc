@@ -11,8 +11,9 @@ In that case, Bmyc should just fit your needs.
 * Bmyc uses a configuration file (by default *.bmycconfig.json*) to store assets it needs to manage.
 * Bmyc will try to bump all assets to their latest version and update the configuration file accordingly (unless the latest version is already specified in the configuration file or the force option is used)
 * To bump assets, Bmyc is using *asset managers*, named from where assets needs to be retrieved. For now the following asset managers are availables:
-    * github
-    * cdnjs
+    * [github](https://github.com/) (Sources from repository)
+    * [cdnjs](https://cdnjs.com/)
+    * [unpkg](https://unpkg.com/)
 
 ## How to use it?
 

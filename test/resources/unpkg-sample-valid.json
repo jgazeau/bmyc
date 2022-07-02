@@ -1,0 +1,5 @@
+{
+  "name": "unpkg",
+  "library": "typescript",
+  "filePath": "bin/tsc"
+}

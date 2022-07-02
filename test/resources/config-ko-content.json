@@ -1,6 +1,6 @@
 [{
   "name": "asset1",
   "localPath": "./path/asset1.min.js",
-  "assetManager": "unknown",
+  "assetManager": "unknown_assetManager",
   "currentVersion": "0.0.1"
 }]
