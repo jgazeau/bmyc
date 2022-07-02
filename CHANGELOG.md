@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.5.0 (02/07/2022)
+
+#### Internal
+
+- [**internal**] chore:(deps-dev): bump @types/mocha from 9.1.0 to 9.1.1 [#30](https://github.com/jgazeau/bmyc/pull/30)
+
+---
+
 ## 0.4.2 (20/06/2022)
 *No changelog for this release.*
 
