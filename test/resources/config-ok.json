@@ -1,6 +1,6 @@
 [
   {
-    "package": "",
+    "package": "package1",
     "hold": false,
     "name": "asset1",
     "localPath": "path/asset1.min.js",
@@ -12,7 +12,7 @@
     "currentVersion": "0.0.1"
   },
   {
-    "package": "",
+    "package": "package2",
     "hold": false,
     "name": "asset2",
     "localPath": "./path/asset2.min.js",
@@ -21,6 +21,17 @@
       "owner": "owner",
       "repository": "repository",
       "filePath": "dir/asset2.min.js"
+    }
+  },
+  {
+    "package": "package3",
+    "hold": false,
+    "name": "asset3",
+    "localPath": "./path/asset3.min.js",
+    "assetManager": {
+      "name": "unpkg",
+      "library": "typescript",
+      "filePath": "bin/tsc"
     }
   }
 ]

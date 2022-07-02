@@ -12,6 +12,7 @@ import {
   testTempPath,
   testResourcesPath,
 } from '../../testUtils/const';
+import {AssetManagerType} from '../../../src/model/assetManagers/assetManagerType';
 
 const CONFIG_OK: PathLike = path.join(testResourcesPath, 'config-ok.json');
 const CONFIG_OK_DUPLICATE: PathLike = path.join(
@@ -39,13 +40,15 @@ describe('Configuration tests', () => {
   it('Configuration should parse a correct JSON when valid configuration file', () => {
     const configFile: Configuration = new Configuration(CONFIG_OK);
     expect(configFile._filePath).to.be.a('string');
-    expect(configFile._assets.length).to.be.equal(2);
+    expect(configFile._assets.length).to.be.equal(
+      Object.keys(AssetManagerType).length
+    );
     expect(configFile._assets).to.be.an.instanceof(Array);
     configFile._assets.forEach(asset => {
       expect(asset).to.be.an.instanceof(Asset);
     });
   });
-  it('Configuration should parse a correct JSON when valid configuration file with same package name', () => {
+  it('Configuration should parse a correct JSON when valid configuration file with same assets name', () => {
     const configFile: Configuration = new Configuration(CONFIG_OK_DUPLICATE);
     expect(configFile._filePath).to.be.a('string');
     expect(configFile._assets.length).to.be.equal(2);
@@ -64,7 +67,7 @@ describe('Configuration tests', () => {
       new Configuration(CONFIG_KO_CONTENT);
     }).to.throw(ConfigurationError);
   });
-  it('Configuration should throw a ConfigurationError when configuration file with duplicate assets', () => {
+  it('Configuration should throw a ConfigurationError when configuration file with same package name', () => {
     expect(() => {
       new Configuration(CONFIG_KO_DUPLICATE);
     }).to.throw(ConfigurationError);

@@ -98,9 +98,9 @@ describe('Cdnjs AssetManager tests', () => {
     const input: string = fs.readFileSync(CDNJS_SAMPLE_UNEXISTING_FILE, 'utf8');
     const cdnjs: Cdnjs = deserializeObject(input, Cdnjs);
     return cdnjs.getLatestVersion().then(latestVersion => {
-      expect(cdnjs.getContent(latestVersion)).to.eventually.be.rejectedWith(
-        BmycError
-      );
+      return expect(
+        cdnjs.getContent(latestVersion)
+      ).to.eventually.be.rejectedWith(BmycError);
     });
   });
 });

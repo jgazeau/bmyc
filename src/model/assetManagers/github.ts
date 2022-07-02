@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any*/
 import * as path from 'path';
 import axios from 'axios';
-import {BmycError} from '../bmycError';
 import {AssetManager} from './assetManager';
 import {IsDefined, IsString} from 'class-validator';
+import {BmycError, unknownLatestVersionError} from '../bmycError';
 
 const GITHUB_API_URL = 'https://api.github.com';
 
@@ -54,7 +54,14 @@ export class Github extends AssetManager {
         },
         url: `${GITHUB_API_URL}/repos/${this.owner}/${this.repository}/releases/latest`,
       }).then((response: any) => {
-        return Promise.resolve(response.data.tag_name);
+        const version = response.data.tag_name;
+        if (version) {
+          return Promise.resolve(version);
+        } else {
+          throw unknownLatestVersionError(
+            `${this.owner}/${this.repository}/${this.filePath}`
+          );
+        }
       });
     });
   }

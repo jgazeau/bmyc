@@ -1,9 +1,11 @@
 import * as path from 'path';
 import * as fs from 'fs-extra';
 import {PathLike} from 'fs-extra';
+import {Unpkg} from '../assetManagers/unpkg';
 import {Cdnjs} from '../assetManagers/cdnjs';
 import {Github} from '../assetManagers/github';
 import {Exclude, Type} from 'class-transformer';
+import {AssetManagerType} from '../assetManagers/assetManagerType';
 import {AssetManager as AssetManager} from '../assetManagers/assetManager';
 import {AssetManagerValidator as AssetManagerValidator} from '../assetManagers/assetManagerValidator';
 import {
@@ -72,8 +74,9 @@ export class Asset {
     discriminator: {
       property: 'name',
       subTypes: [
-        {value: Cdnjs, name: 'cdnjs'},
-        {value: Github, name: 'github'},
+        {value: Cdnjs, name: AssetManagerType.CDNJS},
+        {value: Github, name: AssetManagerType.GITHUB},
+        {value: Unpkg, name: AssetManagerType.UNPKG},
       ],
     },
   })

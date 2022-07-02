@@ -17,5 +17,14 @@
       "repository": "bmyc",
       "filePath": "test/resources/github-content-ok.js"
     }
+  },
+  {
+    "name": "asset3",
+    "localPath": "test/temp/bmyc-unpkg-typescript-ok.js",
+    "assetManager": {
+      "name": "unpkg",
+      "library": "typescript",
+      "filePath": "bin/tsc"
+    }
   }
 ]

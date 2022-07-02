@@ -160,9 +160,9 @@ describe('GitHub AssetManager tests', () => {
     const input: string = fs.readFileSync(GITHUB_SAMPLE_PARENT_AS_FILE, 'utf8');
     const github: Github = deserializeObject(input, Github);
     return github.getLatestVersion().then(latestVersion => {
-      expect(github.getContent(latestVersion)).to.eventually.be.rejectedWith(
-        BmycError
-      );
+      return expect(
+        github.getContent(latestVersion)
+      ).to.eventually.be.rejectedWith(BmycError);
     });
   });
   it('getContent should throw a BmycError when unexisting file', () => {
@@ -173,9 +173,9 @@ describe('GitHub AssetManager tests', () => {
     );
     const github: Github = deserializeObject(input, Github);
     return github.getLatestVersion().then(latestVersion => {
-      expect(github.getContent(latestVersion)).to.eventually.be.rejectedWith(
-        BmycError
-      );
+      return expect(
+        github.getContent(latestVersion)
+      ).to.eventually.be.rejectedWith(BmycError);
     });
   });
   it('getContent should throw a BmycError when directory', () => {
@@ -183,9 +183,9 @@ describe('GitHub AssetManager tests', () => {
     const input: string = fs.readFileSync(GITHUB_SAMPLE_DIRECTORY, 'utf8');
     const github: Github = deserializeObject(input, Github);
     return github.getLatestVersion().then(latestVersion => {
-      expect(github.getContent(latestVersion)).to.eventually.be.rejectedWith(
-        BmycError
-      );
+      return expect(
+        github.getContent(latestVersion)
+      ).to.eventually.be.rejectedWith(BmycError);
     });
   });
   it('getContent should throw a BmycError when empty file', () => {
@@ -193,9 +193,9 @@ describe('GitHub AssetManager tests', () => {
     const input: string = fs.readFileSync(GITHUB_SAMPLE_EMPTY, 'utf8');
     const github: Github = deserializeObject(input, Github);
     return github.getLatestVersion().then(latestVersion => {
-      expect(github.getContent(latestVersion)).to.eventually.be.rejectedWith(
-        BmycError
-      );
+      return expect(
+        github.getContent(latestVersion)
+      ).to.eventually.be.rejectedWith(BmycError);
     });
   });
 });
