@@ -6,8 +6,6 @@ jobs:
   Publish:
     name: Publish
     runs-on: ubuntu-latest
-    env:
-      CHANGELOG_FILE: CHANGELOG.md
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -15,6 +13,29 @@ jobs:
           ref: 'main'
           submodules: recursive
           fetch-depth: 1
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          cache: 'npm'
+      - name: Generate changelog
+        env:
+          GREN_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          export TAG_NAME=${GITHUB_REF##*/}
+          printf "%70s\n" | tr ' ' '-'
+          npm ci
+          printf "%70s\n" | tr ' ' '-'
+          npm version ${TAG_NAME} --no-git-tag-version
+          printf "%70s\n" | tr ' ' '-'
+          git add package.json
+          git add package-lock.json
+          printf "%70s\n" | tr ' ' '-'
+          git config --local user.name "GitHub Action"
+          git config --local user.email "action@github.com"
+          git commit -m "tag/${TAG_NAME}"
+          git tag ${TAG_NAME}
+          git push
+          git push -f origin ${TAG_NAME}
       - name: Publish on Npm
         uses: JS-DevTools/npm-publish@v1
         with:
