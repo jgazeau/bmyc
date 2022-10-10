@@ -30,8 +30,20 @@
     "localPath": "./path/asset3.min.js",
     "assetManager": {
       "name": "unpkg",
-      "library": "typescript",
-      "filePath": "bin/tsc"
+      "library": "axios",
+      "filePath": "dist/axios.min.js"
+    }
+  },
+  {
+    "package": "package4",
+    "hold": false,
+    "name": "asset4",
+    "localPath": "./path/asset4.min.js",
+    "assetManager": {
+      "name": "jsdelivr",
+      "cdn": "npm",
+      "package": "axios",
+      "filePath": "dist/axios.min.js"
     }
   }
 ]

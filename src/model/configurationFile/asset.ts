@@ -5,6 +5,7 @@ import {Unpkg} from '../assetManagers/unpkg';
 import {Cdnjs} from '../assetManagers/cdnjs';
 import {Github} from '../assetManagers/github';
 import {Exclude, Type} from 'class-transformer';
+import {Jsdelivr} from '../assetManagers/jsdelivr';
 import {AssetManagerType} from '../assetManagers/assetManagerType';
 import {AssetManager as AssetManager} from '../assetManagers/assetManager';
 import {AssetManagerValidator as AssetManagerValidator} from '../assetManagers/assetManagerValidator';
@@ -77,6 +78,7 @@ export class Asset {
         {value: Cdnjs, name: AssetManagerType.CDNJS},
         {value: Github, name: AssetManagerType.GITHUB},
         {value: Unpkg, name: AssetManagerType.UNPKG},
+        {value: Jsdelivr, name: AssetManagerType.JSDELIVR},
       ],
     },
   })

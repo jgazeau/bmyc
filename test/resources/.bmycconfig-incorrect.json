@@ -4,7 +4,7 @@
     "localPath": "test/temp/bmyc-cdnjs-incorrect-unknown.min.js",
     "assetManager": {
       "name": "cdnjs",
-      "library": "typescript",
+      "library": "axios",
       "fileName": "unknown.min.js"
     }
   },

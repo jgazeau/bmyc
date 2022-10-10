@@ -1,5 +1,5 @@
 {
   "name": "cdnjs",
-  "library": "typescript",
-  "fileName": "typescript.min.js"
+  "library": "axios",
+  "fileName": "axios.min.js"
 }

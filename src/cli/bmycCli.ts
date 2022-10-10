@@ -2,6 +2,7 @@ import kleur = require('kleur');
 import {hideBin} from 'yargs/helpers';
 import {getOutputWidth} from '../utils/helpers';
 import {IArgumentsParser, ICliArguments} from './iArgumentsParser';
+import {AssetManagerType} from '../model/assetManagers/assetManagerType';
 import {
   CLI_USAGE,
   CONFIG_OPTION,
@@ -92,7 +93,9 @@ export class BmycCli {
       })
       .wrap(getOutputWidth())
       .epilog(
-        `Additional information:
+        `Package managers available:
+${this.printAvailablePackages(2)}
+Additional information:
   GitHub: ${kleur.green('https://github.com/jgazeau/bmyc.git')}
   Documentation: ${kleur.blue('https://github.com/jgazeau/bmyc#readme')}
   Issues: ${kleur.red('https://github.com/jgazeau/bmyc/issues')}
@@ -103,5 +106,15 @@ export class BmycCli {
   parse(): Promise<ICliArguments> {
     this.parser.argv;
     return Promise.resolve(BmycCli.cliArgs);
+  }
+
+  private printAvailablePackages(offset: number): string {
+    let availablePackages = '';
+    Object.values(AssetManagerType).forEach(entry => {
+      availablePackages = `${availablePackages}${' '.repeat(
+        offset
+      )}- ${entry}\n`;
+    });
+    return availablePackages;
   }
 }

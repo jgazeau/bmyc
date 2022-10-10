@@ -1,11 +1,11 @@
 [
   {
     "name": "asset1",
-    "localPath": "tempDirectory/tempSubdir/bmyc-cdnjs-typescript.min.js",
+    "localPath": "tempDirectory/tempSubdir/bmyc-cdnjs-axios.min.js",
     "assetManager": {
       "name": "cdnjs",
-      "library": "typescript",
-      "fileName": "typescript.min.js"
+      "library": "axios",
+      "fileName": "axios.min.js"
     }
   },
   {
@@ -20,11 +20,21 @@
   },
   {
     "name": "asset3",
-    "localPath": "tempDirectory/tempSubdir/bmyc-unpkg-typescript-ok.js",
+    "localPath": "tempDirectory/tempSubdir/bmyc-unpkg-axios-ok.js",
     "assetManager": {
       "name": "unpkg",
-      "library": "typescript",
-      "filePath": "bin/tsc"
+      "library": "axios",
+      "filePath": "dist/axios.min.js"
+    }
+  },
+  {
+    "name": "asset4",
+    "localPath": "tempDirectory/tempSubdir/bmyc-jsdelivr-axios-ok.js",
+    "assetManager": {
+      "name": "jsdelivr",
+      "cdn": "npm",
+      "package": "axios",
+      "filePath": "dist/axios.min.js"
     }
   }
 ]

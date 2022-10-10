@@ -92,7 +92,7 @@ describe('Unpkg AssetManager tests', () => {
       });
     });
   });
-  it('getContent should throw a BmycError when unexisting file', () => {
+  it('getContent should throw a Error when unexisting file', () => {
     setChaiAsPromised();
     const input: string = fs.readFileSync(UNPKG_SAMPLE_UNEXISTING_FILE, 'utf8');
     const unpkg: Unpkg = deserializeObject(input, Unpkg);
