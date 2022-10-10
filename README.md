@@ -14,6 +14,7 @@ In that case, Bmyc should just fit your needs.
     * [github](https://github.com/) (Sources from repository)
     * [cdnjs](https://cdnjs.com/)
     * [unpkg](https://unpkg.com/)
+    * [jsdelivr](https://www.jsdelivr.com/)
 
 ## How to use it?
 
@@ -51,6 +52,12 @@ Examples:
   bmyc --force                         Force asset's update
   bmyc --config "./myconfig.json"      Use specific configuration file
   bmyc --summary-pr "./summary-pr.md"  Generate markdown summary results to describe a Pull Request
+
+Package managers available:
+  - cdnjs
+  - github
+  - unpkg
+  - jsdelivr
 
 Additional information:
   GitHub: https://github.com/jgazeau/bmyc.git

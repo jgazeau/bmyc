@@ -1,0 +1,6 @@
+{
+  "name": "jsdelivr",
+  "cdn": "npm",
+  "package": "axios",
+  "filePath": "dist/unknown.min.js"
+}

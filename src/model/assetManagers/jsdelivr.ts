@@ -4,18 +4,32 @@ import {AssetManager} from './assetManager';
 import {IsDefined, IsString} from 'class-validator';
 import {unknownLatestVersionError} from '../bmycError';
 
-const UNPKG_API_URL = 'https://unpkg.com';
+const JSDELIVR_API_URL = 'https://data.jsdelivr.com/v1';
+const JSDELIVR_DATA_URL = 'https://cdn.jsdelivr.net';
+const JSDELIVR_PACKAGE_PATH = 'package';
 
-export class Unpkg extends AssetManager {
+export class Jsdelivr extends AssetManager {
   @IsDefined()
   @IsString()
-  private library: string;
+  private cdn: string;
   /* c8 ignore start */
-  public get _library(): string {
-    return this.library;
+  public get _cdn(): string {
+    return this.cdn;
   }
-  public set _library(value: string) {
-    this.library = value;
+  public set _cdn(value: string) {
+    this.cdn = value;
+  }
+  /* c8 ignore stop */
+
+  @IsDefined()
+  @IsString()
+  private package: string;
+  /* c8 ignore start */
+  public get _package(): string {
+    return this.package;
+  }
+  public set _package(value: string) {
+    this.package = value;
   }
   /* c8 ignore stop */
 
@@ -34,18 +48,13 @@ export class Unpkg extends AssetManager {
   getLatestVersion(): Promise<string> {
     return axios({
       method: 'get',
-      url: `${UNPKG_API_URL}/${this.library}/`,
+      url: `${JSDELIVR_API_URL}/${JSDELIVR_PACKAGE_PATH}/${this.cdn}/${this.package}`,
     }).then((response: any) => {
-      // Unpkg should redirect to the latest version of the package by default
-      let version = response.request.res.responseUrl.replace(
-        new RegExp(`.*${this.library}@`),
-        ''
-      );
-      version = version.replace(new RegExp('/.*'), '');
+      const version = response.data.tags.latest;
       if (version) {
         return Promise.resolve(version);
       } else {
-        throw unknownLatestVersionError(`${this.library}/${this.filePath}`);
+        throw unknownLatestVersionError(`${this.cdn}/${this.package}`);
       }
     });
   }
@@ -53,7 +62,7 @@ export class Unpkg extends AssetManager {
   getContent(assetVersion: string): Promise<Buffer> {
     return axios({
       method: 'get',
-      url: `${UNPKG_API_URL}/${this.library}@${assetVersion}/${this.filePath}`,
+      url: `${JSDELIVR_DATA_URL}/${this.cdn}/${this.package}@${assetVersion}/${this.filePath}`,
     }).then((response: any) => {
       return Promise.resolve(response.data);
     });

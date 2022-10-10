@@ -1,5 +1,5 @@
 {
   "name": "unpkg",
-  "library": "typescript",
-  "filePath": "bin/tsc"
+  "library": "axios",
+  "filePath": "dist/axios.min.js"
 }

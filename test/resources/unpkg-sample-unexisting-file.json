@@ -1,5 +1,5 @@
 {
   "name": "unpkg",
-  "library": "typescript",
+  "library": "axios",
   "filePath": "unknown.js"
 }
