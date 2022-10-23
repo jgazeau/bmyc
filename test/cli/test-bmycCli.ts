@@ -1,15 +1,15 @@
-import 'reflect-metadata';
 import {expect} from 'chai';
+import 'reflect-metadata';
 import {BmycCli} from '../../src/cli/bmycCli';
-import {SinonStubs} from '../testUtils/sinonStubs';
-import {mockArgs, setChaiAsPromised} from '../testUtils/helpers';
-import {NON_EXISTING_FILE, TEST_SUMMARY_PR_FILE_NAME} from '../testUtils/const';
 import {
   CONFIG_OPTION,
   DEFAULT_CONFIGURATION_FILE_NAME,
   FORCE_OPTION,
   SUMMARY_PR_OPTION,
 } from '../../src/utils/const';
+import {NON_EXISTING_FILE, TEST_SUMMARY_PR_FILE_NAME} from '../testUtils/const';
+import {mockArgs, setChaiAsPromised} from '../testUtils/helpers';
+import {SinonStubs} from '../testUtils/sinonStubs';
 
 describe('Bmyc CLI tests', () => {
   const sinonMock = new SinonStubs({});

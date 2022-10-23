@@ -1,30 +1,30 @@
-import * as path from 'path';
-import * as fs from 'fs-extra';
 import {expect} from 'chai';
+import * as fs from 'fs-extra';
 import {PathLike} from 'fs-extra';
-import {logger} from '../../src/utils/logger';
-import {SinonStubs} from '../testUtils/sinonStubs';
-import {Asset} from '../../src/model/configurationFile/asset';
+import * as path from 'path';
 import {ConfigurationError} from '../../src/model/configurationError';
-import {cleanupPrintResults, setChaiAsPromised} from '../testUtils/helpers';
+import {Asset} from '../../src/model/configurationFile/asset';
 import {NOT_AVAILABLE, SUMMARY_PR_NOT_GENERATED} from '../../src/utils/const';
+import {logger} from '../../src/utils/logger';
+import {
+  getAssetVersion,
+  getStatus,
+  getSummary,
+  HELD,
+  PrintEntry,
+  PrintResults,
+  ResultEntry,
+  STATUS_ERROR,
+  STATUS_UPDATED,
+  STATUS_UPTODATE,
+} from '../../src/utils/stats';
 import {
   testResourcesPath,
   TEST_SUMMARY_PR_FILE_NAME,
   TEST_SUMMARY_PR_FILE_PATH,
 } from '../testUtils/const';
-import {
-  ResultEntry,
-  PrintResults,
-  getStatus,
-  getSummary,
-  PrintEntry,
-  getAssetVersion,
-  STATUS_ERROR,
-  STATUS_UPDATED,
-  STATUS_UPTODATE,
-  HELD,
-} from '../../src/utils/stats';
+import {cleanupPrintResults, setChaiAsPromised} from '../testUtils/helpers';
+import {SinonStubs} from '../testUtils/sinonStubs';
 
 function mockAsset(
   packageName: string,

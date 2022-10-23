@@ -1,7 +1,5 @@
 import kleur = require('kleur');
 import {hideBin} from 'yargs/helpers';
-import {getOutputWidth} from '../utils/helpers';
-import {IArgumentsParser, ICliArguments} from './iArgumentsParser';
 import {AssetManagerType} from '../model/assetManagers/assetManagerType';
 import {
   CLI_USAGE,
@@ -10,6 +8,8 @@ import {
   FORCE_OPTION,
   SUMMARY_PR_OPTION,
 } from '../utils/const';
+import {getOutputWidth} from '../utils/helpers';
+import {IArgumentsParser, ICliArguments} from './iArgumentsParser';
 const yargs = require('yargs');
 
 export class BmycCli {

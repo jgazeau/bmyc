@@ -1,10 +1,10 @@
-import * as path from 'path';
-import * as fs from 'fs-extra';
-import {Asset} from './asset';
-import {PathLike} from 'fs-extra';
-import {ArrayUnique} from 'class-validator';
 import {instanceToPlain, plainToInstance} from 'class-transformer';
+import {ArrayUnique} from 'class-validator';
+import * as fs from 'fs-extra';
+import {PathLike} from 'fs-extra';
+import * as path from 'path';
 import {checkFilePath, validateClassObjectSync} from '../../utils/helpers';
+import {Asset} from './asset';
 
 export class Configuration {
   private filePath: PathLike;

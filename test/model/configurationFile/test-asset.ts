@@ -1,18 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any*/
-import 'reflect-metadata';
-import * as path from 'path';
-import * as fs from 'fs-extra';
 import {expect} from 'chai';
+import * as fs from 'fs-extra';
 import {PathLike} from 'fs-extra';
+import * as path from 'path';
+import 'reflect-metadata';
 import {version} from '../../../package.json';
-import {FORCE_OPTION} from '../../../src/utils/const';
-import {setChaiAsPromised} from '../../testUtils/helpers';
-import {deserializeObject} from '../../../src/utils/helpers';
-import {Github} from '../../../src/model/assetManagers/github';
-import {Asset} from '../../../src/model/configurationFile/asset';
-import {rootPath, testResourcesPath} from '../../testUtils/const';
-import {ConfigurationError} from '../../../src/model/configurationError';
 import {AssetManager} from '../../../src/model/assetManagers/assetManager';
+import {Github} from '../../../src/model/assetManagers/github';
+import {ConfigurationError} from '../../../src/model/configurationError';
+import {Asset} from '../../../src/model/configurationFile/asset';
+import {FORCE_OPTION} from '../../../src/utils/const';
+import {deserializeObject} from '../../../src/utils/helpers';
+import {rootPath, testResourcesPath} from '../../testUtils/const';
+import {setChaiAsPromised} from '../../testUtils/helpers';
 
 const ASSET_SAMPLE_INCORRECT_ASSET_MANAGER: PathLike = path.join(
   testResourcesPath,

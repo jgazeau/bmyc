@@ -1,16 +1,16 @@
-import {red} from 'kleur';
 import {expect} from 'chai';
 import {PathLike} from 'fs-extra';
-import {logger} from '../../src/utils/logger';
-import {SinonStubs} from '../testUtils/sinonStubs';
-import {MAX_TTY_LENGTH} from '../../src/utils/const';
-import {logTestLevel, NON_EXISTING_FILE} from '../testUtils/const';
+import {red} from 'kleur';
 import {ConfigurationError} from '../../src/model/configurationError';
+import {MAX_TTY_LENGTH} from '../../src/utils/const';
 import {
   checkFilePath,
   getOutputWidth,
   headerFactory,
 } from '../../src/utils/helpers';
+import {logger} from '../../src/utils/logger';
+import {logTestLevel, NON_EXISTING_FILE} from '../testUtils/const';
+import {SinonStubs} from '../testUtils/sinonStubs';
 
 describe('Utils tests', () => {
   const sinonMock = new SinonStubs({});

@@ -1,25 +1,25 @@
-import 'reflect-metadata';
-import * as path from 'path';
-import * as fs from 'fs-extra';
 import {expect} from 'chai';
-import {Bmyc} from '../src/bmyc';
+import * as fs from 'fs-extra';
 import {PathLike} from 'fs-extra';
-import {SinonStubs} from './testUtils/sinonStubs';
-import {Asset} from '../src/model/configurationFile/asset';
+import * as path from 'path';
+import 'reflect-metadata';
+import {Bmyc} from '../src/bmyc';
 import {ConfigurationError} from '../src/model/configurationError';
+import {Asset} from '../src/model/configurationFile/asset';
 import {Configuration} from '../src/model/configurationFile/configuration';
-import {rootPath, testResourcesPath, testTempPath} from './testUtils/const';
 import {
   CONFIG_OPTION,
   DEFAULT_CONFIGURATION_FILE_NAME,
   FORCE_OPTION,
 } from '../src/utils/const';
+import {rootPath, testResourcesPath, testTempPath} from './testUtils/const';
 import {
   cleanTestTempDirectory,
   cleanupPrintResults,
   mockArgs,
   setChaiAsPromised,
 } from './testUtils/helpers';
+import {SinonStubs} from './testUtils/sinonStubs';
 
 const DEFAULT_CONFIG_FILE: PathLike = path.join(
   testResourcesPath,

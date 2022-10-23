@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any*/
-import 'reflect-metadata';
-import * as path from 'path';
-import * as fs from 'fs-extra';
 import {expect} from 'chai';
+import * as fs from 'fs-extra';
 import {PathLike} from 'fs-extra';
+import * as path from 'path';
+import 'reflect-metadata';
+import {Cdnjs} from '../../../src/model/assetManagers/cdnjs';
 import {BmycError} from '../../../src/model/bmycError';
+import {ConfigurationError} from '../../../src/model/configurationError';
+import {deserializeObject} from '../../../src/utils/helpers';
 import {testResourcesPath} from '../../testUtils/const';
 import {setChaiAsPromised} from '../../testUtils/helpers';
-import {deserializeObject} from '../../../src/utils/helpers';
-import {Cdnjs} from '../../../src/model/assetManagers/cdnjs';
-import {ConfigurationError} from '../../../src/model/configurationError';
 
 const CDNJS_SAMPLE_UNEXISTING_FILE: PathLike = path.join(
   testResourcesPath,

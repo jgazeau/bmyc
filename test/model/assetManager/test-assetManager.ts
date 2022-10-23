@@ -1,7 +1,7 @@
-import 'reflect-metadata';
 import {expect} from 'chai';
-import {ConfigurationError} from '../../../src/model/configurationError';
+import 'reflect-metadata';
 import {AssetManager} from '../../../src/model/assetManagers/assetManager';
+import {ConfigurationError} from '../../../src/model/configurationError';
 
 describe('AssetManager tests', () => {
   it('getLatestVersion should throw a ConfigurationError', () => {

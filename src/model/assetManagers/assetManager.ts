@@ -1,6 +1,6 @@
 import {IsDefined, IsString} from 'class-validator';
 import {ConfigurationError} from '../configurationError';
-import {IAssetManager as IAssetManager} from './iAssetManager';
+import {IAssetManager} from './iAssetManager';
 
 export abstract class AssetManager implements IAssetManager {
   @IsDefined()

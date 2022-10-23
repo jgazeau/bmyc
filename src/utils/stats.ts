@@ -1,16 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any*/
-import * as path from 'path';
-import * as fs from 'fs-extra';
 import {PathLike} from 'fs';
-import {logger} from './logger';
-import {Asset} from '../model/configurationFile/asset';
-import {getBorderCharacters, table, TableUserConfig} from 'table';
+import * as fs from 'fs-extra';
 import {blue, Color, gray, green, red, white, yellow} from 'kleur';
+import * as path from 'path';
+import {getBorderCharacters, table, TableUserConfig} from 'table';
+import {Asset} from '../model/configurationFile/asset';
 import {
   NOT_AVAILABLE,
   SUMMARY_PR_NOT_GENERATED,
   SUMMARY_PR_TITLE,
 } from './const';
+import {logger} from './logger';
 
 export class PrintEntry {
   constructor(

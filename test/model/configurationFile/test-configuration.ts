@@ -1,18 +1,18 @@
-import 'reflect-metadata';
-import * as path from 'path';
-import * as fs from 'fs-extra';
 import {expect} from 'chai';
+import * as fs from 'fs-extra';
 import {PathLike} from 'fs-extra';
-import {setChaiAsPromised} from '../../testUtils/helpers';
-import {Asset} from '../../../src/model/configurationFile/asset';
+import * as path from 'path';
+import 'reflect-metadata';
+import {AssetManagerType} from '../../../src/model/assetManagers/assetManagerType';
 import {ConfigurationError} from '../../../src/model/configurationError';
+import {Asset} from '../../../src/model/configurationFile/asset';
 import {Configuration} from '../../../src/model/configurationFile/configuration';
 import {
   NON_EXISTING_FILE,
-  testTempPath,
   testResourcesPath,
+  testTempPath,
 } from '../../testUtils/const';
-import {AssetManagerType} from '../../../src/model/assetManagers/assetManagerType';
+import {setChaiAsPromised} from '../../testUtils/helpers';
 
 const CONFIG_OK: PathLike = path.join(testResourcesPath, 'config-ok.json');
 const CONFIG_OK_DUPLICATE: PathLike = path.join(

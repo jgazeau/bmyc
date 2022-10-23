@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any*/
 import axios from 'axios';
-import {AssetManager} from './assetManager';
 import {IsDefined, IsString} from 'class-validator';
 import {unknownLatestVersionError} from '../bmycError';
+import {AssetManager} from './assetManager';
 
 const JSDELIVR_API_URL = 'https://data.jsdelivr.com/v1';
 const JSDELIVR_DATA_URL = 'https://cdn.jsdelivr.net';

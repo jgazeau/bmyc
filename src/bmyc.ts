@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 /* eslint-disable @typescript-eslint/no-explicit-any*/
-import 'reflect-metadata';
 import {red} from 'kleur';
-import {logger} from './utils/logger';
+import 'reflect-metadata';
 import {BmycCli} from './cli/bmycCli';
-import {PrintResults} from './utils/stats';
-import {headerFactory} from './utils/helpers';
 import {Asset} from './model/configurationFile/asset';
 import {Configuration} from './model/configurationFile/configuration';
+import {headerFactory} from './utils/helpers';
+import {logger} from './utils/logger';
+import {PrintResults} from './utils/stats';
 
 export class Bmyc {
   static main(): Promise<Configuration> {

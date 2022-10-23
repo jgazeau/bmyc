@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any*/
-import * as path from 'path';
 import axios from 'axios';
-import {AssetManager} from './assetManager';
 import {IsDefined, IsString} from 'class-validator';
+import * as path from 'path';
 import {BmycError, unknownLatestVersionError} from '../bmycError';
+import {AssetManager} from './assetManager';
 
 const GITHUB_API_URL = 'https://api.github.com';
 

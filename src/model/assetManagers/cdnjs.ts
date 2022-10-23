@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any*/
 import axios from 'axios';
-import {Github} from './github';
-import {AssetManager} from './assetManager';
 import {IsDefined, IsString} from 'class-validator';
 import {unknownLatestVersionError} from '../bmycError';
+import {AssetManager} from './assetManager';
+import {Github} from './github';
 
 const CDNJS_API_URL = 'https://api.cdnjs.com';
 const CDNJS_GITHUB_OWNER = 'cdnjs';

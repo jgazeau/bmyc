@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any*/
-import 'reflect-metadata';
-import * as path from 'path';
-import * as fs from 'fs-extra';
 import {expect} from 'chai';
+import * as fs from 'fs-extra';
 import {PathLike} from 'fs-extra';
-import {testResourcesPath} from '../../testUtils/const';
-import {setChaiAsPromised} from '../../testUtils/helpers';
-import {deserializeObject} from '../../../src/utils/helpers';
+import * as path from 'path';
+import 'reflect-metadata';
 import {Jsdelivr} from '../../../src/model/assetManagers/jsdelivr';
 import {ConfigurationError} from '../../../src/model/configurationError';
+import {deserializeObject} from '../../../src/utils/helpers';
+import {testResourcesPath} from '../../testUtils/const';
+import {setChaiAsPromised} from '../../testUtils/helpers';
 
 const JSDELIVR_SAMPLE_UNEXISTING_CDN: PathLike = path.join(
   testResourcesPath,

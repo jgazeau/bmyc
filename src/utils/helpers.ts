@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any*/
+import {ClassConstructor, plainToInstance} from 'class-transformer';
+import {validateSync, ValidationError} from 'class-validator';
 import * as fs from 'fs-extra';
-import {logger} from './logger';
 import {PathLike} from 'fs-extra';
 import {Color, white} from 'kleur';
 import {TLogLevelName} from 'tslog';
-import {BMYC_HEADER, MAX_TTY_LENGTH} from './const';
-import {validateSync, ValidationError} from 'class-validator';
 import {ConfigurationError} from '../model/configurationError';
-import {ClassConstructor, plainToInstance} from 'class-transformer';
+import {BMYC_HEADER, MAX_TTY_LENGTH} from './const';
+import {logger} from './logger';
 
 export function checkFilePath(filePath: PathLike): PathLike {
   if (fs.existsSync(filePath)) {

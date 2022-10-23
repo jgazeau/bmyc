@@ -1,5 +1,5 @@
-import {BmycCli} from '../cli/bmycCli';
 import {Logger, TLogLevelName} from 'tslog';
+import {BmycCli} from '../cli/bmycCli';
 
 export class LoggerFactory {
   private static _logger: Logger;

@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any*/
 import axios from 'axios';
-import {AssetManager} from './assetManager';
 import {IsDefined, IsString} from 'class-validator';
 import {unknownLatestVersionError} from '../bmycError';
+import {AssetManager} from './assetManager';
 
 const UNPKG_API_URL = 'https://unpkg.com';
 

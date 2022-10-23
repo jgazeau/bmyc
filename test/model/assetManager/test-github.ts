@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any*/
-import 'reflect-metadata';
-import * as path from 'path';
-import * as fs from 'fs-extra';
 import {expect} from 'chai';
+import * as fs from 'fs-extra';
 import {PathLike} from 'fs-extra';
-import {BmycError} from '../../../src/model/bmycError';
-import {setChaiAsPromised} from '../../testUtils/helpers';
-import {deserializeObject} from '../../../src/utils/helpers';
+import * as path from 'path';
+import 'reflect-metadata';
 import {Github} from '../../../src/model/assetManagers/github';
-import {rootPath, testResourcesPath} from '../../testUtils/const';
+import {BmycError} from '../../../src/model/bmycError';
 import {ConfigurationError} from '../../../src/model/configurationError';
+import {deserializeObject} from '../../../src/utils/helpers';
+import {rootPath, testResourcesPath} from '../../testUtils/const';
+import {setChaiAsPromised} from '../../testUtils/helpers';
 
 const tempToken = process.env.BMYC_GITHUB_TOKEN;
 const GITHUB_SAMPLE_DIRECTORY: PathLike = path.join(

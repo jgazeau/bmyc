@@ -1,14 +1,4 @@
-import * as path from 'path';
-import * as fs from 'fs-extra';
-import {PathLike} from 'fs-extra';
-import {Unpkg} from '../assetManagers/unpkg';
-import {Cdnjs} from '../assetManagers/cdnjs';
-import {Github} from '../assetManagers/github';
 import {Exclude, Type} from 'class-transformer';
-import {Jsdelivr} from '../assetManagers/jsdelivr';
-import {AssetManagerType} from '../assetManagers/assetManagerType';
-import {AssetManager as AssetManager} from '../assetManagers/assetManager';
-import {AssetManagerValidator as AssetManagerValidator} from '../assetManagers/assetManagerValidator';
 import {
   IsBoolean,
   IsDefined,
@@ -17,6 +7,16 @@ import {
   Validate,
   ValidateNested,
 } from 'class-validator';
+import * as fs from 'fs-extra';
+import {PathLike} from 'fs-extra';
+import * as path from 'path';
+import {AssetManager} from '../assetManagers/assetManager';
+import {AssetManagerType} from '../assetManagers/assetManagerType';
+import {AssetManagerValidator} from '../assetManagers/assetManagerValidator';
+import {Cdnjs} from '../assetManagers/cdnjs';
+import {Github} from '../assetManagers/github';
+import {Jsdelivr} from '../assetManagers/jsdelivr';
+import {Unpkg} from '../assetManagers/unpkg';
 
 export class Asset {
   @IsOptional()
