@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {instanceToPlain, plainToInstance} from 'class-transformer';
 import {ArrayUnique} from 'class-validator';
 import * as fs from 'fs-extra';
