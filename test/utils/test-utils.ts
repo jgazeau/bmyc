@@ -9,7 +9,7 @@ import {
   headerFactory,
 } from '../../src/utils/helpers';
 import {logger} from '../../src/utils/logger';
-import {logTestLevel, NON_EXISTING_FILE} from '../testUtils/const';
+import {NON_EXISTING_FILE} from '../testUtils/const';
 import {SinonStubs} from '../testUtils/sinonStubs';
 
 describe('Utils tests', () => {
@@ -39,7 +39,7 @@ describe('Utils tests', () => {
   it('headerFactory should log', () => {
     sinonMock.logger = true;
     sinonMock.sinonSetStubs();
-    headerFactory(red, logTestLevel);
-    expect(logger()[logTestLevel]).to.be.calledOnce;
+    headerFactory(red);
+    expect(logger().info).to.be.calledOnce;
   });
 });

@@ -4,7 +4,6 @@ import {validateSync, ValidationError} from 'class-validator';
 import * as fs from 'fs-extra';
 import {PathLike} from 'fs-extra';
 import {Color, white} from 'kleur';
-import {TLogLevelName} from 'tslog';
 import {ConfigurationError} from '../model/configurationError';
 import {BMYC_HEADER, MAX_TTY_LENGTH} from './const';
 import {logger} from './logger';
@@ -43,11 +42,8 @@ export function deserializeObject(
   return deserializedObject;
 }
 
-export function headerFactory(
-  color: Color = white,
-  logLevel: TLogLevelName = 'info'
-): void {
-  logger()[logLevel](color(`${BMYC_HEADER}`));
+export function headerFactory(color: Color = white): void {
+  logger().info(color(`${BMYC_HEADER}`));
 }
 
 export function getOutputWidth(): number {

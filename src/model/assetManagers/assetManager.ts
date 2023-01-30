@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {IsDefined, IsString} from 'class-validator';
 import {ConfigurationError} from '../configurationError';
 import {IAssetManager} from './iAssetManager';

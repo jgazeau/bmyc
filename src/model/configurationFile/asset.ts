@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {Exclude, Type} from 'class-transformer';
 import {
   IsBoolean,
