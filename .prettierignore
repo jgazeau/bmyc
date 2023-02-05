@@ -1,0 +1,3 @@
+# Test ignores
+test/**/*.md
+test/**/*.json
