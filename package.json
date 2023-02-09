@@ -1,6 +1,6 @@
 {
   "name": "bmyc",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "description": "Tool to bump assets based on a configuration file",
   "engines": {
     "node": ">=14.14.0"
