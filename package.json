@@ -61,7 +61,7 @@
     "@types/mocha": "^10.0.1",
     "@types/node": "^18.11.0",
     "@types/sinon": "^10.0.13",
-    "@types/sinon-chai": "^3.2.8",
+    "@types/sinon-chai": "^3.2.9",
     "@types/validator": "^13.7.5",
     "@types/yargs": "^17.0.22",
     "c8": "^7.12.0",
