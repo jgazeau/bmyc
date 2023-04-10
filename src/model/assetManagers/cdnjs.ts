@@ -2,15 +2,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any*/
 import axios from 'axios';
 import {IsDefined, IsString} from 'class-validator';
-import {unknownLatestVersionError} from '../bmycError';
+import {BmycError, unknownLatestVersionError} from '../bmycError';
 import {AssetManager} from './assetManager';
-import {Github} from './github';
 
 const CDNJS_API_URL = 'https://api.cdnjs.com';
-const CDNJS_GITHUB_OWNER = 'cdnjs';
-const CDNJS_GITHUB_REPOSITORY = 'cdnjs';
-const CDNJS_GITHUB_ROOT_FILEPATH = 'ajax/libs';
-const CDNJS_GITHUB_REF = 'master';
+const CDNJS_LIBRARIES_PATH = 'libraries';
+const CDNJS_LIBS_HOST = 'https://cdnjs.cloudflare.com';
+const CDNJS_LIBS_ROOT_PATH = 'ajax/libs';
+const CDNJS_LIBS_ENCODING = 'utf-8';
 
 export class Cdnjs extends AssetManager {
   @IsDefined()
@@ -43,7 +42,7 @@ export class Cdnjs extends AssetManager {
       params: {
         fields: 'version',
       },
-      url: `${CDNJS_API_URL}/libraries/${this.library}`,
+      url: `${CDNJS_API_URL}/${CDNJS_LIBRARIES_PATH}/${this.library}`,
     }).then((response: any) => {
       const version = response.data.version;
       if (version) {
@@ -55,12 +54,27 @@ export class Cdnjs extends AssetManager {
   }
 
   getContent(assetVersion: string): Promise<Buffer> {
-    const cdnjsGithub = new Github();
-    cdnjsGithub._owner = CDNJS_GITHUB_OWNER;
-    cdnjsGithub._repository = CDNJS_GITHUB_REPOSITORY;
-    cdnjsGithub._filePath = `${CDNJS_GITHUB_ROOT_FILEPATH}/${this.library}/${assetVersion}/${this.fileName}`;
-    return cdnjsGithub.getSha(CDNJS_GITHUB_REF).then((assetSha: string) => {
-      return cdnjsGithub.getBlob(assetSha);
-    });
+    return axios({
+      maxContentLength: 100000000,
+      maxBodyLength: 100000000,
+      method: 'get',
+      url: `${CDNJS_LIBS_HOST}/${CDNJS_LIBS_ROOT_PATH}/${this.library}/${assetVersion}/${this.fileName}`,
+    })
+      .then((response: any) => {
+        if (response.data) {
+          return Promise.resolve(
+            Buffer.from(response.data, CDNJS_LIBS_ENCODING)
+          );
+        } else {
+          throw new BmycError(
+            `Cannot get content of library ${this.fileName} (${assetVersion})`
+          );
+        }
+      })
+      .catch((error: Error) => {
+        throw new BmycError(
+          `Cannot get library ${this.fileName} (${assetVersion}) with error: ${error.message}`
+        );
+      });
   }
 }
