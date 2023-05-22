@@ -51,7 +51,7 @@
     "kleur": "^4.1.5",
     "reflect-metadata": "^0.1.13",
     "table": "^6.8.1",
-    "tslog": "^4.7.1",
+    "tslog": "^4.8.2",
     "yargs": "^17.7.1"
   },
   "devDependencies": {
