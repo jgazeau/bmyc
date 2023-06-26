@@ -52,7 +52,7 @@
     "reflect-metadata": "^0.1.13",
     "table": "^6.8.1",
     "tslog": "^4.8.2",
-    "yargs": "^17.7.1"
+    "yargs": "^17.7.2"
   },
   "devDependencies": {
     "@types/chai": "^4.3.3",
