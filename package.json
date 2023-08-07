@@ -55,7 +55,7 @@
     "yargs": "^17.7.2"
   },
   "devDependencies": {
-    "@types/chai": "^4.3.3",
+    "@types/chai": "^4.3.5",
     "@types/chai-as-promised": "^7.1.5",
     "@types/fs-extra": "^11.0.1",
     "@types/mocha": "^10.0.1",
@@ -65,7 +65,7 @@
     "@types/validator": "^13.7.17",
     "@types/yargs": "^17.0.24",
     "c8": "^8.0.1",
-    "chai": "^4.3.6",
+    "chai": "^4.3.7",
     "chai-as-promised": "^7.1.1",
     "gts": "^4.0.1",
     "mocha": "^10.2.0",
