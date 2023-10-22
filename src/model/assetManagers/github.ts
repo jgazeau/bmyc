@@ -46,6 +46,7 @@ export class Github extends AssetManager {
   /* c8 ignore stop */
 
   getLatestVersion(): Promise<string> {
+    const url = `${GITHUB_API_URL}/repos/${this.owner}/${this.repository}/releases/latest`;
     return this.checkGitHubToken().then(() => {
       return axios({
         method: 'get',
@@ -53,22 +54,29 @@ export class Github extends AssetManager {
           Accept: 'application/vnd.github.v3+json',
           Authorization: `token ${process.env.BMYC_GITHUB_TOKEN}`,
         },
-        url: `${GITHUB_API_URL}/repos/${this.owner}/${this.repository}/releases/latest`,
-      }).then((response: any) => {
-        const version = response.data.tag_name;
-        if (version) {
-          return Promise.resolve(version);
-        } else {
-          throw unknownLatestVersionError(
-            `${this.owner}/${this.repository}/${this.filePath}`
-          );
-        }
-      });
+        url: url,
+      })
+        .then((response: any) => {
+          const version = response.data.tag_name;
+          if (version) {
+            return Promise.resolve(version);
+          } else {
+            throw unknownLatestVersionError(
+              `${this.owner}/${this.repository}/${this.filePath}`
+            );
+          }
+        })
+        .catch((error: Error) => {
+          throw new BmycError(`${url}:\n${error.message}`);
+        });
     });
   }
 
   getSha(assetRef: string): Promise<string> {
     return this.checkGitHubToken().then(() => {
+      const url = `${GITHUB_API_URL}/repos/${this.owner}/${
+        this.repository
+      }/contents/${path.dirname(this.filePath)}`;
       return axios({
         method: 'get',
         headers: {
@@ -78,43 +86,46 @@ export class Github extends AssetManager {
         params: {
           ref: assetRef,
         },
-        url: `${GITHUB_API_URL}/repos/${this.owner}/${
-          this.repository
-        }/contents/${path.dirname(this.filePath)}`,
-      }).then((response: any) => {
-        if (response.data.length) {
-          const element: any = response.data.find(
-            (el: any) => el.name === path.basename(this.filePath)
-          );
-          if (element) {
-            switch (element.type) {
-              case 'file': {
-                return Promise.resolve(element.sha);
+        url: url,
+      })
+        .then((response: any) => {
+          if (response.data.length) {
+            const element: any = response.data.find(
+              (el: any) => el.name === path.basename(this.filePath)
+            );
+            if (element) {
+              switch (element.type) {
+                case 'file': {
+                  return Promise.resolve(element.sha);
+                }
+                default: {
+                  throw new BmycError(
+                    `Type of ${this.filePath} not allowed (${element.type})`
+                  );
+                }
               }
-              default: {
-                throw new BmycError(
-                  `Type of ${this.filePath} not allowed (${element.type})`
-                );
-              }
+            } else {
+              throw new BmycError(`Cannot find ${this.filePath}`);
             }
           } else {
-            throw new BmycError(`Cannot find ${this.filePath}`);
+            throw new BmycError(
+              `${path.dirname(
+                this.filePath
+              )} should be a directory containing your file ${path.basename(
+                this.filePath
+              )}`
+            );
           }
-        } else {
-          throw new BmycError(
-            `${path.dirname(
-              this.filePath
-            )} should be a directory containing your file ${path.basename(
-              this.filePath
-            )}`
-          );
-        }
-      });
+        })
+        .catch((error: Error) => {
+          throw new BmycError(`${url}:\n${error.message}`);
+        });
     });
   }
 
   getBlob(assetSha: string): Promise<Buffer> {
     return this.checkGitHubToken().then(() => {
+      const url = `${GITHUB_API_URL}/repos/${this.owner}/${this.repository}/git/blobs/${assetSha}`;
       return axios({
         maxContentLength: 100000000,
         method: 'get',
@@ -122,16 +133,20 @@ export class Github extends AssetManager {
           Accept: 'application/vnd.github.v3+json',
           Authorization: `token ${process.env.BMYC_GITHUB_TOKEN}`,
         },
-        url: `${GITHUB_API_URL}/repos/${this.owner}/${this.repository}/git/blobs/${assetSha}`,
-      }).then((response: any) => {
-        if (response.data.content) {
-          return Promise.resolve(
-            Buffer.from(response.data.content, response.data.encoding)
-          );
-        } else {
-          throw new BmycError(`Cannot get content of blob ${assetSha}`);
-        }
-      });
+        url: url,
+      })
+        .then((response: any) => {
+          if (response.data.content) {
+            return Promise.resolve(
+              Buffer.from(response.data.content, response.data.encoding)
+            );
+          } else {
+            throw new BmycError(`Cannot get content of blob ${assetSha}`);
+          }
+        })
+        .catch((error: Error) => {
+          throw new BmycError(`${url}:\n${error.message}`);
+        });
     });
   }
 

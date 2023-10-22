@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any*/
 import axios from 'axios';
 import {IsDefined, IsString} from 'class-validator';
-import {unknownLatestVersionError} from '../bmycError';
+import {BmycError, unknownLatestVersionError} from '../bmycError';
 import {AssetManager} from './assetManager';
 
 const UNPKG_API_URL = 'https://unpkg.com';
@@ -33,30 +33,40 @@ export class Unpkg extends AssetManager {
   /* c8 ignore stop */
 
   getLatestVersion(): Promise<string> {
+    const url = `${UNPKG_API_URL}/${this.library}/`;
     return axios({
       method: 'get',
-      url: `${UNPKG_API_URL}/${this.library}/`,
-    }).then((response: any) => {
-      // Unpkg should redirect to the latest version of the package by default
-      let version = response.request.res.responseUrl.replace(
-        new RegExp(`.*${this.library}@`),
-        ''
-      );
-      version = version.replace(new RegExp('/.*'), '');
-      if (version) {
-        return Promise.resolve(version);
-      } else {
-        throw unknownLatestVersionError(`${this.library}/${this.filePath}`);
-      }
-    });
+      url: url,
+    })
+      .then((response: any) => {
+        // Unpkg should redirect to the latest version of the package by default
+        let version = response.request.res.responseUrl.replace(
+          new RegExp(`.*${this.library}@`),
+          ''
+        );
+        version = version.replace(new RegExp('/.*'), '');
+        if (version) {
+          return Promise.resolve(version);
+        } else {
+          throw unknownLatestVersionError(`${this.library}/${this.filePath}`);
+        }
+      })
+      .catch((error: Error) => {
+        throw new BmycError(`${url}:\n${error.message}`);
+      });
   }
 
   getContent(assetVersion: string): Promise<Buffer> {
+    const url = `${UNPKG_API_URL}/${this.library}@${assetVersion}/${this.filePath}`;
     return axios({
       method: 'get',
-      url: `${UNPKG_API_URL}/${this.library}@${assetVersion}/${this.filePath}`,
-    }).then((response: any) => {
-      return Promise.resolve(response.data);
-    });
+      url: url,
+    })
+      .then((response: any) => {
+        return Promise.resolve(response.data);
+      })
+      .catch((error: Error) => {
+        throw new BmycError(`${url}:\n${error.message}`);
+      });
   }
 }

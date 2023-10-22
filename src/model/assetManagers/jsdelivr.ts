@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any*/
 import axios from 'axios';
 import {IsDefined, IsString} from 'class-validator';
-import {unknownLatestVersionError} from '../bmycError';
+import {BmycError, unknownLatestVersionError} from '../bmycError';
 import {AssetManager} from './assetManager';
 
 const JSDELIVR_API_URL = 'https://data.jsdelivr.com/v1';
@@ -47,25 +47,35 @@ export class Jsdelivr extends AssetManager {
   /* c8 ignore stop */
 
   getLatestVersion(): Promise<string> {
+    const url = `${JSDELIVR_API_URL}/${JSDELIVR_PACKAGE_PATH}/${this.cdn}/${this.package}`;
     return axios({
       method: 'get',
-      url: `${JSDELIVR_API_URL}/${JSDELIVR_PACKAGE_PATH}/${this.cdn}/${this.package}`,
-    }).then((response: any) => {
-      const version = response.data.tags.latest;
-      if (version) {
-        return Promise.resolve(version);
-      } else {
-        throw unknownLatestVersionError(`${this.cdn}/${this.package}`);
-      }
-    });
+      url: url,
+    })
+      .then((response: any) => {
+        const version = response.data.tags.latest;
+        if (version) {
+          return Promise.resolve(version);
+        } else {
+          throw unknownLatestVersionError(`${this.cdn}/${this.package}`);
+        }
+      })
+      .catch((error: Error) => {
+        throw new BmycError(`${url}:\n${error.message}`);
+      });
   }
 
   getContent(assetVersion: string): Promise<Buffer> {
+    const url = `${JSDELIVR_DATA_URL}/${this.cdn}/${this.package}@${assetVersion}/${this.filePath}`;
     return axios({
       method: 'get',
-      url: `${JSDELIVR_DATA_URL}/${this.cdn}/${this.package}@${assetVersion}/${this.filePath}`,
-    }).then((response: any) => {
-      return Promise.resolve(response.data);
-    });
+      url: url,
+    })
+      .then((response: any) => {
+        return Promise.resolve(response.data);
+      })
+      .catch((error: Error) => {
+        throw new BmycError(`${url}:\n${error.message}`);
+      });
   }
 }

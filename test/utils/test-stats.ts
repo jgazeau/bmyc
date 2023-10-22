@@ -2,14 +2,11 @@ import {expect} from 'chai';
 import * as fs from 'fs-extra';
 import {PathLike} from 'fs-extra';
 import * as path from 'path';
-import {ConfigurationError} from '../../src/model/configurationError';
+import {BmycError} from '../../src/model/bmycError';
 import {Asset} from '../../src/model/configurationFile/asset';
 import {NOT_AVAILABLE, SUMMARY_PR_NOT_GENERATED} from '../../src/utils/const';
 import {logger} from '../../src/utils/logger';
 import {
-  getAssetVersion,
-  getStatus,
-  getSummary,
   HELD,
   PrintEntry,
   PrintResults,
@@ -17,11 +14,14 @@ import {
   STATUS_ERROR,
   STATUS_UPDATED,
   STATUS_UPTODATE,
+  getAssetVersion,
+  getStatus,
+  getSummary,
 } from '../../src/utils/stats';
 import {
-  testResourcesPath,
   TEST_SUMMARY_PR_FILE_NAME,
   TEST_SUMMARY_PR_FILE_PATH,
+  testResourcesPath,
 } from '../testUtils/const';
 import {cleanupPrintResults, setChaiAsPromised} from '../testUtils/helpers';
 import {SinonStubs} from '../testUtils/sinonStubs';
@@ -58,7 +58,7 @@ function mockResultEntry(asset: Asset, error?: Error): ResultEntry {
   ];
 }
 
-const FAKE_ERROR: ConfigurationError = new ConfigurationError('Error occurred');
+const FAKE_ERROR: BmycError = new BmycError('[ASSET_URL]:<br>Error occurred');
 const FAKE_LOCALPATH: PathLike = 'fakePath.fake';
 const FAKE_VERSION = 'X.X.X';
 const TEST_SUMMARY_PR_FILE: PathLike = path.join(

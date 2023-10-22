@@ -37,28 +37,34 @@ export class Cdnjs extends AssetManager {
   /* c8 ignore stop */
 
   getLatestVersion(): Promise<string> {
+    const url = `${CDNJS_API_URL}/${CDNJS_LIBRARIES_PATH}/${this.library}`;
     return axios({
       method: 'get',
       params: {
         fields: 'version',
       },
-      url: `${CDNJS_API_URL}/${CDNJS_LIBRARIES_PATH}/${this.library}`,
-    }).then((response: any) => {
-      const version = response.data.version;
-      if (version) {
-        return Promise.resolve(version);
-      } else {
-        throw unknownLatestVersionError(`${this.library}/${this.fileName}`);
-      }
-    });
+      url: url,
+    })
+      .then((response: any) => {
+        const version = response.data.version;
+        if (version) {
+          return Promise.resolve(version);
+        } else {
+          throw unknownLatestVersionError(`${this.library}/${this.fileName}`);
+        }
+      })
+      .catch((error: Error) => {
+        throw new BmycError(`${url}:\n${error.message}`);
+      });
   }
 
   getContent(assetVersion: string): Promise<Buffer> {
+    const url = `${CDNJS_LIBS_HOST}/${CDNJS_LIBS_ROOT_PATH}/${this.library}/${assetVersion}/${this.fileName}`;
     return axios({
       maxContentLength: 100000000,
       maxBodyLength: 100000000,
       method: 'get',
-      url: `${CDNJS_LIBS_HOST}/${CDNJS_LIBS_ROOT_PATH}/${this.library}/${assetVersion}/${this.fileName}`,
+      url: url,
     })
       .then((response: any) => {
         if (response.data) {
@@ -72,9 +78,7 @@ export class Cdnjs extends AssetManager {
         }
       })
       .catch((error: Error) => {
-        throw new BmycError(
-          `Cannot get library ${this.fileName} (${assetVersion}) with error: ${error.message}`
-        );
+        throw new BmycError(`${url}:\n${error.message}`);
       });
   }
 }
