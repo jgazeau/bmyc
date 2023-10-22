@@ -27,7 +27,7 @@ export class PrintEntry {
 
 const HEADER_PACKAGE = new PrintEntry('Package', gray);
 const HEADER_NAME = new PrintEntry('Name', gray);
-const HEADER_PATH = new PrintEntry('Local path', gray);
+const HEADER_PATH = new PrintEntry('Comment', gray);
 const HEADER_VERSION = new PrintEntry('Version', gray);
 const HEADER_STATUS = new PrintEntry('Status', gray);
 
@@ -41,7 +41,7 @@ class SortedStatus {
   static readonly STATUS_ERROR: PrintEntry = STATUS_ERROR;
 }
 
-export function HELD(isNewVersion: boolean, separator = '\n'): PrintEntry {
+export function HELD(isNewVersion: boolean, separator = '<br>'): PrintEntry {
   return isNewVersion
     ? new PrintEntry(`HELD${separator}(OUTDATED)`, yellow)
     : new PrintEntry(`HELD${separator}(UP-TO-DATE)`, yellow);
@@ -274,8 +274,8 @@ export class PrintResults {
     summary = summary.concat('\n\n');
     summary = summary.concat(PrintResults.buildSummaryRow(this.columnHeader));
     summary = summary.concat('| - | - | - | - | - |\n');
-    this.results.forEach(entry => {
-      if (entry.includes(STATUS_UPDATED)) {
+    this.results.forEach((entry, index) => {
+      if (index > 0) {
         summary = summary.concat(PrintResults.buildSummaryRow(entry));
       }
     });
@@ -314,5 +314,7 @@ export function getAssetVersion(asset: Asset): string {
 export function getSummary(asset: Asset, error?: Error): string {
   return error
     ? error.message
-    : path.normalize(path.relative('', asset._localPath.toString()));
+    : `Local path: ${path.normalize(
+        path.relative('', asset._localPath.toString())
+      )}`;
 }
