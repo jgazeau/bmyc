@@ -52,7 +52,7 @@ export type ResultEntry = [
   PrintEntry,
   PrintEntry,
   PrintEntry,
-  PrintEntry
+  PrintEntry,
 ];
 type TableEntry = [string?, string?, string?, string?, string?] | [];
 
