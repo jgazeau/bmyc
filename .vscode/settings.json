@@ -3,6 +3,7 @@
   "mochaExplorer.files": "test/**/test-*.ts",
   "mochaExplorer.esmLoader": false,
   "mochaExplorer.envPath": "bmyc.env",
+  "prettier.bracketSpacing": false,
   "editor.codeActionsOnSave": {
     "source.organizeImports": true
   },
