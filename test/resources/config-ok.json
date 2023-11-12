@@ -30,8 +30,8 @@
     "localPath": "./path/asset3.min.js",
     "assetManager": {
       "name": "unpkg",
-      "library": "axios",
-      "filePath": "dist/axios.min.js"
+      "library": "asset3",
+      "filePath": "dist/asset3.min.js"
     }
   },
   {
@@ -42,8 +42,8 @@
     "assetManager": {
       "name": "jsdelivr",
       "cdn": "npm",
-      "package": "axios",
-      "filePath": "dist/axios.min.js"
+      "package": "asset4",
+      "filePath": "dist/asset4.min.js"
     }
   }
 ]

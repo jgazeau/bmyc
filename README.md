@@ -92,9 +92,9 @@ The generated file has the following characteristics:
 ```json
 [
   {
-    "package": "asset1Package",
-    "name": "asset1",
+    "package": "package1",
     "hold": false,
+    "name": "asset1",
     "localPath": "path/asset1.min.js",
     "assetManager": {
       "name": "cdnjs",
@@ -104,15 +104,38 @@ The generated file has the following characteristics:
     "currentVersion": "0.0.1"
   },
   {
-    "package": "asset2Package",
-    "name": "asset2",
+    "package": "package2",
     "hold": false,
+    "name": "asset2",
     "localPath": "./path/asset2.min.js",
     "assetManager": {
       "name": "github",
       "owner": "owner",
       "repository": "repository",
       "filePath": "dir/asset2.min.js"
+    }
+  },
+  {
+    "package": "package3",
+    "hold": false,
+    "name": "asset3",
+    "localPath": "./path/asset3.min.js",
+    "assetManager": {
+      "name": "unpkg",
+      "library": "asset3",
+      "filePath": "dist/asset3.min.js"
+    }
+  },
+  {
+    "package": "package4",
+    "hold": false,
+    "name": "asset4",
+    "localPath": "./path/asset4.min.js",
+    "assetManager": {
+      "name": "jsdelivr",
+      "cdn": "npm",
+      "package": "asset4",
+      "filePath": "dist/asset4.min.js"
     }
   }
 ]

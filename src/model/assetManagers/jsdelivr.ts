@@ -69,10 +69,17 @@ export class Jsdelivr extends AssetManager {
     const url = `${JSDELIVR_DATA_URL}/${this.cdn}/${this.package}@${assetVersion}/${this.filePath}`;
     return axios({
       method: 'get',
+      responseType: 'arraybuffer',
       url: url,
     })
       .then((response: any) => {
-        return Promise.resolve(response.data);
+        if (response.data) {
+          return Promise.resolve(Buffer.from(response.data));
+        } else {
+          throw new BmycError(
+            `Cannot get content of ${this.filePath} (${assetVersion})`
+          );
+        }
       })
       .catch((error: Error) => {
         throw new BmycError(`${url}:\n${error.message}`);
