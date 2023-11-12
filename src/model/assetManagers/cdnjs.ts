@@ -9,7 +9,6 @@ const CDNJS_API_URL = 'https://api.cdnjs.com';
 const CDNJS_LIBRARIES_PATH = 'libraries';
 const CDNJS_LIBS_HOST = 'https://cdnjs.cloudflare.com';
 const CDNJS_LIBS_ROOT_PATH = 'ajax/libs';
-const CDNJS_LIBS_ENCODING = 'utf-8';
 
 export class Cdnjs extends AssetManager {
   @IsDefined()
@@ -64,16 +63,15 @@ export class Cdnjs extends AssetManager {
       maxContentLength: 100000000,
       maxBodyLength: 100000000,
       method: 'get',
+      responseType: 'arraybuffer',
       url: url,
     })
       .then((response: any) => {
         if (response.data) {
-          return Promise.resolve(
-            Buffer.from(response.data, CDNJS_LIBS_ENCODING)
-          );
+          return Promise.resolve(Buffer.from(response.data));
         } else {
           throw new BmycError(
-            `Cannot get content of library ${this.fileName} (${assetVersion})`
+            `Cannot get content of ${this.fileName} (${assetVersion})`
           );
         }
       })
