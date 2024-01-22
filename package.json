@@ -65,7 +65,7 @@
     "@types/validator": "^13.11.6",
     "@types/yargs": "^17.0.31",
     "c8": "^8.0.1",
-    "chai": "^4.3.10",
+    "chai": "^4.4.1",
     "chai-as-promised": "^7.1.1",
     "gts": "^5.2.0",
     "mocha": "^10.2.0",
