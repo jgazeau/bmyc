@@ -9,10 +9,10 @@ on:
     paths:
       - '**'
 env:
-  NPM_CACHE_NAME: "npm-cache"
-  NPM_CACHE_PATH: "~/.npm"
+  NPM_CACHE_NAME: 'npm-cache'
+  NPM_CACHE_PATH: '~/.npm'
 jobs:
-  Test:
+  test:
     name: Test
     runs-on: ubuntu-latest
     steps:

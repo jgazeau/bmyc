@@ -4,7 +4,7 @@ on:
   release:
     types: [created]
 jobs:
-  Publish:
+  publish:
     name: Publish
     runs-on: ubuntu-latest
     steps:
