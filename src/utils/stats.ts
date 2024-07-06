@@ -292,14 +292,14 @@ export function getStatus(asset: Asset, error?: Error): PrintEntry {
   error
     ? ((printEntry = STATUS_ERROR), PrintResults.totalCount.error++)
     : asset._isUpdated
-    ? ((printEntry = STATUS_UPDATED), PrintResults.totalCount.updated++)
-    : asset._hold
-    ? asset._isNewVersion
-      ? ((printEntry = HELD(asset._isNewVersion)),
-        PrintResults.totalCount.heldOutdated++)
-      : ((printEntry = HELD(asset._isNewVersion)),
-        PrintResults.totalCount.heldUptodate++)
-    : ((printEntry = STATUS_UPTODATE), PrintResults.totalCount.uptodate++);
+      ? ((printEntry = STATUS_UPDATED), PrintResults.totalCount.updated++)
+      : asset._hold
+        ? asset._isNewVersion
+          ? ((printEntry = HELD(asset._isNewVersion)),
+            PrintResults.totalCount.heldOutdated++)
+          : ((printEntry = HELD(asset._isNewVersion)),
+            PrintResults.totalCount.heldUptodate++)
+        : ((printEntry = STATUS_UPTODATE), PrintResults.totalCount.uptodate++);
   return printEntry;
 }
 
