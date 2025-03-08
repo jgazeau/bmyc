@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any*/
-import {expect} from 'chai';
 import * as fs from 'fs-extra';
 import {PathLike} from 'fs-extra';
 import * as path from 'path';
@@ -12,93 +11,102 @@ import {setChaiAsPromised} from '../../testUtils/helpers';
 
 const UNPKG_SAMPLE_UNEXISTING_FILE: PathLike = path.join(
   testResourcesPath,
-  'unpkg-sample-unexisting-file.json'
+  'unpkg-sample-unexisting-file.json',
 );
 const UNPKG_SAMPLE_UNEXISTING_LIBRARY: PathLike = path.join(
   testResourcesPath,
-  'unpkg-sample-unexisting-library.json'
+  'unpkg-sample-unexisting-library.json',
 );
 const UNPKG_SAMPLE_VALID: PathLike = path.join(
   testResourcesPath,
-  'unpkg-sample-valid.json'
+  'unpkg-sample-valid.json',
 );
 
 describe('Unpkg AssetManager tests', () => {
-  it('Unpkg should implement getLatestVersion', () => {
+  it('Unpkg should implement getLatestVersion', async () => {
     const unpkg: Unpkg = new Unpkg();
+    const {expect} = await import('chai');
     expect(unpkg.getLatestVersion).to.be.instanceof(Function);
   });
-  it('Unpkg should implement getContent', () => {
+  it('Unpkg should implement getContent', async () => {
     const unpkg: Unpkg = new Unpkg();
+    const {expect} = await import('chai');
     expect(unpkg.getContent).to.be.instanceof(Function);
   });
-  it('Unpkg should throw a ConfigurationError when name not set', () => {
+  it('Unpkg should throw a ConfigurationError when name not set', async () => {
     const tempInput: any = JSON.parse(
-      fs.readFileSync(UNPKG_SAMPLE_VALID, 'utf8')
+      fs.readFileSync(UNPKG_SAMPLE_VALID, 'utf8'),
     );
     delete tempInput.name;
     const input: string = JSON.stringify(tempInput);
+    const {expect} = await import('chai');
     expect(() => {
       deserializeObject(input, Unpkg);
     }).to.throw(ConfigurationError);
   });
-  it('Unpkg should throw a ConfigurationError when library not set', () => {
+  it('Unpkg should throw a ConfigurationError when library not set', async () => {
     const tempInput: any = JSON.parse(
-      fs.readFileSync(UNPKG_SAMPLE_VALID, 'utf8')
+      fs.readFileSync(UNPKG_SAMPLE_VALID, 'utf8'),
     );
     delete tempInput.library;
     const input: string = JSON.stringify(tempInput);
+    const {expect} = await import('chai');
     expect(() => {
       deserializeObject(input, Unpkg);
     }).to.throw(ConfigurationError);
   });
-  it('Unpkg should throw a ConfigurationError when filePath not set', () => {
+  it('Unpkg should throw a ConfigurationError when filePath not set', async () => {
     const tempInput: any = JSON.parse(
-      fs.readFileSync(UNPKG_SAMPLE_VALID, 'utf8')
+      fs.readFileSync(UNPKG_SAMPLE_VALID, 'utf8'),
     );
     delete tempInput.filePath;
     const input: string = JSON.stringify(tempInput);
+    const {expect} = await import('chai');
     expect(() => {
       deserializeObject(input, Unpkg);
     }).to.throw(ConfigurationError);
   });
-  it('getLatestVersion should return the latest version', () => {
+  it('getLatestVersion should return the latest version', async () => {
     setChaiAsPromised();
     const input: string = fs.readFileSync(UNPKG_SAMPLE_VALID, 'utf8');
     const unpkg: Unpkg = deserializeObject(input, Unpkg);
-    return expect(unpkg.getLatestVersion()).to.eventually.match(
-      /^[0-9]+\.[0-9]+\.[0-9]+([.-][a-zA-Z0-9]+)*$/
+    const {expect} = await import('chai');
+    await expect(unpkg.getLatestVersion()).to.eventually.match(
+      /^[0-9]+\.[0-9]+\.[0-9]+([.-][a-zA-Z0-9]+)*$/,
     );
   });
-  it('getLatestVersion should throw a Error when unexisting library', () => {
+  it('getLatestVersion should throw a Error when unexisting library', async () => {
     setChaiAsPromised();
     const input: string = fs.readFileSync(
       UNPKG_SAMPLE_UNEXISTING_LIBRARY,
-      'utf8'
+      'utf8',
     );
     const unpkg: Unpkg = deserializeObject(input, Unpkg);
-    return expect(unpkg.getLatestVersion()).to.eventually.be.rejectedWith(
+    const {expect} = await import('chai');
+    await expect(unpkg.getLatestVersion()).to.eventually.be.rejectedWith(
       Error,
-      '404'
+      '404',
     );
   });
-  it('getContent should return the latest content', () => {
+  it('getContent should return the latest content', async () => {
     setChaiAsPromised();
     const input: string = fs.readFileSync(UNPKG_SAMPLE_VALID, 'utf8');
     const unpkg: Unpkg = deserializeObject(input, Unpkg);
-    return unpkg.getLatestVersion().then(latestVersion => {
-      return unpkg.getContent(latestVersion).then(content => {
+    const {expect} = await import('chai');
+    return unpkg.getLatestVersion().then(async latestVersion => {
+      await unpkg.getContent(latestVersion).then(content => {
         expect(content).to.not.be.empty;
       });
     });
   });
-  it('getContent should throw a Error when unexisting file', () => {
+  it('getContent should throw a Error when unexisting file', async () => {
     setChaiAsPromised();
     const input: string = fs.readFileSync(UNPKG_SAMPLE_UNEXISTING_FILE, 'utf8');
     const unpkg: Unpkg = deserializeObject(input, Unpkg);
-    return unpkg.getLatestVersion().then(latestVersion => {
-      return expect(
-        unpkg.getContent(latestVersion)
+    const {expect} = await import('chai');
+    return unpkg.getLatestVersion().then(async latestVersion => {
+      await expect(
+        unpkg.getContent(latestVersion),
       ).to.eventually.be.rejectedWith(Error, '404');
     });
   });

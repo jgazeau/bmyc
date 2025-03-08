@@ -1,7 +1,4 @@
 /* c8 ignore start */
-import * as chai from 'chai';
-import * as sinon from 'sinon';
-import * as sinonChai from 'sinon-chai';
 import {logger} from '../../src/utils/logger';
 
 export class SinonStubs {
@@ -46,15 +43,19 @@ export class SinonStubs {
     this.processExit = processExit;
   }
 
-  sinonSetStubs() {
-    chai.use(sinonChai);
+  async sinonSetStubs() {
+    const chai = await import('chai');
+    const sinonChai = await import('sinon-chai');
+    const sinon = await import('sinon');
+    chai.use(sinonChai.default);
     if (this.logger) sinon.stub(logger());
     if (this.consoleLog) sinon.stub(console, 'log');
     if (this.consoleError) sinon.stub(console, 'error');
     if (this.processExit) sinon.stub(process, 'exit');
   }
 
-  sinonRestoreStubs() {
+  async sinonRestoreStubs() {
+    const sinon = await import('sinon');
     sinon.restore();
   }
 }

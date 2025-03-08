@@ -62,7 +62,7 @@ export class Github extends AssetManager {
             return Promise.resolve(version);
           } else {
             throw unknownLatestVersionError(
-              `${this.owner}/${this.repository}/${this.filePath}`
+              `${this.owner}/${this.repository}/${this.filePath}`,
             );
           }
         })
@@ -91,7 +91,7 @@ export class Github extends AssetManager {
         .then((response: any) => {
           if (response.data.length) {
             const element: any = response.data.find(
-              (el: any) => el.name === path.basename(this.filePath)
+              (el: any) => el.name === path.basename(this.filePath),
             );
             if (element) {
               switch (element.type) {
@@ -100,7 +100,7 @@ export class Github extends AssetManager {
                 }
                 default: {
                   throw new BmycError(
-                    `Type of ${this.filePath} not allowed (${element.type})`
+                    `Type of ${this.filePath} not allowed (${element.type})`,
                   );
                 }
               }
@@ -110,10 +110,10 @@ export class Github extends AssetManager {
           } else {
             throw new BmycError(
               `${path.dirname(
-                this.filePath
+                this.filePath,
               )} should be a directory containing your file ${path.basename(
-                this.filePath
-              )}`
+                this.filePath,
+              )}`,
             );
           }
         })
@@ -138,7 +138,7 @@ export class Github extends AssetManager {
         .then((response: any) => {
           if (response.data.content) {
             return Promise.resolve(
-              Buffer.from(response.data.content, response.data.encoding)
+              Buffer.from(response.data.content, response.data.encoding),
             );
           } else {
             throw new BmycError(`Cannot get content of blob ${assetSha}`);
@@ -160,7 +160,7 @@ export class Github extends AssetManager {
       return Promise.resolve();
     } else {
       return Promise.reject(
-        new BmycError('BMYC_GITHUB_TOKEN variable is not set')
+        new BmycError('BMYC_GITHUB_TOKEN variable is not set'),
       );
     }
   }

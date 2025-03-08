@@ -1,13 +1,19 @@
 /* c8 ignore start */
-import * as chai from 'chai';
-import * as chaiAsPromised from 'chai-as-promised';
 import * as fs from 'fs-extra';
 import {PrintResults} from '../../src/utils/stats';
 import {testTempPath} from './const';
 
 export function setChaiAsPromised(): void {
-  chai.should();
-  chai.use(chaiAsPromised);
+  import('chai')
+    .then(chai => {
+      return import('chai-as-promised').then(chaiAsPromised => {
+        chai.should();
+        chai.use(chaiAsPromised.default);
+      });
+    })
+    .catch(error => {
+      throw error;
+    });
 }
 
 export function mockArgs(args: string[]): void {

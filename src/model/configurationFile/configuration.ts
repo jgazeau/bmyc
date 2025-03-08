@@ -43,7 +43,7 @@ export class Configuration {
         JSON.stringify(instanceToPlain(this.assets), null, 2),
         {
           flag: 'w',
-        }
+        },
       )
       .then(() => {
         return Promise.resolve(this);
@@ -53,7 +53,7 @@ export class Configuration {
 
 function deserializeFile(filePath: PathLike): Asset[] {
   const assetsArray: Asset[] = JSON.parse(
-    fs.readFileSync(filePath, 'utf8')
+    fs.readFileSync(filePath, 'utf8'),
   ).map((value: Asset) => plainToInstance(Asset, value));
   assetsArray.forEach((asset: Asset, i) => {
     validateClassObjectSync(asset, `Asset ${i}`, 'Configuration');

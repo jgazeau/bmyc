@@ -1,4 +1,3 @@
-import {expect} from 'chai';
 import * as fs from 'fs-extra';
 import {PathLike} from 'fs-extra';
 import * as path from 'path';
@@ -34,7 +33,7 @@ function mockAsset(
   currentVersion: string,
   isUpdated: boolean,
   isNewVersion: boolean,
-  latestVersion?: string
+  latestVersion?: string,
 ): Asset {
   const asset = new Asset();
   asset._package = packageName;
@@ -63,7 +62,7 @@ const FAKE_LOCALPATH: PathLike = 'fakePath.fake';
 const FAKE_VERSION = 'X.X.X';
 const TEST_SUMMARY_PR_FILE: PathLike = path.join(
   testResourcesPath,
-  TEST_SUMMARY_PR_FILE_NAME
+  TEST_SUMMARY_PR_FILE_NAME,
 );
 
 const asset1 = mockAsset(
@@ -73,7 +72,7 @@ const asset1 = mockAsset(
   FAKE_LOCALPATH,
   FAKE_VERSION,
   false,
-  false
+  false,
 );
 const asset2 = mockAsset(
   'package1',
@@ -82,7 +81,7 @@ const asset2 = mockAsset(
   FAKE_LOCALPATH,
   FAKE_VERSION,
   false,
-  true
+  true,
 );
 const asset3 = mockAsset(
   'package1',
@@ -91,7 +90,7 @@ const asset3 = mockAsset(
   FAKE_LOCALPATH,
   FAKE_VERSION,
   true,
-  false
+  false,
 );
 const asset4 = mockAsset(
   'package1',
@@ -100,7 +99,7 @@ const asset4 = mockAsset(
   FAKE_LOCALPATH,
   FAKE_VERSION,
   false,
-  false
+  false,
 );
 const asset5 = mockAsset(
   'package1',
@@ -109,7 +108,7 @@ const asset5 = mockAsset(
   FAKE_LOCALPATH,
   FAKE_VERSION,
   false,
-  false
+  false,
 );
 const asset6 = mockAsset(
   'package2',
@@ -118,7 +117,7 @@ const asset6 = mockAsset(
   FAKE_LOCALPATH,
   FAKE_VERSION,
   false,
-  true
+  true,
 );
 const asset7 = mockAsset(
   'package2',
@@ -128,7 +127,7 @@ const asset7 = mockAsset(
   FAKE_VERSION,
   false,
   true,
-  'Y.Y.Y'
+  'Y.Y.Y',
 );
 const asset8 = mockAsset(
   'package2',
@@ -137,7 +136,7 @@ const asset8 = mockAsset(
   FAKE_LOCALPATH,
   FAKE_VERSION,
   true,
-  false
+  false,
 );
 const asset9 = mockAsset(
   'package2',
@@ -146,7 +145,7 @@ const asset9 = mockAsset(
   FAKE_LOCALPATH,
   FAKE_VERSION,
   false,
-  true
+  true,
 );
 const asset10 = mockAsset(
   'package2',
@@ -155,7 +154,7 @@ const asset10 = mockAsset(
   FAKE_LOCALPATH,
   FAKE_VERSION,
   false,
-  true
+  true,
 );
 const asset11 = mockAsset(
   '',
@@ -164,7 +163,7 @@ const asset11 = mockAsset(
   FAKE_LOCALPATH,
   FAKE_VERSION,
   false,
-  false
+  false,
 );
 const asset12 = mockAsset(
   '',
@@ -173,7 +172,7 @@ const asset12 = mockAsset(
   FAKE_LOCALPATH,
   FAKE_VERSION,
   false,
-  false
+  false,
 );
 
 const orderedResults: ResultEntry[] = [
@@ -208,120 +207,137 @@ describe('Stats tests', () => {
     PrintResults.storeResult(asset2, FAKE_ERROR);
     PrintResults.storeResult(asset1);
   });
-  afterEach(() => {
-    sinonMock.sinonRestoreStubs();
+  afterEach(async () => {
+    await sinonMock.sinonRestoreStubs();
   });
-  it('orderResults should order results', () => {
+  it('orderResults should order results', async () => {
     PrintResults.orderResults();
+    const {expect} = await import('chai');
     expect(PrintResults.results.toString()).to.equal(orderedResults.toString());
   });
-  it('manageResults should display results', () => {
+  it('manageResults should display results', async () => {
     sinonMock.logger = true;
-    sinonMock.sinonSetStubs();
+    await sinonMock.sinonSetStubs();
     setChaiAsPromised();
+    const {expect} = await import('chai');
     return PrintResults.manageResults().then(() => {
       expect(logger()['info']).to.be.calledOnce;
     });
   });
-  it('manageResults should display info message when no asset updated', () => {
+  it('manageResults should display info message when no asset updated', async () => {
     sinonMock.logger = true;
-    sinonMock.sinonSetStubs();
+    await sinonMock.sinonSetStubs();
     setChaiAsPromised();
     cleanupPrintResults();
+    const {expect} = await import('chai');
     return PrintResults.manageResults(TEST_SUMMARY_PR_FILE_NAME).then(() => {
       expect(logger()['info']).to.be.calledTwice;
       expect(logger()['info']).to.have.been.calledWith(
-        SUMMARY_PR_NOT_GENERATED
+        SUMMARY_PR_NOT_GENERATED,
       );
     });
   });
-  it('manageResults should store results when summary PR file', () => {
+  it('manageResults should store results when summary PR file', async () => {
     sinonMock.logger = true;
-    sinonMock.sinonSetStubs();
+    await sinonMock.sinonSetStubs();
     setChaiAsPromised();
-    return PrintResults.manageResults(TEST_SUMMARY_PR_FILE_PATH).then(() => {
-      return fs
-        .readFile(TEST_SUMMARY_PR_FILE_PATH, 'utf8')
-        .then(summaryContent => {
-          return fs
-            .readFile(TEST_SUMMARY_PR_FILE, 'utf8')
-            .then(originContent => {
-              expect(originContent).to.be.equal(summaryContent);
-            });
-        });
-    });
+    const {expect} = await import('chai');
+    return PrintResults.manageResults(TEST_SUMMARY_PR_FILE_PATH).then(
+      async () => {
+        await fs
+          .readFile(TEST_SUMMARY_PR_FILE_PATH, 'utf8')
+          .then(async summaryContent => {
+            await fs
+              .readFile(TEST_SUMMARY_PR_FILE, 'utf8')
+              .then(originContent => {
+                expect(originContent).to.be.equal(summaryContent);
+              });
+          });
+      },
+    );
   });
-  it('totals should add totals', () => {
+  it('totals should add totals', async () => {
     PrintResults.totals();
+    const {expect} = await import('chai');
     expect(PrintResults.table).to.have.length(6);
   });
-  it('getStatus should return STATUS_ERROR', () => {
+  it('getStatus should return STATUS_ERROR', async () => {
     const asset = new Asset();
     const error = new Error();
+    const {expect} = await import('chai');
     expect(getStatus(asset, error)).to.equal(STATUS_ERROR);
   });
-  it('getStatus should return STATUS_UPDATED', () => {
+  it('getStatus should return STATUS_UPDATED', async () => {
     const asset = new Asset();
     asset._isUpdated = true;
+    const {expect} = await import('chai');
     expect(getStatus(asset)).to.equal(STATUS_UPDATED);
   });
-  it('getStatus should return STATUS_UPTODATE', () => {
+  it('getStatus should return STATUS_UPTODATE', async () => {
     const asset = new Asset();
     asset._isUpdated = false;
+    const {expect} = await import('chai');
     expect(getStatus(asset)).to.equal(STATUS_UPTODATE);
   });
-  it('getStatus should return HELD_OUTDATED', () => {
+  it('getStatus should return HELD_OUTDATED', async () => {
     const asset = new Asset();
     asset._isUpdated = false;
     asset._hold = true;
     asset._isNewVersion = true;
+    const {expect} = await import('chai');
     expect(getStatus(asset)).to.deep.equal(HELD(true));
   });
-  it('getStatus should return HELD_UPTODATE', () => {
+  it('getStatus should return HELD_UPTODATE', async () => {
     const asset = new Asset();
     asset._isUpdated = false;
     asset._hold = true;
     asset._isNewVersion = false;
+    const {expect} = await import('chai');
     expect(getStatus(asset)).to.deep.equal(HELD(false));
   });
-  it('getAssetVersion should return current and updated version when updated', () => {
+  it('getAssetVersion should return current and updated version when updated', async () => {
     const asset = new Asset();
     const beforeUpdateVersion = '0.0.0';
     const latestVersion = '0.0.1';
     asset._beforeUpdateVersion = beforeUpdateVersion;
     asset._latestVersion = latestVersion;
     asset._isUpdated = true;
+    const {expect} = await import('chai');
     expect(getAssetVersion(asset)).to.equal(
-      `${beforeUpdateVersion} --> ${latestVersion}`
+      `${beforeUpdateVersion} --> ${latestVersion}`,
     );
   });
-  it('getAssetVersion should return current and updated version when hold', () => {
+  it('getAssetVersion should return current and updated version when hold', async () => {
     const asset = new Asset();
     const beforeUpdateVersion = '0.0.0';
     const latestVersion = '0.0.1';
     asset._beforeUpdateVersion = beforeUpdateVersion;
     asset._latestVersion = latestVersion;
     asset._hold = true;
+    const {expect} = await import('chai');
     expect(getAssetVersion(asset)).to.equal(
-      `${beforeUpdateVersion} --> ${latestVersion}`
+      `${beforeUpdateVersion} --> ${latestVersion}`,
     );
   });
-  it('getAssetVersion should return latest version', () => {
+  it('getAssetVersion should return latest version', async () => {
     const asset = new Asset();
     const latestVersion = '0.0.1';
     asset._latestVersion = latestVersion;
     asset._isUpdated = false;
     asset._hold = false;
+    const {expect} = await import('chai');
     expect(getAssetVersion(asset)).to.equal(`${latestVersion}`);
   });
-  it('getAssetVersion should return current version', () => {
+  it('getAssetVersion should return current version', async () => {
     const asset = new Asset();
     const currentVersion = '0.0.1';
     asset._currentVersion = currentVersion;
+    const {expect} = await import('chai');
     expect(getAssetVersion(asset)).to.equal(`${currentVersion}`);
   });
-  it('getAssetVersion should return unknown version', () => {
+  it('getAssetVersion should return unknown version', async () => {
     const asset = new Asset();
+    const {expect} = await import('chai');
     expect(getAssetVersion(asset)).to.equal(NOT_AVAILABLE);
   });
 });

@@ -42,7 +42,7 @@ export class Unpkg extends AssetManager {
         // Unpkg should redirect to the latest version of the package by default
         let version = response.request.res.responseUrl.replace(
           new RegExp(`.*${this.library}@`),
-          ''
+          '',
         );
         version = version.replace(new RegExp('/.*'), '');
         if (version) {
@@ -68,7 +68,7 @@ export class Unpkg extends AssetManager {
           return Promise.resolve(Buffer.from(response.data));
         } else {
           throw new BmycError(
-            `Cannot get content of ${this.filePath} (${assetVersion})`
+            `Cannot get content of ${this.filePath} (${assetVersion})`,
           );
         }
       })

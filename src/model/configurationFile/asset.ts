@@ -197,7 +197,7 @@ export class Asset {
                     assetContent,
                     {
                       flag: 'w',
-                    }
+                    },
                   );
                 });
             })

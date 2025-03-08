@@ -15,7 +15,7 @@ import {logger} from './logger';
 export class PrintEntry {
   constructor(
     public readonly content: string,
-    public readonly color: Color = white
+    public readonly color: Color = white,
   ) {}
   toString(): string {
     return this.content;
@@ -244,7 +244,7 @@ export class PrintResults {
         '',
         '',
         `${this.totalCount.updated}`,
-      ]
+      ],
     );
   }
 
@@ -261,7 +261,7 @@ export class PrintResults {
         PrintResults.buildSummaryPR(),
         {
           flag: 'w',
-        }
+        },
       );
     } else {
       logger().info(SUMMARY_PR_NOT_GENERATED);
@@ -315,6 +315,6 @@ export function getSummary(asset: Asset, error?: Error): string {
   return error
     ? error.message
     : `Local path: ${path.normalize(
-        path.relative('', asset._localPath.toString())
+        path.relative('', asset._localPath.toString()),
       )}`;
 }

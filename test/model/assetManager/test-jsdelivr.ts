@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any*/
-import {expect} from 'chai';
 import * as fs from 'fs-extra';
 import {PathLike} from 'fs-extra';
 import * as path from 'path';
@@ -12,122 +11,133 @@ import {setChaiAsPromised} from '../../testUtils/helpers';
 
 const JSDELIVR_SAMPLE_UNEXISTING_CDN: PathLike = path.join(
   testResourcesPath,
-  'jsdelivr-sample-unexisting-cdn.json'
+  'jsdelivr-sample-unexisting-cdn.json',
 );
 const JSDELIVR_SAMPLE_UNEXISTING_PACKAGE: PathLike = path.join(
   testResourcesPath,
-  'jsdelivr-sample-unexisting-package.json'
+  'jsdelivr-sample-unexisting-package.json',
 );
 const JSDELIVR_SAMPLE_UNEXISTING_FILE: PathLike = path.join(
   testResourcesPath,
-  'jsdelivr-sample-unexisting-file.json'
+  'jsdelivr-sample-unexisting-file.json',
 );
 const JSDELIVR_SAMPLE_VALID: PathLike = path.join(
   testResourcesPath,
-  'jsdelivr-sample-valid.json'
+  'jsdelivr-sample-valid.json',
 );
 
 describe('Jsdelivr AssetManager tests', () => {
-  it('Jsdelivr should implement getLatestVersion', () => {
+  it('Jsdelivr should implement getLatestVersion', async () => {
     const jsdelivr: Jsdelivr = new Jsdelivr();
+    const {expect} = await import('chai');
     expect(jsdelivr.getLatestVersion).to.be.instanceof(Function);
   });
-  it('Jsdelivr should implement getContent', () => {
+  it('Jsdelivr should implement getContent', async () => {
     const jsdelivr: Jsdelivr = new Jsdelivr();
+    const {expect} = await import('chai');
     expect(jsdelivr.getContent).to.be.instanceof(Function);
   });
-  it('Jsdelivr should throw a ConfigurationError when name not set', () => {
+  it('Jsdelivr should throw a ConfigurationError when name not set', async () => {
     const tempInput: any = JSON.parse(
-      fs.readFileSync(JSDELIVR_SAMPLE_VALID, 'utf8')
+      fs.readFileSync(JSDELIVR_SAMPLE_VALID, 'utf8'),
     );
     delete tempInput.name;
     const input: string = JSON.stringify(tempInput);
+    const {expect} = await import('chai');
     expect(() => {
       deserializeObject(input, Jsdelivr);
     }).to.throw(ConfigurationError);
   });
-  it('Jsdelivr should throw a ConfigurationError when cdn not set', () => {
+  it('Jsdelivr should throw a ConfigurationError when cdn not set', async () => {
     const tempInput: any = JSON.parse(
-      fs.readFileSync(JSDELIVR_SAMPLE_VALID, 'utf8')
+      fs.readFileSync(JSDELIVR_SAMPLE_VALID, 'utf8'),
     );
     delete tempInput.cdn;
     const input: string = JSON.stringify(tempInput);
+    const {expect} = await import('chai');
     expect(() => {
       deserializeObject(input, Jsdelivr);
     }).to.throw(ConfigurationError);
   });
-  it('Jsdelivr should throw a ConfigurationError when package not set', () => {
+  it('Jsdelivr should throw a ConfigurationError when package not set', async () => {
     const tempInput: any = JSON.parse(
-      fs.readFileSync(JSDELIVR_SAMPLE_VALID, 'utf8')
+      fs.readFileSync(JSDELIVR_SAMPLE_VALID, 'utf8'),
     );
     delete tempInput.package;
     const input: string = JSON.stringify(tempInput);
+    const {expect} = await import('chai');
     expect(() => {
       deserializeObject(input, Jsdelivr);
     }).to.throw(ConfigurationError);
   });
-  it('Jsdelivr should throw a ConfigurationError when filePath not set', () => {
+  it('Jsdelivr should throw a ConfigurationError when filePath not set', async () => {
     const tempInput: any = JSON.parse(
-      fs.readFileSync(JSDELIVR_SAMPLE_VALID, 'utf8')
+      fs.readFileSync(JSDELIVR_SAMPLE_VALID, 'utf8'),
     );
     delete tempInput.filePath;
     const input: string = JSON.stringify(tempInput);
+    const {expect} = await import('chai');
     expect(() => {
       deserializeObject(input, Jsdelivr);
     }).to.throw(ConfigurationError);
   });
-  it('getLatestVersion should return the latest version', () => {
+  it('getLatestVersion should return the latest version', async () => {
     setChaiAsPromised();
     const input: string = fs.readFileSync(JSDELIVR_SAMPLE_VALID, 'utf8');
     const jsdelivr: Jsdelivr = deserializeObject(input, Jsdelivr);
-    return expect(jsdelivr.getLatestVersion()).to.eventually.match(
-      /^[0-9]+\.[0-9]+\.[0-9]+([.-][a-zA-Z0-9]+)*$/
+    const {expect} = await import('chai');
+    await expect(jsdelivr.getLatestVersion()).to.eventually.match(
+      /^[0-9]+\.[0-9]+\.[0-9]+([.-][a-zA-Z0-9]+)*$/,
     );
   });
-  it('getLatestVersion should throw a Error when unexisting cdn', () => {
+  it('getLatestVersion should throw a Error when unexisting cdn', async () => {
     setChaiAsPromised();
     const input: string = fs.readFileSync(
       JSDELIVR_SAMPLE_UNEXISTING_CDN,
-      'utf8'
+      'utf8',
     );
     const jsdelivr: Jsdelivr = deserializeObject(input, Jsdelivr);
-    return expect(jsdelivr.getLatestVersion()).to.eventually.be.rejectedWith(
+    const {expect} = await import('chai');
+    await expect(jsdelivr.getLatestVersion()).to.eventually.be.rejectedWith(
       Error,
-      '400'
+      '400',
     );
   });
-  it('getLatestVersion should throw a Error when unexisting package', () => {
+  it('getLatestVersion should throw a Error when unexisting package', async () => {
     setChaiAsPromised();
     const input: string = fs.readFileSync(
       JSDELIVR_SAMPLE_UNEXISTING_PACKAGE,
-      'utf8'
+      'utf8',
     );
     const jsdelivr: Jsdelivr = deserializeObject(input, Jsdelivr);
-    return expect(jsdelivr.getLatestVersion()).to.eventually.be.rejectedWith(
+    const {expect} = await import('chai');
+    await expect(jsdelivr.getLatestVersion()).to.eventually.be.rejectedWith(
       Error,
-      '404'
+      '404',
     );
   });
-  it('getContent should return the latest content', () => {
+  it('getContent should return the latest content', async () => {
     setChaiAsPromised();
     const input: string = fs.readFileSync(JSDELIVR_SAMPLE_VALID, 'utf8');
     const jsdelivr: Jsdelivr = deserializeObject(input, Jsdelivr);
-    return jsdelivr.getLatestVersion().then(latestVersion => {
-      return jsdelivr.getContent(latestVersion).then(content => {
+    const {expect} = await import('chai');
+    return jsdelivr.getLatestVersion().then(async latestVersion => {
+      await jsdelivr.getContent(latestVersion).then(content => {
         expect(content).to.not.be.empty;
       });
     });
   });
-  it('getContent should throw a Error when unexisting file', () => {
+  it('getContent should throw a Error when unexisting file', async () => {
     setChaiAsPromised();
     const input: string = fs.readFileSync(
       JSDELIVR_SAMPLE_UNEXISTING_FILE,
-      'utf8'
+      'utf8',
     );
     const jsdelivr: Jsdelivr = deserializeObject(input, Jsdelivr);
-    return jsdelivr.getLatestVersion().then(latestVersion => {
-      return expect(
-        jsdelivr.getContent(latestVersion)
+    const {expect} = await import('chai');
+    return jsdelivr.getLatestVersion().then(async latestVersion => {
+      await expect(
+        jsdelivr.getContent(latestVersion),
       ).to.eventually.be.rejectedWith(Error, '404');
     });
   });

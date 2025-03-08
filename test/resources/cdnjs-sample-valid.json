@@ -1,5 +1,5 @@
 {
   "name": "cdnjs",
-  "library": "axios",
-  "fileName": "axios.min.js"
+  "library": "three.js",
+  "fileName": "three.core.min.js"
 }

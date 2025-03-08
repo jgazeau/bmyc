@@ -1,8 +1,8 @@
 [
   {
     "package": "package1",
-    "hold": false,
     "name": "asset1",
+    "hold": false,
     "localPath": "path/asset1.min.js",
     "assetManager": {
       "name": "cdnjs",
@@ -13,8 +13,8 @@
   },
   {
     "package": "package2",
-    "hold": false,
     "name": "asset2",
+    "hold": false,
     "localPath": "./path/asset2.min.js",
     "assetManager": {
       "name": "github",
@@ -25,8 +25,8 @@
   },
   {
     "package": "package3",
-    "hold": false,
     "name": "asset3",
+    "hold": false,
     "localPath": "./path/asset3.min.js",
     "assetManager": {
       "name": "unpkg",
@@ -36,8 +36,8 @@
   },
   {
     "package": "package4",
-    "hold": false,
     "name": "asset4",
+    "hold": false,
     "localPath": "./path/asset4.min.js",
     "assetManager": {
       "name": "jsdelivr",

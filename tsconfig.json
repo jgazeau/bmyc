@@ -7,8 +7,10 @@
     "resolveJsonModule": true,
     "sourceMap": true,
     "rootDir": ".",
-    "outDir": "build"
+    "outDir": "build",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true
   },
-  "include": ["src/**/*.ts", "test/**/*.ts"],
+  "include": ["src/**/*.ts", "test/**/*.ts", "package.json"],
   "exclude": ["test/resources/**/*"]
 }

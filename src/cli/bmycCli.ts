@@ -99,7 +99,7 @@ Additional information:
   GitHub: ${kleur.green('https://github.com/jgazeau/bmyc.git')}
   Documentation: ${kleur.blue('https://github.com/jgazeau/bmyc#readme')}
   Issues: ${kleur.red('https://github.com/jgazeau/bmyc/issues')}
-      `
+      `,
       );
   }
 
@@ -112,7 +112,7 @@ Additional information:
     let availablePackages = '';
     Object.values(AssetManagerType).forEach(entry => {
       availablePackages = `${availablePackages}${' '.repeat(
-        offset
+        offset,
       )}- ${entry}\n`;
     });
     return availablePackages;

@@ -77,7 +77,7 @@ export class Jsdelivr extends AssetManager {
           return Promise.resolve(Buffer.from(response.data));
         } else {
           throw new BmycError(
-            `Cannot get content of ${this.filePath} (${assetVersion})`
+            `Cannot get content of ${this.filePath} (${assetVersion})`,
           );
         }
       })

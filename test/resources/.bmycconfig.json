@@ -1,11 +1,11 @@
 [
   {
     "name": "asset1",
-    "localPath": "tempDirectory/tempSubdir/bmyc-cdnjs-axios.min.js",
+    "localPath": "tempDirectory/tempSubdir/bmyc-three-core.min.js",
     "assetManager": {
       "name": "cdnjs",
-      "library": "axios",
-      "fileName": "axios.min.js"
+      "library": "three.js",
+      "fileName": "three.core.min.js"
     }
   },
   {

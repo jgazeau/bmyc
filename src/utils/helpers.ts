@@ -19,7 +19,7 @@ export function checkFilePath(filePath: PathLike): PathLike {
 export function validateClassObjectSync(
   object: Object,
   objectType?: string,
-  parentObjectType?: string
+  parentObjectType?: string,
 ): void {
   const objectTypeMessage = objectType ? objectType : typeof object;
   const parentObjectTypeMessage = parentObjectType
@@ -28,14 +28,14 @@ export function validateClassObjectSync(
   const validationErrors: ValidationError[] = validateSync(object);
   if (validationErrors.length > 0) {
     throw new ConfigurationError(
-      `Validation failed on ${objectTypeMessage} ${parentObjectTypeMessage} with following(s) error(s): \n ${validationErrors}`
+      `Validation failed on ${objectTypeMessage} ${parentObjectTypeMessage} with following(s) error(s): \n ${validationErrors}`,
     );
   }
 }
 
 export function deserializeObject(
   object: any,
-  type: ClassConstructor<any>
+  type: ClassConstructor<any>,
 ): any {
   const deserializedObject: any = plainToInstance(type, JSON.parse(object));
   validateClassObjectSync(deserializedObject);

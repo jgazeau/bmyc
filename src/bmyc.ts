@@ -28,7 +28,7 @@ export class Bmyc {
                 PrintResults.storeResult(asset, error);
                 logger().debug(error);
               });
-          })
+          }),
         )
           .then(() => {
             return PrintResults.manageResults(cliArgs.summaryPR);
