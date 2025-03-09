@@ -1,4 +1,4 @@
-chore:(bmyc): bump thirparties
+chore:(bmyc): bump third parties
 
 | Package | Name | Comment | Version | Status |
 | - | - | - | - | - |

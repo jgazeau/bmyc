@@ -3,14 +3,14 @@
 ## Context
 
 This tool aim to **bump assets to their latest version**. By asset, understand a file containing ... whatever needed.  
-Bacause sometimes projects needs lot of assets located at several different places, it might be hard to maintain and keep these assets up-to-date.
+Because sometimes projects needs lot of assets located at several different places, it might be hard to maintain and keep these assets up-to-date.
 In that case, Bmyc should just fit your needs.
 
 ## How it works?
 
 * Bmyc uses a configuration file (by default *.bmycconfig.json*) to store assets it needs to manage.
 * Bmyc will try to bump all assets to their latest version and update the configuration file accordingly (unless the latest version is already specified in the configuration file or the force option is used)
-* To bump assets, Bmyc is using *asset managers*, named from where assets needs to be retrieved. For now the following asset managers are availables:
+* To bump assets, Bmyc is using *asset managers*, named from where assets needs to be retrieved. For now the following asset managers are available:
     * [github](https://github.com/) (Sources from repository)
     * [cdnjs](https://cdnjs.com/)
     * [unpkg](https://unpkg.com/)
