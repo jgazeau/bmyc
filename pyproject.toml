@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "bmyc"
+version = "0.1.0"
+description = "Tool to bump assets based on a configuration file"
+authors = ["Jules"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+typer = "^0.12.3"
+pydantic = "^2.7.1"
+requests = "^2.31.0"
+jsonschema = "^4.22.0"
+
+[tool.poetry.group.dev.dependencies]
+poethepoet = "^0.27.0"
+pytest = "^8.2.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poe.tasks]
+start = "bmyc"
+
+[tool.poetry.scripts]
+bmyc = "bmyc.main:app"

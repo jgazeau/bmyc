@@ -1,5 +1,0 @@
-# Test ignores
-test/**/*.md
-test/**/*.json
-# Markdown ignores
-*.md

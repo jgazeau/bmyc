@@ -21,48 +21,31 @@ In that case, Bmyc should just fit your needs.
 ### Installation
 
 ```sh
-npm install bmyc
+# TBD after publishing to PyPI
+pip install bmyc
 ```
 
 ### Usage
 
 ```
-●       _____
-●      | ___ \
-●      | |_/ /_ __ ___  _   _  ___
-●      | ___ \ '_ ` _ \| | | |/ __|
-●      | |_/ / | | | | | |_| | (__
-●      |____/|_| |_| |_|\__, |\___|
-●                       |___/
+Usage: bmyc [OPTIONS]
 
-Usage: bmyc [options]
+  Tool to bump assets based on a configuration file
 
-Common options:
-  -f, --force                    Force update of configuration            [boolean] [default: false]
-  -c, --config                   Path of the configuration file        [default: ".bmycconfig.json"]
-  -s, --summaryPR, --summary-pr  Path of the generated markdown summary used to describe a Pull
-                                 Request
+Options:
+  -c, --config PATH               Path of the configuration file. [default: .bmycconfig.json]
+  -f, --force                     Force update of configuration.
+  -s, --summary-pr PATH           Path of the generated markdown summary used to describe a Pull Request.
+  --install-completion            Install completion for the current shell.
+  --show-completion               Show completion for the current shell, to copy it or customize the installation.
+  --help                          Show this message and exit.
+```
 
-Other Options:
-      --debug    Turn on debug logging                                    [boolean] [default: false]
-  -v, --version  Show version number                                                       [boolean]
-  -h, --help     Show help                                                                 [boolean]
-
-Examples:
-  bmyc --force                         Force asset's update
-  bmyc --config "./myconfig.json"      Use specific configuration file
-  bmyc --summary-pr "./summary-pr.md"  Generate markdown summary results to describe a Pull Request
-
-Package managers available:
-  - cdnjs
-  - github
-  - unpkg
-  - jsdelivr
-
-Additional information:
-  GitHub: https://github.com/jgazeau/bmyc.git
-  Documentation: https://github.com/jgazeau/bmyc#readme
-  Issues: https://github.com/jgazeau/bmyc/issues
+### Examples
+```
+bmyc --force                         # Force asset's update
+bmyc --config "./myconfig.json"      # Use specific configuration file
+bmyc --summary-pr "./summary-pr.md"  # Generate markdown summary results to describe a Pull Request
 ```
 
 ### How to hold a version?

@@ -1,0 +1,95 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "BMYC Configuration File Schema",
+  "description": "Schema for the .bmycconfig.json file.",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "package": {
+        "type": "string"
+      },
+      "hold": {
+        "type": "boolean",
+        "default": false
+      },
+      "name": {
+        "type": "string"
+      },
+      "localPath": {
+        "type": "string"
+      },
+      "currentVersion": {
+        "type": "string"
+      },
+      "assetManager": {
+        "type": "object",
+        "oneOf": [
+          {
+            "properties": {
+              "name": {
+                "const": "cdnjs"
+              },
+              "library": {
+                "type": "string"
+              },
+              "fileName": {
+                "type": "string"
+              }
+            },
+            "required": ["name", "library", "fileName"]
+          },
+          {
+            "properties": {
+              "name": {
+                "const": "github"
+              },
+              "owner": {
+                "type": "string"
+              },
+              "repository": {
+                "type": "string"
+              },
+              "filePath": {
+                "type": "string"
+              }
+            },
+            "required": ["name", "owner", "repository", "filePath"]
+          },
+          {
+            "properties": {
+              "name": {
+                "const": "unpkg"
+              },
+              "library": {
+                "type": "string"
+              },
+              "filePath": {
+                "type": "string"
+              }
+            },
+            "required": ["name", "library", "filePath"]
+          },
+          {
+            "properties": {
+              "name": {
+                "const": "jsdelivr"
+              },
+              "cdn": {
+                "type": "string"
+              },
+              "package": {
+                "type": "string"
+              },
+              "filePath": {
+                "type": "string"
+              }
+            },
+            "required": ["name", "cdn", "package", "filePath"]
+          }
+        ]
+      }
+    },
+    "required": ["package", "name", "localPath", "assetManager"]
+  }
+}
