@@ -1,0 +1,115 @@
+[project]
+name = "bmyc"
+version = "0.1.0"
+description = "Tool to bump static assets based on a configuration file"
+license = "MIT"
+readme = "README.md"
+authors = [{ name = "Jordan GAZEAU", email = "jordan.gazeau@gmail.com" }]
+classifiers = [
+    "Environment :: Console",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development",
+]
+requires-python = ">=3.14"
+dependencies = [
+    "click (>=8.3.1,<9.0.0)",
+    "pydantic (>=2.12.5,<3.0.0)",
+    "prettytable (>=3.17.0,<4.0.0)",
+    "pyyaml (>=6.0.3,<7.0.0)",
+    "jsonschema (>=4.26.0,<5.0.0)",
+    "requests (>=2.32.5,<3.0.0)",
+    "colorlog (>=6.10.1,<7.0.0)",
+    "pip-system-certs (>=5.3,<6.0)",
+]
+
+[project.urls]
+homepage = "https://github.com/jgazeau/bmyc"
+repository = "https://github.com/jgazeau/bmyc"
+documentation = "https://github.com/jgazeau/bmyc"
+
+[project.scripts]
+bmyc = 'bmyc.cli:cli'
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[dependency-groups]
+dev = [
+    "pytest (>=9.0.2,<10.0.0)",
+    "flake8 (>=7.3.0,<8.0.0)",
+    "black (>=26.1.0,<27.0.0)",
+    "isort (>=7.0.0,<8.0.0)",
+    "coverage (>=7.13.3,<8.0.0)",
+    "poethepoet (>=0.40.0,<0.41.0)",
+]
+
+[tool.poetry]
+packages = [{ include = "bmyc", from = "src" }]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["unit"]
+
+[tool.coverage.run]
+branch = true
+include = ["src/*"]
+
+[tool.isort]
+profile = "black"
+line_length = 160
+
+[tool.black]
+line-length = 160
+force-exclude = '''
+/(
+\..venv
+)/
+'''
+
+[tool.poe.tasks]
+[tool.poe.tasks."lint"]
+sequence = ["lint:flake8", "lint:isort", "lint:black", "format:black"]
+help = "Lint and format python codebase"
+ignore_fail = "return_non_zero"
+
+[tool.poe.tasks."lint:flake8"]
+cmd = "flake8 ."
+help = "Lint python codebase with flake8"
+
+[tool.poe.tasks."lint:isort"]
+cmd = "isort --color ."
+help = "Lint python codebase with isort"
+
+[tool.poe.tasks."lint:black"]
+cmd = "black --check --diff --color ."
+help = "Lint python codebase with black"
+
+[tool.poe.tasks."format:black"]
+cmd = "black --color ."
+help = "Format python codebase with black"
+
+[tool.poe.tasks."test"]
+sequence = ["test:coverage", "test:coverage-html"]
+help = "Run unit tests and coverage"
+
+[tool.poe.tasks."test:coverage"]
+cmd = "coverage run -m pytest"
+help = "Run unit tests with coverage"
+
+[tool.poe.tasks."test:coverage-report"]
+cmd = "coverage report"
+help = "Generate coverage report"
+
+[tool.poe.tasks."test:coverage-xml"]
+cmd = "coverage xml"
+help = "Generate XML coverage report"
+
+[tool.poe.tasks."test:coverage-html"]
+cmd = "coverage html"
+help = "Generate HTML coverage report"
+
+[tool.poe.tasks."test:pytest"]
+cmd = "pytest"
+help = "Run unit tests"

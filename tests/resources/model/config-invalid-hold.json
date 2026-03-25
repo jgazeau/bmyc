@@ -1,0 +1,12 @@
+{
+  "invalid_hold_package": {
+    "cdnjs_asset": {
+      "local_path": "path/cdnjs_asset.min.js",
+      "hold": true,
+      "cdnjs": {
+        "library": "cdnjs_library",
+        "file_path": "path/cdnjs_asset.min.js"
+      }
+    }
+  }
+}

@@ -1,0 +1,2 @@
+class BmycError(Exception):
+    pass

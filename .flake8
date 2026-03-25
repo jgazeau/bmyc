@@ -1,0 +1,10 @@
+[flake8]
+max-line-length = 160
+format = pylint
+show-source = true
+statistics = true
+doctests = true
+exclude =
+  __pycache__
+  *.egg
+  .venv
