@@ -1,13 +1,17 @@
 {
-  "mochaExplorer.require": "ts-node/register",
-  "mochaExplorer.files": "test/**/test-*.ts",
-  "mochaExplorer.esmLoader": false,
-  "mochaExplorer.envPath": "bmyc.env",
-  "prettier.bracketSpacing": false,
+  "python.terminal.activateEnvironment": true,
+  "python.terminal.activateEnvInCurrentTerminal": true,
+  "python.analysis.typeCheckingMode": "basic",
+  "editor.formatOnSave": true,
+  "flake8.enabled": true,
+  "flake8.args": ["--max-line-length=160"],
   "editor.codeActionsOnSave": {
-    "source.organizeImports": "explicit"
+    "source.unusedImports": "always"
   },
-  "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
+  "autoDocstring.docstringFormat": "numpy",
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter"
+  },
+  "python-envs.defaultEnvManager": "ms-python.python:poetry",
+  "python-envs.defaultPackageManager": "ms-python.python:poetry"
 }

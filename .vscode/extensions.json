@@ -1,3 +1,11 @@
 {
-  "recommendations": ["esbenp.prettier-vscode"]
+  "recommendations": [
+    "editorconfig.editorconfig",
+    "ms-python.black-formatter",
+    "ms-python.flake8",
+    "ms-python.vscode-pylance",
+    "njpwerner.autodocstring",
+    "redhat.vscode-yaml",
+    "tamasfe.even-better-toml"
+  ]
 }
