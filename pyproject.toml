@@ -18,7 +18,7 @@ dependencies = [
     "prettytable (>=3.17.0,<4.0.0)",
     "pyyaml (>=6.0.3,<7.0.0)",
     "jsonschema (>=4.26.0,<5.0.0)",
-    "requests (>=2.32.5,<3.0.0)",
+    "requests (>=2.33.0,<3.0.0)",
     "colorlog (>=6.10.1,<7.0.0)",
     "pip-system-certs (>=5.3,<6.0)",
 ]
