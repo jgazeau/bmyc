@@ -73,21 +73,37 @@ class Asset(BaseModel):
             logging.debug(f"Found latest version: {latest_version}")
             if self.hold:
                 logging.debug(f"Asset is on hold with version {self.current_version}. Skipping version bump.")
+                ResultsHandler().add_result(
+                    self.package_name,
+                    self.name,
+                    self._get_version_display(self.current_version, latest_version),
+                    self.hold,
+                    self._get_bump_status(latest_version, cli_context),
+                    str(self.local_path),
+                )
             else:
                 if cli_context.force or (self.current_version != latest_version):
                     logging.debug(f"Bumping asset from version {self.current_version} to {latest_version}...")
                     self.provider.save_content(cli_context, latest_version, self.local_path)
+                    ResultsHandler().add_result(
+                        self.package_name,
+                        self.name,
+                        self._get_version_display(self.current_version, latest_version),
+                        self.hold,
+                        self._get_bump_status(latest_version, cli_context),
+                        str(self.local_path),
+                    )
                     self.current_version = latest_version
                 else:
                     logging.debug(f"Asset is already at the latest version {self.current_version}. No bump needed.")
-            ResultsHandler().add_result(
-                self.package_name,
-                self.name,
-                self._get_version_display(self.current_version, latest_version),
-                self.hold,
-                self._get_bump_status(latest_version, cli_context),
-                str(self.local_path),
-            )
+                    ResultsHandler().add_result(
+                        self.package_name,
+                        self.name,
+                        self._get_version_display(self.current_version, latest_version),
+                        self.hold,
+                        self._get_bump_status(latest_version, cli_context),
+                        str(self.local_path),
+                    )
         except Exception as e:
             logging.debug(f"Error while bumping asset to latest version: {e}")
             ResultsHandler().add_result(

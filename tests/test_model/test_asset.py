@@ -124,9 +124,9 @@ class TestAsset(unittest.TestCase):
         call_args = mock_results_handler.return_value.add_result.call_args[0]
         assert call_args[0] == asset.package_name
         assert call_args[1] == asset.name
-        assert call_args[2] == "2.0.0 -> 2.0.0"
+        assert call_args[2] == "1.0.0 -> 2.0.0"
         assert call_args[3] is False
-        assert call_args[4] == AssetStatusEnum.UP_TO_DATE
+        assert call_args[4] == AssetStatusEnum.UPDATED
 
     @patch("bmyc.model.asset.ResultsHandler")
     @patch.object(Cdnjs, "get_latest_version", return_value="2.0.0")
@@ -139,8 +139,8 @@ class TestAsset(unittest.TestCase):
         mock_save.assert_called_once()
         mock_results_handler.return_value.add_result.assert_called_once()
         call_args = mock_results_handler.return_value.add_result.call_args[0]
-        assert call_args[2] == "2.0.0 -> 2.0.0"
-        assert call_args[4] == AssetStatusEnum.UP_TO_DATE
+        assert call_args[2] == "1.0.0 -> 2.0.0"
+        assert call_args[4] == AssetStatusEnum.UPDATED
 
     @patch("bmyc.model.asset.ResultsHandler")
     @patch.object(Cdnjs, "get_latest_version", return_value="2.0.0")
