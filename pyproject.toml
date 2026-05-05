@@ -1,6 +1,6 @@
 [project]
 name = "bmyc"
-version = "0.1.0"
+version = "1.1.0"
 description = "Tool to bump static assets based on a configuration file"
 license = "MIT"
 readme = "README.md"
