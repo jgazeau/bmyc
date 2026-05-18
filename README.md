@@ -305,6 +305,16 @@ Increase verbosity level (can be used multiple times: `-v`, `-vv`, `-vvv`).
 
 Display help message.
 
+#### `--install-completion [auto|bash|zsh|fish]`
+
+Install shell completion and print setup instructions.
+
+- **Type**: Optional choice
+- **Default**: `auto` (auto-detect current shell)
+- **Options**: `auto`, `bash`, `zsh`, `fish`
+- **Example**: `bmyc --install-completion bash`
+- **Note**: Does not require a configuration file
+
 ## CLI Examples
 
 ### Basic update
@@ -349,6 +359,88 @@ bmyc --configuration .bmycconfig.json -vvv
 ```bash
 bmyc --configuration .bmycconfig.json --insecure
 ```
+
+## Shell Completion
+
+BMYC provides shell completion support for bash, zsh, and fish shells. This enables tab completion for commands, options, and configuration/summary file paths.
+
+### Installing Shell Completion
+
+#### Automatic Installation
+
+Use the `--install-completion` option to get setup instructions for your shell:
+
+```bash
+# Detect your current shell automatically
+bmyc --install-completion
+
+# Or explicitly specify a shell
+bmyc --install-completion bash
+bmyc --install-completion zsh
+bmyc --install-completion fish
+```
+
+#### Manual Installation
+
+##### Bash
+
+Add the following line to `~/.bashrc`:
+
+```bash
+eval "$(_BMYC_COMPLETE=bash_source bmyc)"
+```
+
+Then reload your shell:
+
+```bash
+source ~/.bashrc
+```
+
+##### Zsh
+
+Add the following line to `~/.zshrc`:
+
+```bash
+eval "$(_BMYC_COMPLETE=zsh_source bmyc)"
+```
+
+Then reload your shell:
+
+```bash
+source ~/.zshrc
+```
+
+##### Fish
+
+Save the completion script:
+
+```bash
+mkdir -p ~/.config/fish/completions
+_BMYC_COMPLETE=fish_source bmyc > ~/.config/fish/completions/bmyc.fish
+```
+
+The completion will be automatically loaded on next shell startup.
+
+### Using Shell Completion
+
+Once installed, press `Tab` to trigger completion:
+
+```bash
+# Complete options
+bmyc --<Tab>
+
+# Complete configuration file paths (JSON/YAML files)
+bmyc --configuration <Tab>
+
+# Complete summary file paths (Markdown files)
+bmyc --summary <Tab>
+```
+
+Supported completions:
+
+- **Options**: All CLI flags and options (`--help`, `--verbose`, `--force`, etc.)
+- **Configuration files**: `.json` and `.yaml` files in current directory
+- **Summary files**: `.md` files, or any file path you specify
 
 ## Workflow Example
 

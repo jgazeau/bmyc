@@ -5,6 +5,12 @@ from typing import Optional
 import click
 import colorlog
 
+from bmyc.cli_completion import (
+    complete_configuration_files,
+    complete_summary_files,
+    get_current_shell,
+    get_install_completion_instructions,
+)
 from bmyc.cli_context import CliContext
 from bmyc.commons.common_constants import (
     CLI_CONFIGURATION_OPTION,
@@ -49,10 +55,11 @@ def verbosity(verbose):
 @click.option(
     CLI_CONFIGURATION_SHORT_OPTION,
     CLI_CONFIGURATION_OPTION,
-    type=click.Path(file_okay=True, dir_okay=False, resolve_path=True, path_type=Path, exists=True),
-    required=True,
-    default=CLI_CONFIGURATION_OPTION_DEFAULT_VALUE,
+    type=click.Path(file_okay=True, dir_okay=False, resolve_path=True, path_type=Path),
+    required=False,
+    default=None,
     help="Configuration file path. Configuration file must be a valid JSON or YAML file.",
+    shell_complete=complete_configuration_files,
 )
 @click.option(
     CLI_SUMMARY_SHORT_OPTION,
@@ -61,6 +68,7 @@ def verbosity(verbose):
     is_flag=False,
     flag_value=CLI_SUMMARY_OPTION_DEFAULT_VALUE,
     help="Summary file path.",
+    shell_complete=complete_summary_files,
 )
 @click.option(
     CLI_GITHUB_TOKEN_OPTION,
@@ -70,6 +78,14 @@ def verbosity(verbose):
     default=None,
     help="GitHub token used to authenticate with the GitHub API.",
 )
+@click.option(
+    "--install-completion",
+    type=click.Choice(["auto", "bash", "zsh", "fish"]),
+    is_flag=False,
+    flag_value="auto",
+    default=None,
+    help="Install shell completion and print instructions. Use 'auto' to detect your current shell.",
+)
 def cli(
     verbose: int,
     force: bool,
@@ -77,10 +93,43 @@ def cli(
     configuration: Path,
     summary: Path | None,
     github_token: Optional[str],
+    install_completion: str | None,
 ):
     """
     Bump Me if You Can. Tool used to bump static assets and keep them up-to-date.
     """
+    # Handle completion installation
+    if install_completion:
+        shell = install_completion
+        if shell == "auto":
+            shell = get_current_shell()
+            if not shell:
+                click.echo("Could not detect your shell. Please specify: bash, zsh, or fish", err=True)
+                raise SystemExit(1)
+
+        instructions = get_install_completion_instructions(shell)
+        if instructions:
+            click.echo(instructions)
+            raise SystemExit(0)
+        else:
+            click.echo(f"Unknown shell: {shell}", err=True)
+            raise SystemExit(1)
+
+    # Validate configuration file exists when not installing completion
+    if configuration and not Path(configuration).exists():
+        click.echo(f"Error: Configuration file '{configuration}' does not exist.", err=True)
+        raise SystemExit(1)
+    elif not configuration:
+        # Apply the default value
+        configuration = Path(CLI_CONFIGURATION_OPTION_DEFAULT_VALUE).resolve()
+        if not configuration.exists():
+            click.echo(
+                f"Error: Configuration file '{CLI_CONFIGURATION_OPTION_DEFAULT_VALUE}' does not exist. "
+                "Use -c/--configuration to specify a configuration file.",
+                err=True,
+            )
+            raise SystemExit(1)
+
     handler = colorlog.StreamHandler()
     formatter = colorlog.ColoredFormatter(
         "%(log_color)s%(levelname)-8s%(reset)s %(log_color)s%(message)s",
