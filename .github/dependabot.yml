@@ -17,6 +17,10 @@ updates:
     allow:
       - dependency-type: "direct"
       - dependency-type: "indirect"
+    groups:
+      pip-dependencies:
+        patterns:
+          - '*'
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
@@ -31,3 +35,7 @@ updates:
       include: "scope"
     labels:
       - 'internal'
+    groups:
+      github-actions-dependencies:
+        patterns:
+          - '*'
