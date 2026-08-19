@@ -27,8 +27,8 @@ class Processor:
         )
         asyncio.run(self.__process_configuration())
         self.__cli_context.configuration.write_text(f"{to_pretty_json(self.__bmyc_configuration.model_dump(), indent=2)}\n")
-        ResultsHandler().print_results()
-        ResultsHandler().save_summary(self.__cli_context.summary)
+        ResultsHandler().print_results(self.__cli_context)
+        ResultsHandler().save_summary(self.__cli_context)
 
     def __print_header(self):
         log_header()

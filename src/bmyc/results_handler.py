@@ -1,9 +1,8 @@
 import logging
-from pathlib import Path
 
 from prettytable import HRuleStyle, PrettyTable
 
-from bmyc.commons.common_constants import MAX_TTY_LENGTH
+from bmyc.cli_context import CliContext
 from bmyc.commons.singleton import Singleton
 from bmyc.model.asset_status_enum import AssetStatusEnum
 
@@ -61,12 +60,10 @@ class ResultsHandler(metaclass=Singleton):
             )
         )
 
-    def print_results(self):
-        results_table = self._get_results_table()
+    def print_results(self, cli_context: CliContext):
+        results_table = self._get_results_table(cli_context)
         results_table.header = True
         results_table.hrules = HRuleStyle.ALL
-        results_table.max_table_width = MAX_TTY_LENGTH
-        results_table.max_width = {"Local Path/Error": 60}
         results_table.use_header_width = True
         results_table._set_double_border_style()
         totals_table = self._get_totals_table()
@@ -76,17 +73,17 @@ class ResultsHandler(metaclass=Singleton):
         totals_table._set_double_border_style()
         logging.info(f"\n{results_table}\n{totals_table}")
 
-    def save_summary(self, summary: Path | None):
-        if summary is not None:
-            results_table = self._get_results_table()
+    def save_summary(self, cli_context: CliContext):
+        if cli_context.summary is not None:
+            results_table = self._get_results_table(cli_context)
             results_table._set_markdown_style()
             totals_table = self._get_totals_table()
             totals_table._set_markdown_style()
-            summary.write_text(f"{results_table}\n\n{totals_table}\n")
+            cli_context.summary.write_text(f"{results_table}\n\n{totals_table}\n")
 
-    def _get_results_table(self) -> PrettyTable:
+    def _get_results_table(self, cli_context: CliContext) -> PrettyTable:
         results_table = PrettyTable(["Package", "Name", "Version", "Hold", "Status", "Local Path/Error"])
-        results_table.add_rows([list(row) for row in self._results])
+        results_table.add_rows([list(row) for row in self._results if not cli_context.compact_summary or row[4] != AssetStatusEnum.UP_TO_DATE.value])
         return results_table
 
     def _get_totals_table(self) -> PrettyTable:

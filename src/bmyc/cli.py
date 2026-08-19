@@ -13,6 +13,8 @@ from bmyc.cli_completion import (
 )
 from bmyc.cli_context import CliContext
 from bmyc.commons.common_constants import (
+    CLI_COMPACT_SUMMARY_OPTION,
+    CLI_COMPLETION_OPTION,
     CLI_CONFIGURATION_OPTION,
     CLI_CONFIGURATION_OPTION_DEFAULT_VALUE,
     CLI_CONFIGURATION_SHORT_OPTION,
@@ -79,7 +81,13 @@ def verbosity(verbose):
     help="GitHub token used to authenticate with the GitHub API.",
 )
 @click.option(
-    "--install-completion",
+    CLI_COMPACT_SUMMARY_OPTION,
+    type=bool,
+    is_flag=True,
+    help="Generate a compact summary.",
+)
+@click.option(
+    CLI_COMPLETION_OPTION,
     type=click.Choice(["auto", "bash", "zsh", "fish"]),
     is_flag=False,
     flag_value="auto",
@@ -93,6 +101,7 @@ def cli(
     configuration: Path,
     summary: Path | None,
     github_token: Optional[str],
+    compact_summary: bool,
     install_completion: str | None,
 ):
     """
@@ -156,6 +165,7 @@ def cli(
             configuration=configuration,
             summary=summary,
             github_token=github_token,
+            compact_summary=compact_summary,
         )
     )
     processor.process()

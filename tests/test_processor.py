@@ -19,6 +19,7 @@ class TestProcessor(unittest.TestCase):
             force=False,
             insecure=False,
             github_token="dummy_token",
+            compact_summary=False,
         )
         processor = Processor(cli_context)
         assert isinstance(processor, Processor)
@@ -30,28 +31,21 @@ class TestProcessor(unittest.TestCase):
             force=False,
             insecure=False,
             github_token="dummy_token",
+            compact_summary=False,
         )
         processor = Processor(cli_context)
         assert isinstance(processor, Processor)
 
     def test_processor_should_raise_error_when_json_configuration_requires_github_token(self):
         cli_context = CliContext(
-            configuration=Path(MODEL_RESOURCES_PATH, "config-valid.json"),
-            summary=None,
-            force=False,
-            insecure=False,
-            github_token=None,
+            configuration=Path(MODEL_RESOURCES_PATH, "config-valid.json"), summary=None, force=False, insecure=False, github_token=None, compact_summary=False
         )
         with self.assertRaisesRegex(BmycError, "GitHub token is required for asset 'multi_package.github_asset' with GitHub provider"):
             Processor(cli_context)
 
     def test_processor_should_raise_error_when_yaml_configuration_requires_github_token(self):
         cli_context = CliContext(
-            configuration=Path(MODEL_RESOURCES_PATH, "config-valid.yaml"),
-            summary=None,
-            force=False,
-            insecure=False,
-            github_token=None,
+            configuration=Path(MODEL_RESOURCES_PATH, "config-valid.yaml"), summary=None, force=False, insecure=False, github_token=None, compact_summary=False
         )
         with self.assertRaisesRegex(BmycError, "GitHub token is required for asset 'multi_package.github_asset' with GitHub provider"):
             Processor(cli_context)
@@ -63,6 +57,7 @@ class TestProcessor(unittest.TestCase):
             force=False,
             insecure=False,
             github_token="dummy_token",
+            compact_summary=False,
         )
         with self.assertRaisesRegex(BmycError, "Duplicate local paths found for assets: package1.asset1, package1.asset2, package1.asset3, package2.asset1"):
             Processor(cli_context)
@@ -74,6 +69,7 @@ class TestProcessor(unittest.TestCase):
             force=False,
             insecure=False,
             github_token="dummy_token",
+            compact_summary=False,
         )
         with self.assertRaisesRegex(BmycError, "Duplicate local paths found for assets: package1.asset1, package1.asset2, package1.asset3, package2.asset1"):
             Processor(cli_context)
@@ -140,7 +136,7 @@ class TestProcessor(unittest.TestCase):
             processor = Processor(cli_context)
             processor.process()
             mock_results_handler_instance = mock_results_handler_class.return_value
-            mock_results_handler_instance.save_summary.assert_called_once_with(temp_summary_path)
+            mock_results_handler_instance.save_summary.assert_called_once_with(cli_context)
 
     @patch("bmyc.processor.ResultsHandler")
     @patch("bmyc.processor.asyncio.run")
@@ -158,7 +154,7 @@ class TestProcessor(unittest.TestCase):
             processor = Processor(cli_context)
             processor.process()
             mock_results_handler_instance = mock_results_handler_class.return_value
-            mock_results_handler_instance.save_summary.assert_called_once_with(None)
+            mock_results_handler_instance.save_summary.assert_called_once_with(cli_context)
 
     @patch("bmyc.processor.ResultsHandler")
     @patch("bmyc.processor.asyncio.run")

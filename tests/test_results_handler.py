@@ -5,6 +5,7 @@ from unittest.mock import patch
 
 from bmyc.model.asset_status_enum import AssetStatusEnum
 from bmyc.results_handler import ResultsHandler
+from tests.commons.helpers import dummy_cli_context
 
 
 class TestResultsHandler(unittest.TestCase):
@@ -85,15 +86,25 @@ class TestResultsHandler(unittest.TestCase):
 
     def test_get_results_table_should_have_correct_columns_when_called(self):
         handler = ResultsHandler()
-        table = handler._get_results_table()
+        table = handler._get_results_table(dummy_cli_context())
         assert table.field_names == ["Package", "Name", "Version", "Hold", "Status", "Local Path/Error"]
 
     def test_get_results_table_should_contain_added_rows_when_rows_added(self):
         handler = ResultsHandler()
         handler.add_result("mypkg", "myasset", "3.0.0", True, AssetStatusEnum.UPDATED, "/some/path")
-        table = handler._get_results_table()
+        table = handler._get_results_table(dummy_cli_context())
         assert len(table.rows) == 1
         assert table.rows[0] == ["mypkg", "myasset", "3.0.0", True, AssetStatusEnum.UPDATED.value, "/some/path"]
+
+    def test_get_results_table_should_not_contain_added_rows_when_compact_summary_and_up_to_date(self):
+        handler = ResultsHandler()
+        handler.add_result("mypkg", "myasset", "3.0.0", True, AssetStatusEnum.UP_TO_DATE, "/some/path")
+        handler.add_result("another_pkg", "another_asset", "4.0.0", True, AssetStatusEnum.UPDATED, "/some/other/path")
+        cli_context = dummy_cli_context()
+        cli_context.compact_summary = True
+        table = handler._get_results_table(cli_context)
+        assert len(table.rows) == 1
+        assert table.rows[0] == ["another_pkg", "another_asset", "4.0.0", True, AssetStatusEnum.UPDATED.value, "/some/other/path"]
 
     def test_get_totals_table_should_have_correct_columns_when_called(self):
         handler = ResultsHandler()
@@ -114,7 +125,7 @@ class TestResultsHandler(unittest.TestCase):
         handler = ResultsHandler()
         self._add_one_of_each(handler)
         with patch("bmyc.results_handler.logging") as mock_logging:
-            handler.print_results()
+            handler.print_results(dummy_cli_context())
             mock_logging.info.assert_called_once()
             logged_message = mock_logging.info.call_args[0][0]
             assert "Package" in logged_message
@@ -124,9 +135,10 @@ class TestResultsHandler(unittest.TestCase):
         handler = ResultsHandler()
         self._add_one_of_each(handler)
         with tempfile.TemporaryDirectory() as tmp_dir:
-            summary_path = Path(tmp_dir, "summary.md")
-            handler.save_summary(summary_path)
-            content = summary_path.read_text()
+            cli_context = dummy_cli_context()
+            cli_context.summary = Path(tmp_dir, "summary.md")
+            handler.save_summary(cli_context)
+            content = cli_context.summary.read_text()
             assert "Package" in content
             assert "Total" in content
             assert "|" in content
@@ -135,9 +147,10 @@ class TestResultsHandler(unittest.TestCase):
         handler = ResultsHandler()
         self._add_one_of_each(handler)
         with tempfile.TemporaryDirectory() as tmp_dir:
-            summary_path = Path(tmp_dir, "summary.md")
-            handler.save_summary(summary_path)
-            content = summary_path.read_text()
+            cli_context = dummy_cli_context()
+            cli_context.summary = Path(tmp_dir, "summary.md")
+            handler.save_summary(cli_context)
+            content = cli_context.summary.read_text()
             assert AssetStatusEnum.ERROR.value in content
             assert AssetStatusEnum.OUTDATED.value in content
             assert AssetStatusEnum.UPDATED.value in content

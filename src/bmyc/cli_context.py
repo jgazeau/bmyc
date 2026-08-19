@@ -10,3 +10,4 @@ class CliContext:
     configuration: Path
     summary: Path | None
     github_token: Optional[str]
+    compact_summary: bool
