@@ -131,7 +131,7 @@ class Asset(BaseModel):
 
     def _get_version_display(self, current_version: str | None, latest_version: str | None) -> str:
         if current_version and latest_version:
-            return f"{current_version} -> {latest_version}"
+            return f"{current_version} => {latest_version}"
         elif current_version:
             return current_version
         elif latest_version:

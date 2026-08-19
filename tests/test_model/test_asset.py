@@ -63,7 +63,7 @@ class TestAsset(unittest.TestCase):
 
     def test_get_version_display_should_return_correct_format(self):
         asset = Asset.model_validate(dummy_json_asset())
-        assert asset._get_version_display("1.0.0", "2.0.0") == "1.0.0 -> 2.0.0"
+        assert asset._get_version_display("1.0.0", "2.0.0") == "1.0.0 => 2.0.0"
         assert asset._get_version_display("1.0.0", None) == "1.0.0"
         assert asset._get_version_display(None, "2.0.0") == "2.0.0"
         assert asset._get_version_display(None, None) == NOT_AVAILABLE
@@ -124,7 +124,7 @@ class TestAsset(unittest.TestCase):
         call_args = mock_results_handler.return_value.add_result.call_args[0]
         assert call_args[0] == asset.package_name
         assert call_args[1] == asset.name
-        assert call_args[2] == "1.0.0 -> 2.0.0"
+        assert call_args[2] == "1.0.0 => 2.0.0"
         assert call_args[3] is False
         assert call_args[4] == AssetStatusEnum.UPDATED
 
@@ -139,7 +139,7 @@ class TestAsset(unittest.TestCase):
         mock_save.assert_called_once()
         mock_results_handler.return_value.add_result.assert_called_once()
         call_args = mock_results_handler.return_value.add_result.call_args[0]
-        assert call_args[2] == "1.0.0 -> 2.0.0"
+        assert call_args[2] == "1.0.0 => 2.0.0"
         assert call_args[4] == AssetStatusEnum.UPDATED
 
     @patch("bmyc.model.asset.ResultsHandler")

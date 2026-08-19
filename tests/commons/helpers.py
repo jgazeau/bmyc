@@ -15,6 +15,7 @@ def dummy_cli_context():
         configuration=Path(MODEL_RESOURCES_PATH, "config-valid.json"),
         summary=None,
         github_token="dummy_github_token",
+        compact_summary=False,
     )
 
 

@@ -264,6 +264,14 @@ Path where the summary report will be saved.
 - **Default**: `bmyc-summary.md`
 - **Example**: `bmyc --summary update-report.md`
 
+#### `--compact-summary`
+
+Generate a compact summary report without up-to-date assets information.
+
+- **Type**: Flag
+- **Default**: Off
+- **Example**: `bmyc --compact-summary`
+
 #### `-f, --force`
 
 Force update of all assets, including those marked with `hold: true`.

@@ -9,6 +9,7 @@ from unittest.mock import patch
 from click.testing import CliRunner
 
 from bmyc.cli import cli
+from bmyc.commons.common_constants import CLI_COMPLETION_OPTION
 from tests.commons.helpers import MODEL_RESOURCES_PATH
 
 
@@ -22,7 +23,7 @@ class TestCliInstallCompletion(unittest.TestCase):
 
     def test_install_completion_bash(self):
         """Test --install-completion with bash."""
-        result = self.runner.invoke(cli, ["--install-completion", "bash"])
+        result = self.runner.invoke(cli, [CLI_COMPLETION_OPTION, "bash"])
         assert result.exit_code == 0
         assert "bash" in result.output.lower()
         assert "_BMYC_COMPLETE=bash_source" in result.output
@@ -30,7 +31,7 @@ class TestCliInstallCompletion(unittest.TestCase):
 
     def test_install_completion_zsh(self):
         """Test --install-completion with zsh."""
-        result = self.runner.invoke(cli, ["--install-completion", "zsh"])
+        result = self.runner.invoke(cli, [CLI_COMPLETION_OPTION, "zsh"])
         assert result.exit_code == 0
         assert "zsh" in result.output.lower()
         assert "_BMYC_COMPLETE=zsh_source" in result.output
@@ -38,7 +39,7 @@ class TestCliInstallCompletion(unittest.TestCase):
 
     def test_install_completion_fish(self):
         """Test --install-completion with fish."""
-        result = self.runner.invoke(cli, ["--install-completion", "fish"])
+        result = self.runner.invoke(cli, [CLI_COMPLETION_OPTION, "fish"])
         assert result.exit_code == 0
         assert "fish" in result.output.lower()
         assert "_BMYC_COMPLETE=fish_source" in result.output
@@ -47,27 +48,27 @@ class TestCliInstallCompletion(unittest.TestCase):
     def test_install_completion_auto_detected(self):
         """Test --install-completion auto detection."""
         with patch("bmyc.cli.get_current_shell", return_value="bash"):
-            result = self.runner.invoke(cli, ["--install-completion", "auto"])
+            result = self.runner.invoke(cli, [CLI_COMPLETION_OPTION, "auto"])
             assert result.exit_code == 0
             assert "bash" in result.output.lower()
 
     def test_install_completion_auto_detection_failure(self):
         """Test --install-completion auto when shell cannot be detected."""
         with patch("bmyc.cli.get_current_shell", return_value=None):
-            result = self.runner.invoke(cli, ["--install-completion", "auto"])
+            result = self.runner.invoke(cli, [CLI_COMPLETION_OPTION, "auto"])
             assert result.exit_code == 1
             assert "Could not detect" in result.output or "error" in result.output.lower()
 
     def test_install_completion_auto_default(self):
         """Test --install-completion flag value with auto default."""
         with patch("bmyc.cli.get_current_shell", return_value="zsh"):
-            result = self.runner.invoke(cli, ["--install-completion"])
+            result = self.runner.invoke(cli, [CLI_COMPLETION_OPTION])
             assert result.exit_code == 0
             assert "zsh" in result.output.lower()
 
     def test_install_completion_invalid_shell(self):
         """Test --install-completion with invalid shell."""
-        result = self.runner.invoke(cli, ["--install-completion", "invalid_shell"])
+        result = self.runner.invoke(cli, [CLI_COMPLETION_OPTION, "invalid_shell"])
         # Click should handle invalid choice
         assert result.exit_code != 0
 
@@ -79,7 +80,7 @@ class TestCliInstallCompletion(unittest.TestCase):
         )
         # Should run normally (exit code depends on processor, not install-completion)
         # We're just testing that --install-completion is not triggered
-        assert "--install-completion" not in result.output or "install" not in result.output.lower()
+        assert CLI_COMPLETION_OPTION not in result.output or "install" not in result.output.lower()
 
     def test_configuration_required_without_install_completion(self):
         """Test that configuration is required when not using --install-completion."""
@@ -96,7 +97,7 @@ class TestCliInstallCompletion(unittest.TestCase):
     def test_install_completion_bypasses_configuration_requirement(self):
         """Test that --install-completion bypasses configuration file requirement."""
         # With --install-completion, the configuration file shouldn't be required
-        result = self.runner.invoke(cli, ["--install-completion", "bash"])
+        result = self.runner.invoke(cli, [CLI_COMPLETION_OPTION, "bash"])
         assert result.exit_code == 0
         # Should not complain about missing configuration
 
@@ -132,7 +133,7 @@ class TestCliWithConfiguration(unittest.TestCase):
         result = self.runner.invoke(cli, ["-h"])
         assert result.exit_code == 0
         assert "Bump Me if You Can" in result.output
-        assert "--install-completion" in result.output
+        assert CLI_COMPLETION_OPTION in result.output
         assert "--force" in result.output
         assert "--insecure" in result.output
 
