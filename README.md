@@ -787,7 +787,7 @@ For issues, questions, or suggestions, please open an issue on the [GitHub repos
 
 ## Changelog
 
-### Version 1.1.0
+### Version 1.2.0
 
 Initial release with support for:
 
